@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 type UserState = {
-  // False if not logged in
+  // Null if not logged in
   // JWT if logged in
   accessToken: String | null;
 };
