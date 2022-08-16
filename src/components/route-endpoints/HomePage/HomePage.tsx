@@ -5,8 +5,13 @@ import Input from "../../UI-elements/Input/Input";
 import Button from "../../UI-elements/Button/Button";
 import { useForm } from "../../../hooks/useForm/useForm";
 import { V } from "../../../hooks/useForm/useForm-validators";
+import { useHttpClient } from "../../../hooks/useHttpClient";
+import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
 
 const HomePage = () => {
+  // Get Cttp Client
+  const { isLoading, error, clearError, sendRequest } = useHttpClient();
+
   // Setup register state
   const [
     registerData,
@@ -54,7 +59,7 @@ const HomePage = () => {
   };
 
   // Form submit handler
-  const submitHandler = (event: React.SyntheticEvent) => {
+  const submitHandler = async (event: React.SyntheticEvent) => {
     event.preventDefault();
 
     // If in Register mode, validate all fields
@@ -65,12 +70,16 @@ const HomePage = () => {
     }
 
     // Send data to backend
-
-    // Save JWT to localeStorage
+    try {
+      await sendRequest("/", {
+        body: { email: loginEmail, password: loginPass },
+        auth: false,
+      });
+    } catch (err: any) {
+      console.log(err);
+    }
 
     // Update state
-
-    // Start timer
   };
 
   // Components for login form
@@ -137,6 +146,8 @@ const HomePage = () => {
 
   return (
     <>
+      {isLoading && <LoadingSpinner asOverlay />}
+
       <Card>Get ready to train</Card>
       <Card>
         <div className={styles["tab-switch"]}>
