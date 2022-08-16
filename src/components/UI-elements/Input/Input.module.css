@@ -12,6 +12,7 @@
   font-size: 1rem;
 
   border: 1px solid var(--dark-7);
+  border-radius: 0.5rem;
 }
 
 .text-input:focus {
@@ -25,6 +26,8 @@ div.password {
 div.password > .text-input {
   flex-grow: 1;
   border-right: none;
+  border-top-right-radius: 0rem;
+  border-bottom-right-radius: 0rem;
 }
 
 button.password {
@@ -32,6 +35,8 @@ button.password {
 
   border: 1px solid var(--dark-7);
   border-left: none;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 
   background-color: inherit;
 }
