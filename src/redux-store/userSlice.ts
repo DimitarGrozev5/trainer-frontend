@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, Middleware } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 type UserState = {
@@ -26,3 +26,21 @@ const userSlice = createSlice({
 
 export const userActions = userSlice.actions;
 export const userReducer = userSlice.reducer;
+
+export const userMiddleware: Middleware = (storeAPI) => (next) => (action) => {
+  switch (action.type) {
+    case "user/setUserData":
+      // Save userData to local storage
+      localStorage.setItem("userData", JSON.stringify(action.payload));
+      break;
+
+    case "user/clearUserData":
+      // Remove userData from local storage
+      localStorage.removeItem("userData");
+      break;
+
+    default:
+      break;
+  }
+  return next(action);
+};
