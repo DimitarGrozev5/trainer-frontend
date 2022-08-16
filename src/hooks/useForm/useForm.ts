@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { produce } from "immer";
+import { produce, current } from "immer";
 import { InputInit, Input, Form } from "./useForm-data-types";
 
 export const useForm = (inputs: InputInit[]) => {
@@ -12,7 +12,7 @@ export const useForm = (inputs: InputInit[]) => {
   }, [inputs]);
 
   // Setup Form Data and helper state
-  const [formData, setFormData] = useState(initFormData);
+  const [formData, setFormData] = useState<Form>(initFormData);
   const [formWasTouched, setFormWasTouched] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -20,22 +20,33 @@ export const useForm = (inputs: InputInit[]) => {
   // onChange the input field is changed and validated
   // An error is set to isValid, only if the Input field or Form was previously touched
   const onChange = (target: string) => (value: string) => {
-    // Update State
     setFormData((data) => {
       const t = { ...data[target] };
+      let newData = { ...data, [target]: t };
+
+      // Update Value
       t.value = value;
 
-      // Run validator
-      const isValid = t.validator(value);
-
-      // If the form and input are not touched, don't display error message
-      t.isValid = "";
-      if ((formWasTouched || t.touched) && !isValid) {
-        t.isValid = t.err;
-        setFormIsValid(false);
+      // Validate field
+      if (formWasTouched || t.touched) {
+        const isValid = t.validator(newData, target);
+        t.isValid = "";
+        if (!isValid) {
+          t.isValid = t.err;
+        }
       }
+      newData = { ...data, [target]: t };
 
-      return { ...data, [target]: t };
+      // Validate form
+      setFormIsValid(
+        Object.entries(newData).reduce(
+          (a, c) => a && c[1].validator(newData, c[0]),
+          true
+        )
+      );
+
+      // Return state
+      return newData;
     });
   };
 
@@ -45,13 +56,6 @@ export const useForm = (inputs: InputInit[]) => {
     setFormData((data) =>
       produce<Form>(data, (draft) => {
         draft[target].touched = true;
-
-        // Test all fields
-        const allIsValid = Object.values(draft).reduce((a, c) => {
-          const isValid = c.validator(c.value);
-          return a && isValid;
-        }, true);
-        setFormIsValid(allIsValid);
       })
     );
     onChange(target)(value);
@@ -60,25 +64,28 @@ export const useForm = (inputs: InputInit[]) => {
   // Function that sets the form to touched, validated all fields and returns if the form is valid
   const touchForm = () => {
     setFormWasTouched(true);
-    setFormData((data) =>
-      Object.keys(data)
-        .map((target) => {
-          const t = { ...data[target] };
+    setFormData((data) => {
+      let allIsValid = true;
+      const allData = Object.keys(data).map((target) => {
+        const t = { ...data[target] };
 
-          // Run validator
-          const isValid = t.validator(t.value);
+        // Run validator
+        const isValid = t.validator(data, target);
+        allIsValid = allIsValid && isValid;
 
-          // If the form and input are not touched, don't display error message
-          t.isValid = "";
-          if (!isValid) {
-            t.isValid = t.err;
-            setFormIsValid(false);
-          }
+        // If the form and input are not touched, don't display error message
+        t.isValid = "";
+        if (!isValid) {
+          t.isValid = t.err;
+        }
 
-          return [target, t] as const;
-        })
-        .reduce((a, c) => ({ ...a, [c[0]]: c[1] }), {})
-    );
+        return [target, t] as const;
+      });
+
+      setFormIsValid(allIsValid);
+
+      return allData.reduce((a, c) => ({ ...a, [c[0]]: c[1] }), {});
+    });
   };
 
   // Function that resets the form to the initFormData state

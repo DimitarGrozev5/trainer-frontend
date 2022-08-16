@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./HomePage.module.css";
 import Card from "../../UI-elements/Card/Card";
 import Input from "../../UI-elements/Input/Input";
@@ -27,7 +27,7 @@ const HomePage = () => {
       name: "pass",
       init: "",
       err: "Invalid Password!",
-      validator: V.longerThan(6),
+      validator: V.longerThan(5),
     },
     {
       name: "re-pass",
@@ -122,7 +122,9 @@ const HomePage = () => {
         onBlur={onBlur("re-pass")}
       />
 
-      <Button type="submit">Register</Button>
+      <Button type="submit" disabled={!registerFormIsValid}>
+        Register
+      </Button>
     </>
   );
 
