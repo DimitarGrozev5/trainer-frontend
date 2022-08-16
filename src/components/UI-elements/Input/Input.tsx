@@ -7,15 +7,32 @@ import { useTState } from "../../../hooks/useTState";
 interface Props {
   label: string;
   type: "text" | "email" | "password";
+  error?: string;
+  value: string;
+  onChange: () => void;
+  onBlur: () => void;
 }
 
-const Input: React.FC<Props> = ({ label, type }) => {
+const Input: React.FC<Props> = ({
+  label,
+  type,
+  error,
+  value,
+  onChange,
+  onBlur,
+}) => {
+  // Generate Id for accessibility purposes
   const id = `$label{}_${nanoid()}`;
 
+  // Password visibility state
   const [showPassword, , { toggleState: toggleShowPassword }] =
     useTState(false);
 
+  // Setup class names
   const classNames = [styles["text-input"]];
+
+  const invalid = error && error.length;
+  invalid && classNames.push(styles.error);
 
   return (
     <div className={styles.container}>
@@ -29,6 +46,9 @@ const Input: React.FC<Props> = ({ label, type }) => {
             type={showPassword ? "text" : "password"}
             id={id}
             name={id}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
           />
           <button
             type="button"
@@ -40,8 +60,17 @@ const Input: React.FC<Props> = ({ label, type }) => {
         </div>
       )}
       {type !== "password" && (
-        <input className={classNames.join(" ")} type={type} id={id} name={id} />
+        <input
+          className={classNames.join(" ")}
+          type={type}
+          id={id}
+          name={id}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
       )}
+      {invalid && <div className={styles.error}>{error}</div>}
     </div>
   );
 };
