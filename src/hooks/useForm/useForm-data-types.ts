@@ -1,15 +1,12 @@
+type ValidatorFn = (form: Form, target: string) => boolean;
+
 export class InputInit {
   name: string;
   init: string;
   err: string;
-  validator: (val: string) => boolean;
+  validator: ValidatorFn;
 
-  constructor(
-    name: string,
-    init: string,
-    err: string,
-    validator: (val: string) => boolean
-  ) {
+  constructor(name: string, init: string, err: string, validator: ValidatorFn) {
     this.name = name;
     this.init = init;
     this.err = err;
@@ -20,11 +17,11 @@ export class InputInit {
 export class Input {
   value: string;
   err: string;
-  validator: (val: string) => boolean;
+  validator: ValidatorFn;
   isValid: string = "";
   touched: boolean = false;
 
-  constructor(init: string, err: string, validator: (val: string) => boolean) {
+  constructor(init: string, err: string, validator: ValidatorFn) {
     this.value = init;
     this.err = err;
     this.validator = validator;
