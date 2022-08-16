@@ -4,6 +4,7 @@
 
 .tab-switch > button {
   width: 50%;
+  text-decoration: underline;
 }
 
 .form {

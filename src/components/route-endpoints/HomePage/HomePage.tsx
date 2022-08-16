@@ -1,15 +1,13 @@
+import React, { useState } from "react";
 import styles from "./HomePage.module.css";
 import Card from "../../UI-elements/Card/Card";
 import Input from "../../UI-elements/Input/Input";
 import Button from "../../UI-elements/Button/Button";
-import { useSState } from "../../../hooks/useSState";
 import { useForm } from "../../../hooks/useForm";
 import { notEmpty } from "../../../util/data-validation";
 
 const HomePage = () => {
-  const [loginMode, , { setStateTo: setLoginModeTo }] = useSState(true);
-
-  const [registerData, onChange] = useForm([
+  const [registerData, onChange, onBlur, touchForm, resetForm] = useForm([
     { name: "email", init: "", err: "Invalid Email!", validator: notEmpty },
     {
       name: "re-email",
@@ -26,6 +24,18 @@ const HomePage = () => {
     },
   ]);
 
+  const submitHandler = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+
+    touchForm();
+  };
+
+  const [loginMode, setLoginMode] = useState(true);
+  const setLoginModeTo = (val: boolean) => () => {
+    resetForm();
+    setLoginMode(val);
+  };
+
   const loginForm = (
     <>
       {/* <Input label="Email:" type="email" />
@@ -40,27 +50,34 @@ const HomePage = () => {
       <Input
         label="Email:"
         type="email"
-        error="Invalid Email"
+        error={registerData["email"].isValid}
         value={registerData["email"].value}
         onChange={onChange("email")}
+        onBlur={onBlur("email")}
       />
       <Input
         label="Repeat Email:"
         type="email"
+        error={registerData["re-email"].isValid}
         value={registerData["re-email"].value}
         onChange={onChange("re-email")}
+        onBlur={onBlur("re-email")}
       />
       <Input
         label="Password:"
         type="password"
+        error={registerData["pass"].isValid}
         value={registerData["pass"].value}
         onChange={onChange("pass")}
+        onBlur={onBlur("pass")}
       />
       <Input
         label="Repeat Password:"
         type="password"
+        error={registerData["re-pass"].isValid}
         value={registerData["re-pass"].value}
         onChange={onChange("re-pass")}
+        onBlur={onBlur("re-pass")}
       />
 
       <Button type="submit">Register</Button>
@@ -79,7 +96,7 @@ const HomePage = () => {
             Register
           </Button>
         </div>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={submitHandler}>
           {loginMode ? loginForm : registerForm}
         </form>
       </Card>

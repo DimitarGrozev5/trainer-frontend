@@ -10,7 +10,7 @@ interface Props {
   error?: string;
   value: string;
   onChange: (val: string) => void;
-  onBlur?: () => void;
+  onBlur?: (val: string) => void;
 }
 
 const Input: React.FC<Props> = ({
@@ -34,10 +34,14 @@ const Input: React.FC<Props> = ({
   const invalid = error && error.length;
   invalid && classNames.push(styles.error);
 
-  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.currentTarget.value);
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
+    onChange(e.currentTarget.value);
+
+  const blurHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
+    onBlur && onBlur(e.currentTarget.value);
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${invalid ? styles.error : ""}`}>
       <label className={styles.label} htmlFor={id}>
         {label}
       </label>
@@ -50,7 +54,7 @@ const Input: React.FC<Props> = ({
             name={id}
             value={value}
             onChange={changeHandler}
-            onBlur={onBlur}
+            onBlur={blurHandler}
           />
           <button
             type="button"
@@ -69,10 +73,10 @@ const Input: React.FC<Props> = ({
           name={id}
           value={value}
           onChange={changeHandler}
-          onBlur={onBlur}
+          onBlur={blurHandler}
         />
       )}
-      {invalid && <div className={styles.error}>{error}</div>}
+      {invalid && <div className={styles["error-box"]}>{error}</div>}
     </div>
   );
 };

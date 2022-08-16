@@ -41,6 +41,12 @@ button.password {
   background-color: inherit;
 }
 
+.error button.password {
+  border: 1px solid var(--acc-red);
+  border-left: none;
+  color: var(--acc-red);
+}
+
 .text-input.error {
   border: 1px solid var(--acc-red);
   color: var(--acc-red);
@@ -48,4 +54,8 @@ button.password {
 
 div.error {
   color: var(--acc-red);
+}
+
+.error-box {
+  text-align: right;
 }
