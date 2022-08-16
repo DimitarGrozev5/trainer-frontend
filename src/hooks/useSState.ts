@@ -1,16 +1,18 @@
 import { useMemo, useState } from "react";
-// TODO - finish this garbadge
+
+interface Helpers<S> {
+  setStateTo: (val: S) => () => void;
+}
+
 export const useSState = <S>(initValue: S) => {
   const [state, setState] = useState(initValue);
 
   const fns = useMemo(
     () => ({
-      setStateTo: (val: S) => setState(val),
+      setStateTo: (val: S) => () => setState(val),
     }),
     []
   );
 
-  type Output = [S, typeof setState, typeof fns];
-
-  return [state, setState, fns] as Output;
+  return [state, setState, fns as Helpers<S>] as const;
 };
