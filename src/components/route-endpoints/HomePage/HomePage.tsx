@@ -3,9 +3,10 @@ import styles from "./HomePage.module.css";
 import Card from "../../UI-elements/Card/Card";
 import Input from "../../UI-elements/Input/Input";
 import Button from "../../UI-elements/Button/Button";
+import { useSState } from "../../../hooks/useSState";
 
 const HomePage = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [loginMode, , { setStateTo: setLoginModeTo }] = useSState(true);
 
   const loginForm = (
     <>
@@ -32,11 +33,15 @@ const HomePage = () => {
       <Card>Get ready to train</Card>
       <Card>
         <div className={styles["tab-switch"]}>
-          <Button accent={isLogin}>Login</Button>
-          <Button accent={!isLogin}>Register</Button>
+          <Button accent={!!loginMode} onClick={setLoginModeTo(true)}>
+            Login
+          </Button>
+          <Button accent={!loginMode} onClick={setLoginModeTo(false)}>
+            Register
+          </Button>
         </div>
         <form className={styles.form}>
-          {isLogin ? loginForm : registerForm}
+          {loginMode ? loginForm : registerForm}
         </form>
       </Card>
     </>

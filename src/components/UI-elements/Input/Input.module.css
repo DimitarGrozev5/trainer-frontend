@@ -10,8 +10,28 @@
 .text-input {
   padding: 0.5rem;
   font-size: 1rem;
+
+  border: 1px solid var(--dark-7);
 }
 
 .text-input:focus {
-  outline-color: var(--dark-7);
+  outline: none;
+}
+
+div.password {
+  display: flex;
+}
+
+div.password > .text-input {
+  flex-grow: 1;
+  border-right: none;
+}
+
+button.password {
+  padding-right: 0.3rem;
+
+  border: 1px solid var(--dark-7);
+  border-left: none;
+
+  background-color: inherit;
 }
