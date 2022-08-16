@@ -30,20 +30,26 @@ const HomePage = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPass, setLoginPass] = useState("");
 
+  // Setup Tabs state for chaning between Login and Register
   const [loginMode, setLoginMode] = useState(true);
   const setLoginModeTo = (val: boolean) => () => {
+    // Reset forms when swiching
     resetRegisterForm();
     setLoginEmail("");
     setLoginPass("");
+
+    // Update state
     setLoginMode(val);
   };
 
+  // Form submit handler
   const submitHandler = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
     loginMode && touchRegisterForm();
   };
 
+  // Components for login form
   const loginForm = (
     <>
       <Input
@@ -63,6 +69,7 @@ const HomePage = () => {
     </>
   );
 
+  // Components for registration form
   const registerForm = (
     <>
       <Input
