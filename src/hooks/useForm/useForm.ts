@@ -1,40 +1,6 @@
 import { useMemo, useState } from "react";
 import { produce } from "immer";
-
-class InputInit {
-  name: string;
-  init: string;
-  err: string;
-  validator: (val: string) => boolean;
-
-  constructor(
-    name: string,
-    init: string,
-    err: string,
-    validator: (val: string) => boolean
-  ) {
-    this.name = name;
-    this.init = init;
-    this.err = err;
-    this.validator = validator;
-  }
-}
-
-class Input {
-  value: string;
-  err: string;
-  validator: (val: string) => boolean;
-  isValid: string = "";
-  touched: boolean = false;
-
-  constructor(init: string, err: string, validator: (val: string) => boolean) {
-    this.value = init;
-    this.err = err;
-    this.validator = validator;
-  }
-}
-
-type Form = { [name: string]: Input };
+import { InputInit, Input, Form } from "./data-types";
 
 export const useForm = (inputs: InputInit[]) => {
   // Transform Init data to a dictionery of inputs
@@ -45,9 +11,13 @@ export const useForm = (inputs: InputInit[]) => {
     );
   }, [inputs]);
 
+  // Setup Form Data and helper state
   const [formData, setFormData] = useState(initFormData);
   const [formWasTouched, setFormWasTouched] = useState(false);
 
+  // Create Change Handler
+  // onChange the input field is changed and validated
+  // An error is set to isValid, only if the Input field or Form was previously touched
   const onChange = (target: string) => (value: string) => {
     // Update State
     setFormData((data) => {
@@ -67,6 +37,8 @@ export const useForm = (inputs: InputInit[]) => {
     });
   };
 
+  // Create Blur Handler
+  // Set the filed to touched and run onChange, to validate the field
   const onBlur = (target: string) => (value: string) => {
     setFormData((data) =>
       produce<Form>(data, (draft) => {
@@ -76,6 +48,7 @@ export const useForm = (inputs: InputInit[]) => {
     onChange(target)(value);
   };
 
+  // Function that sets the form to touched and validated all fields
   const touchForm = () => {
     setFormWasTouched(true);
     setFormData((data) =>
@@ -98,6 +71,7 @@ export const useForm = (inputs: InputInit[]) => {
     );
   };
 
+  // Function that resets the form to the initFormData state
   const resetForm = () => {
     setFormData(initFormData);
   };

@@ -3,7 +3,7 @@ import styles from "./HomePage.module.css";
 import Card from "../../UI-elements/Card/Card";
 import Input from "../../UI-elements/Input/Input";
 import Button from "../../UI-elements/Button/Button";
-import { useForm } from "../../../hooks/useForm";
+import { useForm } from "../../../hooks/useForm/useForm";
 import { notEmpty } from "../../../util/data-validation";
 
 const HomePage = () => {
