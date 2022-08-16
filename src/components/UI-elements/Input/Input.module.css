@@ -40,3 +40,12 @@ button.password {
 
   background-color: inherit;
 }
+
+.text-input.error {
+  border: 1px solid var(--acc-red);
+  color: var(--acc-red);
+}
+
+div.error {
+  color: var(--acc-red);
+}
