@@ -7,6 +7,8 @@ import { useForm } from "../../../hooks/useForm/useForm";
 import { V } from "../../../hooks/useForm/useForm-validators";
 import { useHttpClient } from "../../../hooks/useHttpClient";
 import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
+import Modal from "../../UI-elements/Modal/Modal";
+import ErrorModal from "../../UI-elements/Modal/ErrorModal";
 
 const HomePage = () => {
   // Get Cttp Client
@@ -147,6 +149,7 @@ const HomePage = () => {
   return (
     <>
       {isLoading && <LoadingSpinner asOverlay />}
+      <ErrorModal show={!!error} error={error} onClose={clearError} />
 
       <Card>Get ready to train</Card>
       <Card>
