@@ -4,7 +4,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 type UserState = {
   // Null if not logged in
   // JWT if logged in
-  accessToken: String | null;
+  accessToken: string | null;
 };
 
 const userSlice = createSlice({
