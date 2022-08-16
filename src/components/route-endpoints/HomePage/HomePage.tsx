@@ -3,14 +3,33 @@ import Card from "../../UI-elements/Card/Card";
 import Input from "../../UI-elements/Input/Input";
 import Button from "../../UI-elements/Button/Button";
 import { useSState } from "../../../hooks/useSState";
+import { useForm } from "../../../hooks/useForm";
+import { notEmpty } from "../../../util/data-validation";
 
 const HomePage = () => {
   const [loginMode, , { setStateTo: setLoginModeTo }] = useSState(true);
 
+  const [registerData, onChange] = useForm([
+    { name: "email", init: "", err: "Invalid Email!", validator: notEmpty },
+    {
+      name: "re-email",
+      init: "",
+      err: "Emails don't match!",
+      validator: notEmpty,
+    },
+    { name: "pass", init: "", err: "Invalid Password!", validator: notEmpty },
+    {
+      name: "re-pass",
+      init: "",
+      err: "Passwords don't match!",
+      validator: notEmpty,
+    },
+  ]);
+
   const loginForm = (
     <>
-      <Input label="Email:" type="email" />
-      <Input label="Password:" type="password" />
+      {/* <Input label="Email:" type="email" />
+      <Input label="Password:" type="password" /> */}
 
       <Button type="submit">Login</Button>
     </>
@@ -18,10 +37,31 @@ const HomePage = () => {
 
   const registerForm = (
     <>
-      <Input label="Email:" type="email" />
-      <Input label="Repeat Email:" type="email" />
-      <Input label="Password:" type="password" />
-      <Input label="Repeat Password:" type="password" />
+      <Input
+        label="Email:"
+        type="email"
+        error="Invalid Email"
+        value={registerData["email"].value}
+        onChange={onChange("email")}
+      />
+      <Input
+        label="Repeat Email:"
+        type="email"
+        value={registerData["re-email"].value}
+        onChange={onChange("re-email")}
+      />
+      <Input
+        label="Password:"
+        type="password"
+        value={registerData["pass"].value}
+        onChange={onChange("pass")}
+      />
+      <Input
+        label="Repeat Password:"
+        type="password"
+        value={registerData["re-pass"].value}
+        onChange={onChange("re-pass")}
+      />
 
       <Button type="submit">Register</Button>
     </>

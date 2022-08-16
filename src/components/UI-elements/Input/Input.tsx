@@ -9,8 +9,8 @@ interface Props {
   type: "text" | "email" | "password";
   error?: string;
   value: string;
-  onChange: () => void;
-  onBlur: () => void;
+  onChange: (val: string) => void;
+  onBlur?: () => void;
 }
 
 const Input: React.FC<Props> = ({
@@ -34,6 +34,8 @@ const Input: React.FC<Props> = ({
   const invalid = error && error.length;
   invalid && classNames.push(styles.error);
 
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.currentTarget.value);
+
   return (
     <div className={styles.container}>
       <label className={styles.label} htmlFor={id}>
@@ -47,7 +49,7 @@ const Input: React.FC<Props> = ({
             id={id}
             name={id}
             value={value}
-            onChange={onChange}
+            onChange={changeHandler}
             onBlur={onBlur}
           />
           <button
@@ -66,7 +68,7 @@ const Input: React.FC<Props> = ({
           id={id}
           name={id}
           value={value}
-          onChange={onChange}
+          onChange={changeHandler}
           onBlur={onBlur}
         />
       )}
