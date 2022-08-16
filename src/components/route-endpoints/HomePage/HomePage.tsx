@@ -8,23 +8,29 @@ import { notEmpty } from "../../../util/data-validation";
 
 const HomePage = () => {
   // Setup register state
-  const [registerData, onChange, onBlur, touchRegisterForm, resetRegisterForm] =
-    useForm([
-      { name: "email", init: "", err: "Invalid Email!", validator: notEmpty },
-      {
-        name: "re-email",
-        init: "",
-        err: "Emails don't match!",
-        validator: notEmpty,
-      },
-      { name: "pass", init: "", err: "Invalid Password!", validator: notEmpty },
-      {
-        name: "re-pass",
-        init: "",
-        err: "Passwords don't match!",
-        validator: notEmpty,
-      },
-    ]);
+  const [
+    registerData,
+    registerFormIsValid,
+    onChange,
+    onBlur,
+    touchRegisterForm,
+    resetRegisterForm,
+  ] = useForm([
+    { name: "email", init: "", err: "Invalid Email!", validator: notEmpty },
+    {
+      name: "re-email",
+      init: "",
+      err: "Emails don't match!",
+      validator: notEmpty,
+    },
+    { name: "pass", init: "", err: "Invalid Password!", validator: notEmpty },
+    {
+      name: "re-pass",
+      init: "",
+      err: "Passwords don't match!",
+      validator: notEmpty,
+    },
+  ]);
 
   // Setup Login state
   const [loginEmail, setLoginEmail] = useState("");
@@ -46,7 +52,13 @@ const HomePage = () => {
   const submitHandler = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    loginMode && touchRegisterForm();
+    // If in Register mode, validate all fields
+    !loginMode && touchRegisterForm();
+
+    if (!loginMode && !registerFormIsValid) {
+      return;
+    }
+    console.log("send");
   };
 
   // Components for login form

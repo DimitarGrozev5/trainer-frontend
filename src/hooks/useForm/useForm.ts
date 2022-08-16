@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { produce } from "immer";
-import { InputInit, Input, Form } from "./data-types";
+import { InputInit, Input, Form } from "./useForm-data-types";
 
 export const useForm = (inputs: InputInit[]) => {
   // Transform Init data to a dictionery of inputs
@@ -14,6 +14,7 @@ export const useForm = (inputs: InputInit[]) => {
   // Setup Form Data and helper state
   const [formData, setFormData] = useState(initFormData);
   const [formWasTouched, setFormWasTouched] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
 
   // Create Change Handler
   // onChange the input field is changed and validated
@@ -31,6 +32,7 @@ export const useForm = (inputs: InputInit[]) => {
       t.isValid = "";
       if ((formWasTouched || t.touched) && !isValid) {
         t.isValid = t.err;
+        setFormIsValid(false);
       }
 
       return { ...data, [target]: t };
@@ -38,17 +40,24 @@ export const useForm = (inputs: InputInit[]) => {
   };
 
   // Create Blur Handler
-  // Set the filed to touched and run onChange, to validate the field
+  // Set the filed to touched, validate all fields, to set the form validity and run onChange
   const onBlur = (target: string) => (value: string) => {
     setFormData((data) =>
       produce<Form>(data, (draft) => {
         draft[target].touched = true;
+
+        // Test all fields
+        const allIsValid = Object.values(draft).reduce((a, c) => {
+          const isValid = c.validator(c.value);
+          return a && isValid;
+        }, true);
+        setFormIsValid(allIsValid);
       })
     );
     onChange(target)(value);
   };
 
-  // Function that sets the form to touched and validated all fields
+  // Function that sets the form to touched, validated all fields and returns if the form is valid
   const touchForm = () => {
     setFormWasTouched(true);
     setFormData((data) =>
@@ -63,6 +72,7 @@ export const useForm = (inputs: InputInit[]) => {
           t.isValid = "";
           if (!isValid) {
             t.isValid = t.err;
+            setFormIsValid(false);
           }
 
           return [target, t] as const;
@@ -76,5 +86,12 @@ export const useForm = (inputs: InputInit[]) => {
     setFormData(initFormData);
   };
 
-  return [formData, onChange, onBlur, touchForm, resetForm] as const;
+  return [
+    formData,
+    formIsValid,
+    onChange,
+    onBlur,
+    touchForm,
+    resetForm,
+  ] as const;
 };
