@@ -63,7 +63,14 @@ const HomePage = () => {
     if (!loginMode && !registerFormIsValid) {
       return;
     }
-    console.log("send");
+
+    // Send data to backend
+
+    // Save JWT to localeStorage
+
+    // Update state
+
+    // Start timer
   };
 
   // Components for login form
