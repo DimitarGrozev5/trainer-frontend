@@ -4,7 +4,7 @@ import Card from "../../UI-elements/Card/Card";
 import Input from "../../UI-elements/Input/Input";
 import Button from "../../UI-elements/Button/Button";
 import { useForm } from "../../../hooks/useForm/useForm";
-import { notEmpty } from "../../../util/data-validation";
+import { V } from "../../../hooks/useForm/useForm-validators";
 
 const HomePage = () => {
   // Setup register state
@@ -16,19 +16,24 @@ const HomePage = () => {
     touchRegisterForm,
     resetRegisterForm,
   ] = useForm([
-    { name: "email", init: "", err: "Invalid Email!", validator: notEmpty },
+    { name: "email", init: "", err: "Invalid Email!", validator: V.isEmail() },
     {
       name: "re-email",
       init: "",
       err: "Emails don't match!",
-      validator: notEmpty,
+      validator: V.isEqualTo("email"),
     },
-    { name: "pass", init: "", err: "Invalid Password!", validator: notEmpty },
+    {
+      name: "pass",
+      init: "",
+      err: "Invalid Password!",
+      validator: V.longerThan(6),
+    },
     {
       name: "re-pass",
       init: "",
       err: "Passwords don't match!",
-      validator: notEmpty,
+      validator: V.isEqualTo("pass"),
     },
   ]);
 
