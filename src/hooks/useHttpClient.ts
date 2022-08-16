@@ -105,7 +105,8 @@ export const useHttpClient = () => {
         setIsLoading(false);
         return responseData;
       } catch (err: any) {
-        err.name !== "TypeError" && setError(err.message);
+        // err.name !== "TypeError" && setError(err.message);
+        setError(err.message);
         setIsLoading(false);
         throw err;
       }
