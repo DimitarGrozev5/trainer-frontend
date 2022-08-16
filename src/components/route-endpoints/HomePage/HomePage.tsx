@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./HomePage.module.css";
 import Card from "../../UI-elements/Card/Card";
 import Input from "../../UI-elements/Input/Input";
@@ -7,7 +7,6 @@ import { useForm } from "../../../hooks/useForm/useForm";
 import { V } from "../../../hooks/useForm/useForm-validators";
 import { useHttpClient } from "../../../hooks/useHttpClient";
 import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
-import Modal from "../../UI-elements/Modal/Modal";
 import ErrorModal from "../../UI-elements/Modal/ErrorModal";
 
 const HomePage = () => {

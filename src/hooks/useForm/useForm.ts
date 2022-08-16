@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { produce, current } from "immer";
+import { produce } from "immer";
 import { InputInit, Input, Form } from "./useForm-data-types";
 
 export const useForm = (inputs: InputInit[]) => {

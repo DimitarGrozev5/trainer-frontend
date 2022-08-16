@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Transition } from "react-transition-group";
 
-import Button from "../Button/Button";
 import styles from "./Modal.module.css";
 
 interface OverlayProps {
