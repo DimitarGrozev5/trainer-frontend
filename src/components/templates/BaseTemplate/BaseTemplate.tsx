@@ -16,20 +16,21 @@ const BaseTemplate = () => {
   });
 
   // Animate headers based on scroll position
-  const cutoff = 0.35;
+  const cutoff1 = 0.6;
+  const cutoff2 = 0.75;
   const fadeOutAnim = useTransform(
     scrollYProgress,
-    [0, cutoff, 0.5, 1],
+    [0, cutoff1, cutoff2, 1],
     [1, 0, 0, 0]
   );
   const yOutAnim = useTransform(
     scrollYProgress,
-    [0, cutoff, 0.5, 1],
-    ["0vh", "5vh", "0vh", "0vh"]
+    [0, cutoff1, cutoff2, 1],
+    ["0vh", "8vh", "0vh", "0vh"]
   );
   const fadeInAnim = useTransform(
     scrollYProgress,
-    [0, cutoff, 0.5, 1],
+    [0, cutoff1, cutoff2, 1],
     [0, 0, 1, 1]
   );
 

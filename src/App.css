@@ -25,9 +25,9 @@
   --acc-blue: #5da0fd;
 }
 
-/* html {
+html {
   scroll-behavior: smooth;
-} */
+}
 
 ul {
   list-style-type: none;
