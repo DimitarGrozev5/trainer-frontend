@@ -9,13 +9,14 @@ const BaseTemplate = () => {
   const h1Ref: React.Ref<HTMLDivElement> = useRef(null);
   const h3Ref: React.Ref<HTMLDivElement> = useRef(null);
 
-  // Get current scroll position
+  // Get current scroll position, relative to header H1
   const { scrollYProgress } = useScroll({
+    container: containerRef,
     target: h1Ref,
     offset: ["start start", "end start"],
   });
 
-  // Animate headers based on scroll position
+  // Change headers opacity and position based on scroll position
   const cutoff1 = 0.6;
   const cutoff2 = 0.75;
   const fadeOutAnim = useTransform(
@@ -34,6 +35,7 @@ const BaseTemplate = () => {
     [0, 0, 1, 1]
   );
 
+  // Change H3 position to fixed when it's on top
   scrollYProgress.onChange((latest) => {
     if (!h3Ref.current) {
       return;
@@ -43,14 +45,37 @@ const BaseTemplate = () => {
       h3Ref.current.style.left = "0.5rem";
       return;
     }
-    if (latest < 0.88) {
+    if (latest < 0.99) {
       h3Ref.current.style.position = "relative";
       h3Ref.current.style.left = "0px";
     }
   });
 
+  // Snap to H1 or H3 when the user scrolls
+  // TODO: there are some bugs here
+  // When the user fliks to fast scroll, the page doesn't snap to the H1 or H3
+  const touchEndHandler = () => {
+    const latest = scrollYProgress.get();
+    if (!containerRef.current) {
+      return;
+    }
+
+    if (latest <= 0.5) {
+      containerRef.current.scrollTop = 0;
+    }
+    if (latest > 0.5 && latest < 1) {
+      if (h3Ref.current) {
+        containerRef.current.scrollTop = h3Ref.current.offsetTop;
+      }
+    }
+  };
+
   return (
-    <div className={styles.container} ref={containerRef}>
+    <div
+      className={styles.container}
+      ref={containerRef}
+      onTouchEnd={touchEndHandler}
+    >
       <header>
         <motion.h1 ref={h1Ref} style={{ opacity: fadeOutAnim, y: yOutAnim }}>
           Trainer
