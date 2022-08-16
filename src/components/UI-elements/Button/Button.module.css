@@ -1,0 +1,24 @@
+.button {
+  border: 1px solid var(--dark-2);
+  border-radius: 1000rem;
+  color: var(--dark-4);
+  background-color: var(--light-2);
+
+  font-size: 1rem;
+  font-family: sans-serif;
+  text-decoration: none;
+  text-align: center;
+
+  display: inline-block;
+
+  padding: 0.5rem;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  color: var(--light-5);
+  border: 1px solid var(--light-5);
+  background-color: var(--light-2);
+}
