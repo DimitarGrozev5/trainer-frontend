@@ -43,7 +43,7 @@ const Input: React.FC<Props> = ({
     onBlur && onBlur(e.currentTarget.value);
 
   // Create Component for text or email Input
-  let input = (
+  let inputElement = (
     <input
       className={classNames.join(" ")}
       type={type}
@@ -57,7 +57,7 @@ const Input: React.FC<Props> = ({
 
   // Create Component for password input
   if (type === "password") {
-    input = (
+    inputElement = (
       <div className={styles.password}>
         <input
           className={classNames.join(" ")}
@@ -85,7 +85,7 @@ const Input: React.FC<Props> = ({
         {label}
       </label>
 
-      {input}
+      {inputElement}
 
       {invalid && <div className={styles["error-box"]}>{error}</div>}
     </div>
