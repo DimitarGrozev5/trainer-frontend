@@ -17,8 +17,6 @@ const Input: React.FC<Props> = ({ label, type }) => {
 
   const classNames = [styles["text-input"]];
 
-  // type === "password" && classNames.push(styles.password);
-
   return (
     <div className={styles.container}>
       <label className={styles.label} htmlFor={id}>
