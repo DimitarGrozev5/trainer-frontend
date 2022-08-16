@@ -28,3 +28,9 @@
   color: var(--dark-4);
   background-color: var(--light-4);
 }
+
+.plain {
+  border: none;
+  color: var(--dark-7);
+  background-color: var(--light-1);
+}
