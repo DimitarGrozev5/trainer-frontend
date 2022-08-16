@@ -30,37 +30,6 @@
   flex-direction: column;
 }
 
-.modal.entering,
-.modal.entered {
-  animation: openModal 0.2s ease-out forwards;
-}
-
-.modal.exiting {
-  animation: closeModal 0.2s ease-out forwards;
-}
-
-@keyframes openModal {
-  0% {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes closeModal {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-}
-
 .modal > header > h1 {
   font-size: 1.1rem;
   text-align: left;
@@ -74,6 +43,64 @@
 .modal > footer {
   display: flex;
   justify-content: space-around;
+}
+
+.modal.entering,
+.modal.entered {
+  animation: openOverlay 0.2s ease-out forwards;
+}
+
+.modal.exiting {
+  animation: closeOverlay 0.2s ease-out forwards;
+}
+
+@keyframes openOverlay {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes closeOverlay {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+.overlay.entering,
+.overlay.entered {
+  animation: openOverlay 0.2s ease-out forwards;
+}
+
+.overlay.exiting {
+  animation: closeOverlay 0.2s ease-out forwards;
+}
+
+@keyframes openOverlay {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes closeOverlay {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 @media screen and (min-width: 935px) {

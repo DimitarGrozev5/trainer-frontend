@@ -6,11 +6,17 @@ import Button from "../Button/Button";
 import styles from "./Modal.module.css";
 
 interface OverlayProps {
+  transitionState: string;
   onClose: () => void;
 }
 
-const Overlay: React.FC<OverlayProps> = ({ onClose }) => {
-  return <div className={styles.overlay} onClick={onClose}></div>;
+const Overlay: React.FC<OverlayProps> = ({ onClose, transitionState }) => {
+  return (
+    <div
+      className={`${styles.overlay} ${transitionState}`}
+      onClick={onClose}
+    ></div>
+  );
 };
 
 interface Props {
@@ -34,7 +40,7 @@ const Modal: React.FC<Props> = ({
       <Transition in={show} timeout={200} mountOnEnter unmountOnExit>
         {(state) => (
           <>
-            <Overlay onClose={onClose} />
+            <Overlay onClose={onClose} transitionState={styles[state]} />
             <div className={`${styles.modal} ${styles[state]}`}>
               <header>
                 <h1>{title}</h1>
