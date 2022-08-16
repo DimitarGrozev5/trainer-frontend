@@ -7,39 +7,57 @@ import { useForm } from "../../../hooks/useForm";
 import { notEmpty } from "../../../util/data-validation";
 
 const HomePage = () => {
-  const [registerData, onChange, onBlur, touchForm, resetForm] = useForm([
-    { name: "email", init: "", err: "Invalid Email!", validator: notEmpty },
-    {
-      name: "re-email",
-      init: "",
-      err: "Emails don't match!",
-      validator: notEmpty,
-    },
-    { name: "pass", init: "", err: "Invalid Password!", validator: notEmpty },
-    {
-      name: "re-pass",
-      init: "",
-      err: "Passwords don't match!",
-      validator: notEmpty,
-    },
-  ]);
+  // Setup register state
+  const [registerData, onChange, onBlur, touchRegisterForm, resetRegisterForm] =
+    useForm([
+      { name: "email", init: "", err: "Invalid Email!", validator: notEmpty },
+      {
+        name: "re-email",
+        init: "",
+        err: "Emails don't match!",
+        validator: notEmpty,
+      },
+      { name: "pass", init: "", err: "Invalid Password!", validator: notEmpty },
+      {
+        name: "re-pass",
+        init: "",
+        err: "Passwords don't match!",
+        validator: notEmpty,
+      },
+    ]);
+
+  // Setup Login state
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPass, setLoginPass] = useState("");
+
+  const [loginMode, setLoginMode] = useState(true);
+  const setLoginModeTo = (val: boolean) => () => {
+    resetRegisterForm();
+    setLoginEmail("");
+    setLoginPass("");
+    setLoginMode(val);
+  };
 
   const submitHandler = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    touchForm();
-  };
-
-  const [loginMode, setLoginMode] = useState(true);
-  const setLoginModeTo = (val: boolean) => () => {
-    resetForm();
-    setLoginMode(val);
+    loginMode && touchRegisterForm();
   };
 
   const loginForm = (
     <>
-      {/* <Input label="Email:" type="email" />
-      <Input label="Password:" type="password" /> */}
+      <Input
+        label="Email:"
+        type="email"
+        value={loginEmail}
+        onChange={setLoginEmail}
+      />
+      <Input
+        label="Password:"
+        type="password"
+        value={loginPass}
+        onChange={setLoginPass}
+      />
 
       <Button type="submit">Login</Button>
     </>
