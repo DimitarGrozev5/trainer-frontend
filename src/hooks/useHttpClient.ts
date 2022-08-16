@@ -96,8 +96,7 @@ export const useHttpClient = () => {
         if (!response.ok) {
           // Auto logout if the status code is 401 - Unauthorized
           if (response.status === 401) {
-            // localStorage.removeItem("jwt");
-            // dispatch(userActions.logout());
+            dispatch(userActions.clearUserData());
           }
 
           throw new Error(responseData.message);
