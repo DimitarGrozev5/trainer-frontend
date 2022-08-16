@@ -1,14 +1,12 @@
 .container {
-  position: fixed;
+  /* position: fixed;
   top: 0px;
   bottom: 0px;
   left: 0px;
-  right: 0px;
+  right: 0px; */
+  width: 100%;
 
   padding: 0.5rem;
-
-  display: flex;
-  flex-direction: column;
 
   background-color: var(--light-2);
 }
@@ -17,12 +15,31 @@
   height: 40vh;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.container > header > h1 {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container > header > h3 {
+  align-self: flex-start;
+
+  position: relative;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  z-index: 2;
+
+  background-color: var(--light-2);
 }
 
 .container > main {
   flex-grow: 1;
+  min-height: calc(200vh - 2rem);
 
   display: flex;
   flex-direction: column;
