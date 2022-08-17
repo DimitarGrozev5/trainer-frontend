@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { userActions } from "../redux-store/userSlice";
 import { useAppDispatch, useAppSelector } from "./redux-hooks";
 
@@ -18,6 +19,7 @@ interface Config {
 }
 
 export const useHttpClient = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user);
 
@@ -98,6 +100,12 @@ export const useHttpClient = () => {
           if (response.status === 401) {
             dispatch(userActions.clearUserData());
           }
+
+          // TODO: Redirect to login if the status code is 511 - Network Authentication Required
+          // This happens when a new user is created but JWT generation failed
+          // if (response.status === 511) {
+          //   navigate("/login");
+          // }
 
           throw new Error(responseData.message);
         }
