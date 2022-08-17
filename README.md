@@ -41,7 +41,7 @@ The App has two sets of **Routes**. One for logged in users and one for guests. 
 
 The App uses a *BaseTemplate* Component, that provides an html structure for rendering all other content. The *BaseTemplate* has a **header** element for displaying the App name, and a **main** element, that contains an `Outlet` Component, for hosting all other page content.
 
-## Specific Components and custom hooks
+## Components
 
 ### BaseTemplate Component
 
@@ -55,3 +55,12 @@ When the *h1* title element drops out of view, the *h3* title changes it's `posi
 
 The *BaseTemplate* header is designed to display either the *h1* title, or the *h3* title. The transition between them is made to look nice, but when the user stops scrolling, the page has to snap to one of the two positions. This is achieved using the *header* element's `scrollTop` property. An event handler is added to the `touchEnd` Event, so when the user stops scrolling the page will autoscroll to one of the two positions.
 
+### HomePage Component
+
+The *HomePage* Component renders a form for Loging or Registering a user. The user can switch between the two forms, by clicking a button. The **Register** form uses a custom hook - **useForm**, to handle user input and validation. The Component also handles sending Login or Register data to the backend.
+
+## Custom Hooks
+
+### useForm
+
+The *useForm* hook
