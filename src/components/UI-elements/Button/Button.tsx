@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./Button.module.css";
 
 interface Props {
-  children: React.ReactNode;
+  children: string;
   to?: string;
   disabled?: boolean;
   accent?: boolean;
