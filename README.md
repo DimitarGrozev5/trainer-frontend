@@ -47,7 +47,7 @@ The App uses a *BaseTemplate* Component, that provides an html structure for ren
 
 The *BaseTemplate* Component provides an experience, similar to a native Android app. The **header** takes up 1/3 of the screen, to allow the user to reach with his thumb the top of the **main** content. When the page is scrolled the **header** shrinks to a small text at the top of the page. This transition is achieved through a library - *framer-motion*.
 
-The Component uses the *framer-motion* hook `useScroll`, to keep track of the vertical scrolling position. The hook is configured to return the scrolling position, not relative to the **body*, but relative to the *header* **h1** element, that contains the page title. The hook returns `0` when the page is scrolled to the top and `1` when the *h1* element is about to go out of view.
+The Component uses the *framer-motion* hook `useScroll`, to keep track of the vertical scrolling position. The hook is configured to return the scrolling position, not relative to the **body**, but relative to the *header* **h1** element, that contains the page title. The hook returns `0` when the page is scrolled to the top and `1` when the *h1* element is about to go out of view.
 
 The `useTransform` hook is used to animate a change in opacity of the page title, and to link the animation to the scroll position.
 
