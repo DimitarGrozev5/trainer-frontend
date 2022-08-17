@@ -1,46 +1,57 @@
-# Getting Started with Create React App
+# Project overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## User experience
 
-## Available Scripts
+- A user would create an account and be able to log in.
+- After a login he would add different workouts, that the App provides.
+- The App should feature a calendar to help schedule the workouts.
+- The App should be able to guide the user trough every workout.
+- The App should keep a history of the performed workouts.
 
-In the project directory, you can run:
+## Development goals
 
-### `npm start`
+- The App aims to provide calendar and scheduling functionalities, that are flexible enough to work with different workouts and training programs.
+- The App should use PWA functionalities in order to provide a rich experience and offline capabilities.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Learning oportunities
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- This is my first React project that uses Typescript. It will be a great opportunity to learn how to use Typscript with React components, hooks and Redux.
+- The App needs to implement a Service Worker and work with the browser cache, Background Syncronization API and other PWA features. I've worked with these features before, but not much.
+- The App needs to implement user Authentication, Routing, comunication with a backend API, CRUD operations and Error handling. I've implemented all of these features before, but will take the opportuinity to improve on my previous designs.
 
-### `npm test`
+# Basic Structure
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Global state
 
-### `npm run build`
+The App global state will be handled with Redux Toolkit. A *Slice* is created for each feature.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### User Slice
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The *User Slice* contains data about the logged in user. If no user is logged in, the data is **null**.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Routing
 
-### `npm run eject`
+Routing is achieved through *React Router v6*.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Routes structure
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The App has two sets of **Routes**. One for logged in users and one for guests. The *App.tsx* file renders one of the two sets, based on wheter a user is logged in.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Templates
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The App uses a *BaseTemplate* Component, that provides an html structure for rendering all other content. The *BaseTemplate* has a **header** element for displaying the App name, and a **main** element, that contains an `Outlet` Component, for hosting all other page content.
 
-## Learn More
+## Specific Components and custom hooks
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### BaseTemplate Component
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The *BaseTemplate* Component provides an experience, similar to a native Android app. The **header** takes up 1/3 of the screen, to allow the user to reach with his thumb the top of the **main** content. When the page is scrolled the **header** shrinks to a small text at the top of the page. This transition is achieved through a library - *framer-motion*.
+
+The Component uses the *framer-motion* hook `useScroll`, to keep track of the vertical scrolling position. The hook is configured to return the scrolling position, not relative to the **body*, but relative to the *header* **h1** element, that contains the page title. The hook returns `0` when the page is scrolled to the top and `1` when the *h1* element is about to go out of view.
+
+The `useTransform` hook is used to animate a change in opacity of the page title, and to link the animation to the scroll position.
+
+When the *h1* title element drops out of view, the *h3* title changes it's `position` to `fixed`, in order to stay on the top of the viewport. This happens through the `onChange` handler that the `useScroll` hook returns.
+
+The *BaseTemplate* header is designed to display either the *h1* title, or the *h3* title. The transition between them is made to look nice, but when the user stops scrolling, the page has to snap to one of the two positions. This is achieved using the *header* element's `scrollTop` property. An event handler is added to the `touchEnd` Event, so when the user stops scrolling the page will autoscroll to one of the two positions.
+
