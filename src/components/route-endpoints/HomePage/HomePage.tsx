@@ -9,6 +9,15 @@ import { useHttpClient } from "../../../hooks/useHttpClient";
 import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../UI-elements/Modal/ErrorModal";
 
+class AuthData {
+  email: string;
+  password: string;
+  constructor(email: string, password: string) {
+    this.email = email;
+    this.password = password;
+  }
+}
+
 const HomePage = () => {
   // Get Cttp Client
   const { isLoading, error, clearError, sendRequest } = useHttpClient();
@@ -72,9 +81,9 @@ const HomePage = () => {
 
     // Send data to backend
     const endpoint = loginMode ? "/users/login" : "/users/register";
-    const body = loginMode
-      ? { email: loginEmail, password: loginPass }
-      : { email: registerData.email, password: registerData.pass };
+    const body: AuthData = loginMode
+      ? new AuthData(loginEmail, loginPass)
+      : new AuthData(registerData.email.value, registerData.pass.value);
 
     try {
       const userData = await sendRequest(endpoint, {
