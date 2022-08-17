@@ -71,13 +71,20 @@ const HomePage = () => {
     }
 
     // Send data to backend
+    const endpoint = loginMode ? "/users/login" : "/users/register";
+    const body = loginMode
+      ? { email: loginEmail, password: loginPass }
+      : { email: registerData.email, password: registerData.pass };
+
     try {
-      await sendRequest("/", {
-        body: { email: loginEmail, password: loginPass },
+      const userData = await sendRequest(endpoint, {
+        body,
         auth: false,
       });
+      console.log(userData);
     } catch (err: any) {
       console.log(err);
+      return;
     }
 
     // Update state
