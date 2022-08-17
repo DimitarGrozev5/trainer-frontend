@@ -136,4 +136,15 @@ The hook returns the following values:
 - setError - function that can set the error message
 - sendRequest - function that is used for creating http fetch requests. It's rather complex so it will be viewed separetly
 
-#### sendRequest
+### sendRequest
+
+The **sendRequest** function is being provided by the **useHttpClient** custom hook.  
+The function expects the following parameters
+
+- `url` - an API endpoint, relative to the API root URL. e.g.: `url = /users/login` if you want to make a request to `https://backend.com/api/users/login`
+- `config object` - a configuration object that can have the following props:
+
+- `body` - a *JS object*, to be send with the request. It will be authomatically passed through `JSON.stringify`
+- `method` - an *HTTP method* to override the default **sendRequest** function behaviour. the Function sets the *method* to **GET** by default. If a `body` is provided, it sets the *method* to **POST**
+- `headers` - an *HTTP headers* object for specifying headers. The Function sends `"Content-Type": "application/json"` by default, when a `body` is provided.
+- `auth` - flag that instructs the Function to attach the authorization token to the *headers*. It's *true* by default.
