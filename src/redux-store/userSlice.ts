@@ -22,10 +22,12 @@ const userSlice = createSlice({
   } as UserState,
 
   reducers: {
-    setUserData: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
+    setUserData: (state, action: PayloadAction<UserState>) => {
+      state.userId = action.payload.userId;
+      state.token = action.payload.token;
     },
     clearUserData: (state) => {
+      state.userId = null;
       state.token = null;
     },
   },
