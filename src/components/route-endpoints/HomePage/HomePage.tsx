@@ -8,6 +8,8 @@ import { V } from "../../../hooks/useForm/useForm-validators";
 import { useHttpClient } from "../../../hooks/useHttpClient";
 import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../UI-elements/Modal/ErrorModal";
+import { useAppDispatch } from "../../../hooks/redux-hooks";
+import { userActions, UserState } from "../../../redux-store/userSlice";
 
 class AuthData {
   email: string;
@@ -19,6 +21,9 @@ class AuthData {
 }
 
 const HomePage = () => {
+  // Get Dispatch
+  const dispatch = useAppDispatch();
+
   // Get Cttp Client
   const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
@@ -85,8 +90,9 @@ const HomePage = () => {
       ? new AuthData(loginEmail, loginPass)
       : new AuthData(registerData.email.value, registerData.pass.value);
 
+    let userData: UserState;
     try {
-      const userData = await sendRequest(endpoint, {
+      userData = await sendRequest(endpoint, {
         body,
         auth: false,
       });
@@ -97,6 +103,9 @@ const HomePage = () => {
     }
 
     // Update state
+    dispatch(
+      userActions.setUserData(new UserState(userData.userId, userData.token))
+    );
   };
 
   // Components for login form
