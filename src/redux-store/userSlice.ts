@@ -36,16 +36,18 @@ const userSlice = createSlice({
 export const userActions = userSlice.actions;
 export const userReducer = userSlice.reducer;
 
+const authKey = process.env.REACT_APP_LOCALSTORAGE_AUTH_KEY || "userData";
+
 export const userMiddleware: Middleware = (storeAPI) => (next) => (action) => {
   switch (action.type) {
     case "user/setUserData":
       // Save userData to local storage
-      localStorage.setItem("userData", JSON.stringify(action.payload));
+      localStorage.setItem(authKey, JSON.stringify(action.payload));
       break;
 
     case "user/clearUserData":
       // Remove userData from local storage
-      localStorage.removeItem("userData");
+      localStorage.removeItem(authKey);
       break;
 
     default:
