@@ -1,7 +1,7 @@
 import { createSlice, Middleware } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
-type UserState = {
+export type UserState = {
   // Null if not logged in
   // JWT if logged in
   userId: string | null;
