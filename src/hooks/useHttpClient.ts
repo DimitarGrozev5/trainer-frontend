@@ -104,6 +104,7 @@ export const useHttpClient = () => {
           // TODO: Redirect to login if the status code is 511 - Network Authentication Required
           // This happens when a new user is created but JWT generation failed
           // if (response.status === 511) {
+          //   // TODO: Global error handler
           //   navigate("/login");
           // }
 
