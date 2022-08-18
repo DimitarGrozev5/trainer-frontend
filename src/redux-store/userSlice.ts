@@ -1,12 +1,17 @@
 import { createSlice, Middleware } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
-export type UserState = {
+export class UserState {
   // Null if not logged in
   // JWT if logged in
   userId: string | null;
   token: string | null;
-};
+
+  constructor(userId: string | null, token: string | null) {
+    this.userId = userId;
+    this.token = token;
+  }
+}
 
 const userSlice = createSlice({
   name: "user",
