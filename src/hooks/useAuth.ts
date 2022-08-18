@@ -60,6 +60,7 @@ export const useAuth = () => {
     );
 
     // Request token refresh if the token has less than 5 days left
+    // UNTESTED
     if (decodedToken.exp < 5 * 24 * 60 * 60) {
       try {
         sendRequest(`/${userData.userId}/refresh`);
