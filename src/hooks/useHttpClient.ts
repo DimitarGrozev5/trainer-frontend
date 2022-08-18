@@ -70,8 +70,8 @@ export const useHttpClient = () => {
       }
 
       // Add Authorization token
-      if (auth !== false && userData.accessToken) {
-        headersObj["Authorization"] = userData.accessToken;
+      if (auth !== false && userData.token) {
+        headersObj["Authorization"] = userData.token;
       }
 
       // Merge provided headers and preconfigured headers

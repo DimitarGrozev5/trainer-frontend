@@ -4,22 +4,24 @@ import { PayloadAction } from "@reduxjs/toolkit";
 type UserState = {
   // Null if not logged in
   // JWT if logged in
-  accessToken: string | null;
+  userId: string | null;
+  token: string | null;
 };
 
 const userSlice = createSlice({
   name: "user",
 
   initialState: {
-    accessToken: null,
+    userId: null,
+    token: null,
   } as UserState,
 
   reducers: {
     setUserData: (state, action: PayloadAction<string>) => {
-      state.accessToken = action.payload;
+      state.token = action.payload;
     },
     clearUserData: (state) => {
-      state.accessToken = null;
+      state.token = null;
     },
   },
 });
