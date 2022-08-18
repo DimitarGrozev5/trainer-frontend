@@ -10,13 +10,15 @@
 
 ## Development goals
 
-- The App aims to provide calendar and scheduling functionalities, that are flexible enough to work with different workouts and training programs.
-- The App should use PWA functionalities in order to provide a rich experience and offline capabilities.
+- Implementing authorization that works with the Backend and has a good balance between security and usability
+- Implementing calendar and scheduling functionalities
+- Implementing a *Training program* Class, that would allow wildly different programs to be added to the App, without the need for refactoring
+- Providing bonus functionalities, like offline capabilities and notifications
 
 ## Learning oportunities
 
 - This is my first React project that uses Typescript. It will be a great opportunity to learn how to use Typscript with React components, hooks and Redux.
-- The App needs to implement a Service Worker and work with the browser cache, Background Syncronization API and other PWA features. I've worked with these features before, but not much.
+- The App will probably implement a Service Worker and work with the browser cache, Background Syncronization API etc. I've worked with these features before, but not much.
 - The App needs to implement user Authentication, Routing, comunication with a backend API, CRUD operations and Error handling. I've implemented all of these features before, but will take the opportuinity to improve on my previous designs.
 
 # Basic Structure
