@@ -12,7 +12,7 @@
 
 - Implementing authorization that works with the Backend and has a good balance between security and usability
 - Implementing calendar and scheduling functionalities
-- Implementing a *Training program* Class, that would allow wildly different programs to be added to the App, without the need for refactoring
+- Implementing a _Training program_ Class, that would allow wildly different programs to be added to the App, without the need for refactoring
 - Providing bonus functionalities, like offline capabilities and notifications
 
 ## Learning oportunities
@@ -25,11 +25,11 @@
 
 ## Global state
 
-The App global state will be handled with Redux Toolkit. A *Slice* is created for each feature.
+The App global state will be handled with Redux Toolkit. A _Slice_ is created for each feature.
 
 ### User Slice
 
-The **User Slice** contains data about the logged in user. If no user is logged in, the data is *null*.
+The **User Slice** contains data about the logged in user. If no user is logged in, the data is _null_.
 
 ## Routing
 
@@ -37,25 +37,25 @@ Routing is achieved through **React Router v6**.
 
 ### Routes structure
 
-The App has two sets of **Routes**. One for logged in users and one for guests. The *App.tsx* file renders one of the two sets, based on wheter a user is logged in.
+The App has two sets of **Routes**. One for logged in users and one for guests. The _App.tsx_ file renders one of the two sets, based on wheter a user is logged in.
 
 ### Templates
 
-The App uses a **BaseTemplate** Component, that provides an html structure for rendering all other content. The **BaseTemplate** has a *header* element for displaying the App name, and a *main* element, that contains an `Outlet` Component, for hosting all other page content.
+The App uses a **BaseTemplate** Component, that provides an html structure for rendering all other content. The **BaseTemplate** has a _header_ element for displaying the App name, and a _main_ element, that contains an `Outlet` Component, for hosting all other page content.
 
 ## Components
 
 ### BaseTemplate Component
 
-The **BaseTemplate** Component provides an experience, similar to a native Android app. The *header* takes up 1/3 of the screen, to allow the user to reach with his thumb the top of the *main* content. When the page is scrolled the *header* shrinks to a small text at the top of the page. This transition is achieved through a library - *framer-motion*.
+The **BaseTemplate** Component provides an experience, similar to a native Android app. The _header_ takes up 1/3 of the screen, to allow the user to reach with his thumb the top of the _main_ content. When the page is scrolled the _header_ shrinks to a small text at the top of the page. This transition is achieved through a library - _framer-motion_.
 
-The Component uses the **framer-motion** hook `useScroll`, to keep track of the vertical scrolling position. The hook is configured to return the scrolling position, not relative to the **body**, but relative to the *header* **h1** element, that contains the page title. The hook returns `0` when the page is scrolled to the top and `1` when the *h1* element is about to go out of view.
+The Component uses the **framer-motion** hook `useScroll`, to keep track of the vertical scrolling position. The hook is configured to return the scrolling position, not relative to the **body**, but relative to the _header_ **h1** element, that contains the page title. The hook returns `0` when the page is scrolled to the top and `1` when the _h1_ element is about to go out of view.
 
 The `useTransform` hook is used to animate a change in opacity of the page title, and to link the animation to the scroll position.
 
 When the **h1** title element drops out of view, the **h3** title changes it's `position` to `fixed`, in order to stay on the top of the viewport. This happens through the `onChange` handler that the `useScroll` hook returns.
 
-The **BaseTemplate** header is designed to display either the **h1** title, or the **h3** title. The transition between them is made to look nice, but when the user stops scrolling, the page has to snap to one of the two positions. This is achieved using the *header* element's `scrollTop` property. An event handler is added to the `touchEnd` Event, so when the user stops scrolling the page will autoscroll to one of the two positions.
+The **BaseTemplate** header is designed to display either the **h1** title, or the **h3** title. The transition between them is made to look nice, but when the user stops scrolling, the page has to snap to one of the two positions. This is achieved using the _header_ element's `scrollTop` property. An event handler is added to the `touchEnd` Event, so when the user stops scrolling the page will autoscroll to one of the two positions.
 
 ### HomePage Component
 
@@ -74,17 +74,17 @@ The Component has a couple of key properties:
 
 ### Input Component
 
-The **Input** Component is used to abastract awat common Controlled Input functionality and to provide uniform style for all inputs. It Renders a *label*, an *input* and if provided an *error message*.  
+The **Input** Component is used to abastract awat common Controlled Input functionality and to provide uniform style for all inputs. It Renders a _label_, an _input_ and if provided an _error message_.  
 The Component has a couple of properties:
 
-- `label` - text for the *label* element
-- `type` - type for the *input* element
+- `label` - text for the _label_ element
+- `type` - type for the _input_ element
 - `error` - error message. If an empty string is provided, no error message is shown.
 - `value` and `onChange` - props for creating a controlled component
 
 The **Input** Component has some special behaviours:
 
-- If the provided `type` is `password`, a *show password* button is added to the input component
+- If the provided `type` is `password`, a _show password_ button is added to the input component
 
 ### LoadingSpinner Component
 
@@ -117,15 +117,15 @@ The **ErrorModal** Component internaly uses a **Modal**, but abstracts away the 
 
 ### useForm
 
-The **useForm** hook creates *state* and *handlers* for handling form data. The hook accepts and array of *InputInit* objects. Each containing a name, an initial value, an error message and a validator function. It then returns:
+The **useForm** hook creates _state_ and _handlers_ for handling form data. The hook accepts and array of _InputInit_ objects. Each containing a name, an initial value, an error message and a validator function. It then returns:
 
-- An array of *Input* objects, each contianing a *value* prop, that can be passed to *input elements*
-- A *formIsValid* flag that changes to *true* only if all of the form input fields are valid
-- An *onChange* and *onBlur* functions that can be passed to an *input element*
-- *touchForm* function to signal to the hook, that the user has tried to submit the form
-- *resetForm* function that resets the form to it's initial state
+- An array of _Input_ objects, each contianing a _value_ prop, that can be passed to _input elements_
+- A _formIsValid_ flag that changes to _true_ only if all of the form input fields are valid
+- An _onChange_ and _onBlur_ functions that can be passed to an _input element_
+- _touchForm_ function to signal to the hook, that the user has tried to submit the form
+- _resetForm_ function that resets the form to it's initial state
 
-The returned values can be used to create *Controlled Components*
+The returned values can be used to create _Controlled Components_
 
 ### useHttpClient
 
@@ -146,7 +146,11 @@ The function expects the following parameters
 - `url` - an API endpoint, relative to the API root URL. e.g.: `url = /users/login` if you want to make a request to `https://backend.com/api/users/login`
 - `config object` - a configuration object that can have the following props:
 
-- `body` - a *JS object*, to be send with the request. It will be authomatically passed through `JSON.stringify`
-- `method` - an *HTTP method* to override the default **sendRequest** function behaviour. the Function sets the *method* to **GET** by default. If a `body` is provided, it sets the *method* to **POST**
-- `headers` - an *HTTP headers* object for specifying headers. The Function sends `"Content-Type": "application/json"` by default, when a `body` is provided.
-- `auth` - flag that instructs the Function to attach the authorization token to the *headers*. It's *true* by default.
+- `body` - a _JS object_, to be send with the request. It will be authomatically passed through `JSON.stringify`
+- `method` - an _HTTP method_ to override the default **sendRequest** function behaviour. the Function sets the _method_ to **GET** by default. If a `body` is provided, it sets the _method_ to **POST**
+- `headers` - an _HTTP headers_ object for specifying headers. The Function sends `"Content-Type": "application/json"` by default, when a `body` is provided.
+- `auth` - flag that instructs the Function to attach the authorization token to the _headers_. It's _true_ by default.
+
+### useAuth
+
+The **useAuth** hook check _localStorage_ for user authentication data. It then tries to decode the token, update the global state and if the token is close to expiring it tries to refresh it.
