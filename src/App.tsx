@@ -6,11 +6,8 @@ import { useAppSelector } from "./hooks/redux-hooks";
 import { useAuth } from "./hooks/useAuth";
 
 function App() {
-  // Get access token from Redux Store
-  const token = useAppSelector((state) => state.user.token);
-
   // Get authorization data from localStorage
-  useAuth();
+  const token = useAuth().token;
 
   return (
     <Routes>
