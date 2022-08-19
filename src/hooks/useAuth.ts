@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { userActions, UserState } from "../redux-store/userSlice";
 import { useAppDispatch, useAppSelector } from "./redux-hooks";
 import { useHttpClient } from "./useHttpClient";
