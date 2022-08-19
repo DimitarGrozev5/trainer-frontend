@@ -17,12 +17,14 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
   // Calendar current month
   // const [currentMonth, setCurrentMonth] = useState(selectedDate.getMonth());
   // const [currentYear, setCurrentYear] = useState(selectedDate.getFullYear());
+  const [targetDate, setTargetDate] = useState(new Date());
 
   switch (viewMode) {
     case "month":
       return (
         <CalendarMonthView
-          targetDate={selectedDate}
+          targetDate={targetDate}
+          setTargetDate={setTargetDate}
         />
       );
 
