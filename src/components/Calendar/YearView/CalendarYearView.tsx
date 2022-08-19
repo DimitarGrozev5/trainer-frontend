@@ -1,4 +1,6 @@
+import { add } from "date-fns";
 import React, { useMemo } from "react";
+import { addToArr, getArr } from "../../../util/array";
 import styles from "./YearView.module.css";
 
 interface Props {
@@ -10,40 +12,79 @@ type DateUTC = number;
 
 const CalendarYearView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
   const year /* : number[][][] */ = useMemo(() => {
-    const y = targetDate.getFullYear();
-
-    // Get first day of year
-    const firstDay = new Date(y, 0, 1);
-
-    // Get day of week
-    const firstDayOfYear: number = firstDay.getDay();
-
-    // Get date of monday
-    const mondayDateUTC: DateUTC =
-      firstDay.getTime() - (firstDayOfYear - 1) * 24 * 60 * 60 * 1000;
-
     // Build the calendar
-    const year = [];
+    const year: number[][][] = [];
+    const currentYear = targetDate.getFullYear();
+
     for (let month = 0; month < 12; month++) {
-      // const week = [];
-      // const firstOfMonth: Date = new Date(y, month, 1);
-      // const dayOfWeek: number = firstOfMonth.getDay();
-      // const monday: DateUTC =
-      //   firstOfMonth.getTime() - (firstDayOfYear - 1) * 24 * 60 * 60 * 1000;
+      const monthArr: number[][] = [];
+      let currentDate = new Date(currentYear, month, 1);
 
-      // let currentDay: Date = new Date(monday);
+      let week: number[] = [];
+      if (currentDate.getDay() > 0) {
+        week = getArr(currentDate.getDay(), -1);
+      }
+      monthArr.push(week);
+      let currentWeek = 0;
 
-      // while (currentDay.getMonth() <= month) {
-      //   for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
-      //     if()
-      //   }
-      // }
+      monthArr[currentWeek].push(currentDate.getTime());
+      currentDate = add(currentDate, { days: 1 });
+
+      while (currentDate.getDate() !== 1) {
+        if (currentDate.getDay() === 0) {
+          monthArr.push([]);
+          currentWeek++;
+        }
+
+        monthArr[currentWeek].push(currentDate.getTime());
+        currentDate = add(currentDate, { days: 1 });
+      }
+
+      if (currentDate.getDay() > 0) {
+        monthArr[currentWeek] = addToArr(monthArr[currentWeek], 7, -1);
+      }
+
+      year.push(monthArr);
     }
 
     return year;
   }, [targetDate]);
+  console.log(year);
 
-  return <table className={styles.calendar}></table>;
+  return (
+    <table className={styles.calendar}>
+      <tbody>
+        <tr>
+          {year.slice(0, 3).map((month) => (
+            <td key={new Date(month[0][6]).getMonth()}>
+              {new Date(month[0][6]).getMonth()}
+            </td>
+          ))}
+        </tr>
+        <tr>
+          {year.slice(3, 6).map((month) => (
+            <td key={new Date(month[0][6]).getMonth()}>
+              {new Date(month[0][6]).getMonth()}
+            </td>
+          ))}
+        </tr>
+        <tr>
+          {year.slice(6, 9).map((month) => (
+            <td key={new Date(month[0][6]).getMonth()}>
+              {new Date(month[0][6]).getMonth()}
+            </td>
+          ))}
+        </tr>
+        <tr>
+          {year.slice(9, 12).map((month) => (
+            <td key={new Date(month[0][6]).getMonth()}>
+              {new Date(month[0][6]).getMonth()}
+            </td>
+          ))}
+        </tr>
+      </tbody>
+    </table>
+  );
 };
 
 export default CalendarYearView;
