@@ -1,6 +1,7 @@
 import { add } from "date-fns";
 import React, { useMemo } from "react";
 import { addToArr, getArr } from "../../../util/array";
+import MonthViewSub from "./MonthViewSub/MonthViewSub";
 import styles from "./YearView.module.css";
 
 interface Props {
@@ -57,28 +58,28 @@ const CalendarYearView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
         <tr>
           {year.slice(0, 3).map((month) => (
             <td key={new Date(month[0][6]).getMonth()}>
-              {new Date(month[0][6]).getMonth()}
+              <MonthViewSub month={month} />
             </td>
           ))}
         </tr>
         <tr>
           {year.slice(3, 6).map((month) => (
             <td key={new Date(month[0][6]).getMonth()}>
-              {new Date(month[0][6]).getMonth()}
+              <MonthViewSub month={month} />
             </td>
           ))}
         </tr>
         <tr>
           {year.slice(6, 9).map((month) => (
             <td key={new Date(month[0][6]).getMonth()}>
-              {new Date(month[0][6]).getMonth()}
+              <MonthViewSub month={month} />
             </td>
           ))}
         </tr>
         <tr>
           {year.slice(9, 12).map((month) => (
             <td key={new Date(month[0][6]).getMonth()}>
-              {new Date(month[0][6]).getMonth()}
+              <MonthViewSub month={month} />
             </td>
           ))}
         </tr>
