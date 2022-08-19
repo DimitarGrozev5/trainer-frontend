@@ -1,0 +1,13 @@
+.container {
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+.year {
+  flex-grow: 1;
+  text-align: center;
+  padding: 1rem;
+}
