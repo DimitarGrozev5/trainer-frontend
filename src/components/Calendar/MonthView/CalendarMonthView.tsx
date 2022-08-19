@@ -1,24 +1,17 @@
-import { add } from "date-fns";
 import React, { useMemo } from "react";
-import { getMonthName, sameDate, sameMonth } from "../../../util/date";
-import CalendarHeader from "../CalendarHeader/CalendarHeader";
+import { sameDate, sameMonth } from "../../../util/date";
 import styles from "./MonthView.module.css";
 
 interface Props {
   targetDate: Date;
-  setTargetDate: (d: Date) => void;
   selectedDate: Date;
   setSelectedDate: (d: Date) => void;
-  onChangeViewMode: () => void;
 }
 
 type DateUTC = number;
 
 const WEEKS = 7 * 24 * 60 * 60 * 1000;
 const DAYS = 24 * 60 * 60 * 1000;
-const HOURS = 60 * 60 * 1000;
-const MINUTES = 60 * 1000;
-const SECONDS = 1000;
 
 // Function to set the style of a Calendar day
 const setStyles = (
@@ -39,10 +32,8 @@ const setStyles = (
 
 const CalendarMonthView: React.FC<Props> = ({
   targetDate,
-  setTargetDate,
   selectedDate,
   setSelectedDate,
-  onChangeViewMode,
 }) => {
   // Get the days of the month
   const month: Date[][] = useMemo(() => {
@@ -75,57 +66,35 @@ const CalendarMonthView: React.FC<Props> = ({
     return month;
   }, [targetDate]);
 
-  const changeMonthHandler = (direction: 1 | -1) => () => {
-    const prevMonth: Date = add(targetDate, { months: direction });
-    setTargetDate(prevMonth);
-  };
-
-  const setMonthToToday = () => {
-    setTargetDate(new Date());
-  };
-
   return (
-    <>
-      <CalendarHeader
-        title={`${getMonthName(targetDate)} ${targetDate.getFullYear()}`}
-        onChnagePeriod={changeMonthHandler}
-        onPeriodToToday={setMonthToToday}
-        onChangeViewMode={onChangeViewMode}
-      />
-      <table className={styles["calendar"]}>
-        <thead>
-          <tr>
-            <th>Mon</th>
-            <th>Thu</th>
-            <th>Thi</th>
-            <th>Wed</th>
-            <th>Fri</th>
-            <th>Sat</th>
-            <th>Sun</th>
+    <table className={styles["calendar"]}>
+      <thead>
+        <tr>
+          <th>Mon</th>
+          <th>Thu</th>
+          <th>Thi</th>
+          <th>Wed</th>
+          <th>Fri</th>
+          <th>Sat</th>
+          <th>Sun</th>
+        </tr>
+      </thead>
+      <tbody>
+        {month.map((week, i) => (
+          <tr key={i.toString() + week[0].getTime()}>
+            {week.map((day) => (
+              <td
+                key={day.getTime()}
+                className={setStyles(day, targetDate, new Date(), selectedDate)}
+                onClick={setSelectedDate.bind(null, day)}
+              >
+                {day.getDate()}
+              </td>
+            ))}
           </tr>
-        </thead>
-        <tbody>
-          {month.map((week, i) => (
-            <tr key={i.toString() + week[0].getTime()}>
-              {week.map((day) => (
-                <td
-                  key={day.getTime()}
-                  className={setStyles(
-                    day,
-                    targetDate,
-                    new Date(),
-                    selectedDate
-                  )}
-                  onClick={setSelectedDate.bind(null, day)}
-                >
-                  {day.getDate()}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
+        ))}
+      </tbody>
+    </table>
   );
 };
 

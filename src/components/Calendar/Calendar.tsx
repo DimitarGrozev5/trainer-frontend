@@ -1,5 +1,8 @@
+import { add } from "date-fns";
 import React, { useState } from "react";
+import { getMonthName } from "../../util/date";
 import styles from "./Calendar.module.css";
+import CalendarHeader from "./CalendarHeader/CalendarHeader";
 import CalendarMonthView from "./MonthView/CalendarMonthView";
 
 interface Props {
@@ -16,25 +19,48 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
 
   const [targetDate, setTargetDate] = useState(new Date());
 
+  const changePeriod = (ammount: string) => (direction: 1 | -1) => () => {
+    const a = ammount === "decade" ? "years" : ammount;
+    const d = ammount === "decade" ? direction * 10 : direction;
+
+    const newDate: Date = add(targetDate, { [a]: d });
+    setTargetDate(newDate);
+  };
+  const setPeriodToToday = () => {
+    setTargetDate(new Date());
+  };
+
+  let title = "";
+  let changePeriodHandler = changePeriod("");
   let calendar = <></>;
   switch (viewMode) {
     case "month":
+      title = `${getMonthName(targetDate)} ${targetDate.getFullYear()}`;
+      changePeriodHandler = changePeriod("months");
       calendar = (
         <CalendarMonthView
           targetDate={targetDate}
-          setTargetDate={setTargetDate}
           selectedDate={selectedDate}
           setSelectedDate={onChangeDate}
-          onChangeViewMode={setViewMode.bind(null, "year")}
         />
       );
       break;
 
     default:
-      calendar = <></>;
+      break;
   }
 
-  return <div className={styles["calendar-container"]}>{calendar}</div>;
+  return (
+    <div className={styles["calendar-container"]}>
+      <CalendarHeader
+        title={title}
+        onChnagePeriod={changePeriodHandler}
+        onPeriodToToday={setPeriodToToday}
+        onChangeViewMode={setViewMode.bind(null, "year")}
+      />
+      {calendar}
+    </div>
+  );
 };
 
 export default Calendar;
