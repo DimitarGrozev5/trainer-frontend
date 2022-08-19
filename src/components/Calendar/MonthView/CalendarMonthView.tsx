@@ -1,11 +1,13 @@
 import { add } from "date-fns";
 import React, { useMemo } from "react";
-import { getMonthName } from "../../../util/date";
+import { getMonthName, sameDate } from "../../../util/date";
 import styles from "./MonthView.module.css";
 
 interface Props {
   targetDate: Date;
   setTargetDate: (d: Date) => void;
+  selectedDate: Date;
+  setSelectedDate: (d: Date) => void;
 }
 
 type DateUTC = number;
@@ -16,7 +18,21 @@ const HOURS = 60 * 60 * 1000;
 const MINUTES = 60 * 1000;
 const SECONDS = 1000;
 
-const CalendarMonthView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
+// Function to set the style of a Calendar day
+const setStyles = (target: Date, today: Date, selected: Date): string => {
+  const classes: string[] = [];
+  sameDate(target, today) && classes.push(styles.today);
+  sameDate(target, selected) && classes.push(styles.selected);
+
+  return classes.join(" ");
+};
+
+const CalendarMonthView: React.FC<Props> = ({
+  targetDate,
+  setTargetDate,
+  selectedDate,
+  setSelectedDate,
+}) => {
   // Get the days of the month
   const month: Date[][] = useMemo(() => {
     // Get first day of month
@@ -95,7 +111,12 @@ const CalendarMonthView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
           {month.map((week, i) => (
             <tr key={i.toString() + week[0].getTime()}>
               {week.map((day) => (
-                <td key={day.getTime()}>{day.getDate()}</td>
+                <td
+                  key={day.getTime()}
+                  className={setStyles(targetDate, new Date(), selectedDate)}
+                >
+                  {day.getDate()}
+                </td>
               ))}
             </tr>
           ))}
