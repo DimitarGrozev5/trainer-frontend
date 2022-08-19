@@ -1,20 +1,85 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { getMonthName } from "../../../util/date";
 import styles from "./MonthView.module.css";
 
 interface Props {
   targetDate: Date;
-  // onChangeDate: (num: Date) => void;
+  setTargetDate: (d: Date) => void;
 }
 
-const CalendarMonthView: React.FC<Props> = ({ targetDate }) => {
-  //
+type DateUTC = number;
+
+const WEEKS = 7 * 24 * 60 * 60 * 1000;
+const DAYS = 24 * 60 * 60 * 1000;
+const HOURS = 60 * 60 * 1000;
+const MINUTES = 60 * 1000;
+const SECONDS = 1000;
+
+const CalendarMonthView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
+  // Get the days of the month
+  const month: Date[][] = useMemo(() => {
+    // Get first day of month
+    const firstDay: Date = new Date(targetDate.getTime());
+    firstDay.setMilliseconds(0);
+    firstDay.setSeconds(0);
+    firstDay.setMinutes(0);
+    firstDay.setHours(0);
+    firstDay.setDate(1);
+
+    // Get day of week
+    const firstDayOfWeek: number = firstDay.getDay();
+
+    // Get date of monday
+    const mondayDateUTC: DateUTC =
+      firstDay.getTime() - (firstDayOfWeek - 1) * DAYS;
+
+    // Generate array for month
+    const month: Date[][] = [];
+    for (let week = 0; week < 6; week++) {
+      const weekArr: Date[] = [];
+      for (let day = 0; day < 7; day++) {
+        const today = new Date(mondayDateUTC + week * WEEKS + day * DAYS);
+        weekArr.push(today);
+      }
+      month.push(weekArr);
+    }
+
+    return month;
+  }, [targetDate]);
+
+  const changeMonthHandler = (direction: 1 | -1) => () => {
+    let prevMonthNum: number = targetDate.getMonth() + direction;
+    if (prevMonthNum < 0) {
+      prevMonthNum = 12;
+    }
+    if (prevMonthNum > 12) {
+      prevMonthNum = 0;
+    }
+
+    const prevMonth: Date = new Date(targetDate.getTime());
+    prevMonth.setMonth(prevMonthNum);
+
+    setTargetDate(prevMonth);
+  };
 
   return (
     <div className={styles["calendar-container"]}>
       <header className={styles.header}>
-        <button className={styles["header__nav"]}>{"<"}</button>
-        <button className={styles["header__title"]}>August</button>
-        <button className={styles["header__nav"]}>{">"}</button>
+        <button
+          onClick={changeMonthHandler(-1)}
+          className={styles["header__nav"]}
+        >
+          {"<"}
+        </button>
+        <button className={styles["header__title"]}>
+          {getMonthName(targetDate)} {targetDate.getFullYear()}
+        </button>
+        <button
+          onClick={changeMonthHandler(1)}
+          className={styles["header__nav"]}
+        >
+          {">"}
+        </button>
         <button className={styles["header__today"]}>19</button>
       </header>
       <table className={styles["calendar"]}>
@@ -30,60 +95,13 @@ const CalendarMonthView: React.FC<Props> = ({ targetDate }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
-            <td>7</td>
-          </tr>
-          <tr>
-            <td>8</td>
-            <td>9</td>
-            <td>10</td>
-            <td>11</td>
-            <td>12</td>
-            <td>13</td>
-            <td>14</td>
-          </tr>
-          <tr>
-            <td>15</td>
-            <td>16</td>
-            <td>17</td>
-            <td>18</td>
-            <td>19</td>
-            <td>20</td>
-            <td>21</td>
-          </tr>
-          <tr>
-            <td>22</td>
-            <td>23</td>
-            <td>24</td>
-            <td>25</td>
-            <td>26</td>
-            <td>27</td>
-            <td>28</td>
-          </tr>
-          <tr>
-            <td>29</td>
-            <td>30</td>
-            <td>31</td>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>6</td>
-            <td>7</td>
-            <td>8</td>
-            <td>9</td>
-            <td>10</td>
-            <td>11</td>
-          </tr>
+          {month.map((week, i) => (
+            <tr key={i.toString() + week[0].getTime()}>
+              {week.map((day) => (
+                <td key={day.getTime()}>{day.getDate()}</td>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
