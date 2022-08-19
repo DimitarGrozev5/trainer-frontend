@@ -70,13 +70,13 @@ const CalendarMonthView: React.FC<Props> = ({
     <table className={styles["calendar"]}>
       <thead>
         <tr>
+          <th>Sun</th>
           <th>Mon</th>
           <th>Thu</th>
           <th>Thi</th>
           <th>Wed</th>
           <th>Fri</th>
           <th>Sat</th>
-          <th>Sun</th>
         </tr>
       </thead>
       <tbody>
