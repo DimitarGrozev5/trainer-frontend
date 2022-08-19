@@ -12,16 +12,16 @@ interface Props {
 type DateUTC = number;
 
 const CalendarYearView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
-  const year /* : number[][][] */ = useMemo(() => {
+  const year: DateUTC[][][] = useMemo(() => {
     // Build the calendar
-    const year: number[][][] = [];
+    const year: DateUTC[][][] = [];
     const currentYear = targetDate.getFullYear();
 
     for (let month = 0; month < 12; month++) {
-      const monthArr: number[][] = [];
+      const monthArr: DateUTC[][] = [];
       let currentDate = new Date(currentYear, month, 1);
 
-      let week: number[] = [];
+      let week: DateUTC[] = [];
       if (currentDate.getDay() > 0) {
         week = getArr(currentDate.getDay(), -1);
       }
@@ -50,7 +50,6 @@ const CalendarYearView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
 
     return year;
   }, [targetDate]);
-  console.log(year);
 
   return (
     <div className={styles.calendar}>
