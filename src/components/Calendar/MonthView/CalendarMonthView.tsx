@@ -50,7 +50,7 @@ const CalendarMonthView: React.FC<Props> = ({
 
     // Get date of monday
     const mondayDateUTC: DateUTC =
-      firstDay.getTime() - (firstDayOfWeek - 1) * DAYS;
+      firstDay.getTime() - (firstDayOfWeek) * DAYS;
 
     // Generate array for month
     const month: Date[][] = [];
