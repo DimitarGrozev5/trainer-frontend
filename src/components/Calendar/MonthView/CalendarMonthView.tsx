@@ -1,6 +1,6 @@
 import { add } from "date-fns";
 import React, { useMemo } from "react";
-import { getMonthName, sameDate } from "../../../util/date";
+import { getMonthName, sameDate, sameMonth } from "../../../util/date";
 import styles from "./MonthView.module.css";
 
 interface Props {
@@ -19,10 +19,18 @@ const MINUTES = 60 * 1000;
 const SECONDS = 1000;
 
 // Function to set the style of a Calendar day
-const setStyles = (target: Date, today: Date, selected: Date): string => {
+const setStyles = (
+  current: Date,
+  target: Date,
+  today: Date,
+  selected: Date
+): string => {
   const classes: string[] = [];
-  sameDate(target, today) && classes.push(styles.today);
-  sameDate(target, selected) && classes.push(styles.selected);
+  if (!sameMonth(current, target)) {
+    classes.push(styles["other-month"]);
+  }
+  sameDate(current, today) && classes.push(styles.today);
+  sameDate(current, selected) && classes.push(styles.selected);
 
   return classes.join(" ");
 };
@@ -113,7 +121,12 @@ const CalendarMonthView: React.FC<Props> = ({
               {week.map((day) => (
                 <td
                   key={day.getTime()}
-                  className={setStyles(targetDate, new Date(), selectedDate)}
+                  className={setStyles(
+                    day,
+                    targetDate,
+                    new Date(),
+                    selectedDate
+                  )}
                 >
                   {day.getDate()}
                 </td>

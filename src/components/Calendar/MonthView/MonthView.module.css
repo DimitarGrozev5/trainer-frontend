@@ -41,3 +41,15 @@ table.calendar {
   width: 14.28571428%;
   text-align: center;
 }
+
+td.other-month {
+  color: var(--light-7);
+}
+
+td.today {
+  background-color: red;
+}
+
+td.selected {
+  border: 1px solid green;
+}
