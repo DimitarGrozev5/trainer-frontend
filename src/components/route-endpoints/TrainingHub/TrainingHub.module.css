@@ -1,0 +1,10 @@
+.calendar {
+  border: 1px solid black;
+  margin-top: 0.5rem;
+  height: calc(60vh + 1rem);
+}
+
+.today {
+  border: 1px solid black;
+  height: calc(40vh - 0.5rem);
+}
