@@ -14,9 +14,6 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
   // Calendar view mode
   const [viewMode, setViewMode] = useState<CalendarView>("month");
 
-  // Calendar current month
-  // const [currentMonth, setCurrentMonth] = useState(selectedDate.getMonth());
-  // const [currentYear, setCurrentYear] = useState(selectedDate.getFullYear());
   const [targetDate, setTargetDate] = useState(new Date());
 
   switch (viewMode) {
@@ -25,6 +22,8 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
         <CalendarMonthView
           targetDate={targetDate}
           setTargetDate={setTargetDate}
+          selectedDate={selectedDate}
+          setSelectedDate={onChangeDate}
         />
       );
 
