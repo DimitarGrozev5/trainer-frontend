@@ -11,16 +11,16 @@ const MonthViewSub: React.FC<Props> = ({ month }) => {
   return (
     <>
       <h1 className={styles.name}>{getMonthName(new Date(month[0][6]))}</h1>
-      <table>
+      <table className={styles["small-cal"]}>
         <thead>
           <tr>
-            <th>Sun</th>
-            <th>Mon</th>
-            <th>Thu</th>
-            <th>Thi</th>
-            <th>Wed</th>
-            <th>Fri</th>
-            <th>Sat</th>
+            <th>S</th>
+            <th>M</th>
+            <th>T</th>
+            <th>T</th>
+            <th>W</th>
+            <th>F</th>
+            <th>S</th>
           </tr>
         </thead>
         <tbody>

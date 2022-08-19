@@ -1,3 +1,8 @@
 .name {
   font-size: 1rem;
 }
+
+.small-cal td,
+.small-cal th {
+  font-size: 0.8rem;
+}

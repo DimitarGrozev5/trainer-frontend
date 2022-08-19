@@ -7,7 +7,8 @@ import { useAuth } from "./hooks/useAuth";
 
 function App() {
   // Get authorization data from localStorage
-  const token = useAuth().token;
+  // const token = useAuth().token;
+  const token = true;
 
   return (
     <Routes>
