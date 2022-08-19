@@ -1,6 +1,7 @@
 import { add } from "date-fns";
 import React, { useMemo } from "react";
 import { getMonthName, sameDate, sameMonth } from "../../../util/date";
+import CalendarHeader from "../CalendarHeader/CalendarHeader";
 import styles from "./MonthView.module.css";
 
 interface Props {
@@ -85,26 +86,12 @@ const CalendarMonthView: React.FC<Props> = ({
 
   return (
     <div className={styles["calendar-container"]}>
-      <header className={styles.header}>
-        <button
-          onClick={changeMonthHandler(-1)}
-          className={styles["header__nav"]}
-        >
-          {"<"}
-        </button>
-        <button className={styles["header__title"]} onClick={onChangeViewMode}>
-          {getMonthName(targetDate)} {targetDate.getFullYear()}
-        </button>
-        <button
-          onClick={changeMonthHandler(1)}
-          className={styles["header__nav"]}
-        >
-          {">"}
-        </button>
-        <button onClick={setMonthToToday} className={styles["header__today"]}>
-          {new Date().getDate()}
-        </button>
-      </header>
+      <CalendarHeader
+        title={`${getMonthName(targetDate)} ${targetDate.getFullYear()}`}
+        onChnagePeriod={changeMonthHandler}
+        onPeriodToToday={setMonthToToday}
+        onChangeViewMode={onChangeViewMode}
+      />
       <table className={styles["calendar"]}>
         <thead>
           <tr>
