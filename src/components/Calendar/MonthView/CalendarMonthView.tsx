@@ -8,6 +8,7 @@ interface Props {
   setTargetDate: (d: Date) => void;
   selectedDate: Date;
   setSelectedDate: (d: Date) => void;
+  onChangeViewMode: () => void;
 }
 
 type DateUTC = number;
@@ -40,6 +41,7 @@ const CalendarMonthView: React.FC<Props> = ({
   setTargetDate,
   selectedDate,
   setSelectedDate,
+  onChangeViewMode,
 }) => {
   // Get the days of the month
   const month: Date[][] = useMemo(() => {
@@ -90,7 +92,7 @@ const CalendarMonthView: React.FC<Props> = ({
         >
           {"<"}
         </button>
-        <button className={styles["header__title"]}>
+        <button className={styles["header__title"]} onClick={onChangeViewMode}>
           {getMonthName(targetDate)} {targetDate.getFullYear()}
         </button>
         <button
@@ -127,6 +129,7 @@ const CalendarMonthView: React.FC<Props> = ({
                     new Date(),
                     selectedDate
                   )}
+                  onClick={setSelectedDate.bind(null, day)}
                 >
                   {day.getDate()}
                 </td>

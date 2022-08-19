@@ -28,7 +28,8 @@
 table.calendar {
   flex-grow: 1;
 
-  border-collapse: collapse;
+  /* border-collapse: collapse; */
+  border-spacing: 0px;
 }
 
 .calendar th {
@@ -37,7 +38,7 @@ table.calendar {
 
 .calendar td,
 .calendar th {
-  /* border: 1px solid red; */
+  border: 1px solid var(--light-1);
   width: 14.28571428%;
   text-align: center;
 }
@@ -47,9 +48,9 @@ td.other-month {
 }
 
 td.today {
-  background-color: red;
+  color: var(--acc-green);
 }
 
 td.selected {
-  border: 1px solid green;
+  border: 1px solid var(--acc-green);
 }

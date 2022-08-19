@@ -24,6 +24,7 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
           setTargetDate={setTargetDate}
           selectedDate={selectedDate}
           setSelectedDate={onChangeDate}
+          onChangeViewMode={setViewMode.bind(null, "year")}
         />
       );
 
