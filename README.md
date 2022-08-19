@@ -29,7 +29,8 @@ The App global state will be handled with Redux Toolkit. A _Slice_ is created fo
 
 ### User Slice
 
-The **User Slice** contains data about the logged in user. If no user is logged in, the data is _null_.
+The **User Slice** contains data about the logged in user. If no user is logged in, the data is _null_.  
+A *user middleware* is added to the Redux Store. The middleware handles storing and removing the passed user data to localStorage.
 
 ## Routing
 
@@ -153,4 +154,4 @@ The function expects the following parameters
 
 ### useAuth
 
-The **useAuth** hook check _localStorage_ for user authentication data. It then tries to decode the token, update the global state and if the token is close to expiring it tries to refresh it.
+The **useAuth** hook check _localStorage_ for user authentication data. It then tries to decode the token, update the global state and if the token is close to expiring it tries to refresh it by sending a refresh request to the backend. The hook uses the `headers` option of `sendRequest`, to manualy set the *Authorization* header of the request for refresh.
