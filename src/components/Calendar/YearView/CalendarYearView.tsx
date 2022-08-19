@@ -54,34 +54,34 @@ const CalendarYearView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
 
   return (
     <div className={styles.calendar}>
-        <div className={styles.row}>
-          {year.slice(0, 3).map((month) => (
-            <div key={new Date(month[0][6]).getMonth()}>
-              <MonthViewSub month={month} />
-            </div>
-          ))}
-        </div>
-        <div className={styles.row}>
-          {year.slice(3, 6).map((month) => (
-            <div key={new Date(month[0][6]).getMonth()}>
-              <MonthViewSub month={month} />
-            </div>
-          ))}
-        </div>
-        <div className={styles.row}>
-          {year.slice(6, 9).map((month) => (
-            <div key={new Date(month[0][6]).getMonth()}>
-              <MonthViewSub month={month} />
-            </div>
-          ))}
-        </div>
-        <div className={styles.row}>
-          {year.slice(9, 12).map((month) => (
-            <div key={new Date(month[0][6]).getMonth()}>
-              <MonthViewSub month={month} />
-            </div>
-          ))}
-        </div>
+      <div className={styles.row}>
+        {year.slice(0, 3).map((month) => (
+          <div key={new Date(month[0][6]).getMonth()}>
+            <MonthViewSub month={month} setTargetDate={setTargetDate} />
+          </div>
+        ))}
+      </div>
+      <div className={styles.row}>
+        {year.slice(3, 6).map((month) => (
+          <div key={new Date(month[0][6]).getMonth()}>
+            <MonthViewSub month={month} setTargetDate={setTargetDate} />
+          </div>
+        ))}
+      </div>
+      <div className={styles.row}>
+        {year.slice(6, 9).map((month) => (
+          <div key={new Date(month[0][6]).getMonth()}>
+            <MonthViewSub month={month} setTargetDate={setTargetDate} />
+          </div>
+        ))}
+      </div>
+      <div className={styles.row}>
+        {year.slice(9, 12).map((month) => (
+          <div key={new Date(month[0][6]).getMonth()}>
+            <MonthViewSub month={month} setTargetDate={setTargetDate} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

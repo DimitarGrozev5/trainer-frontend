@@ -6,3 +6,8 @@
 .small-cal th {
   font-size: 0.7rem;
 }
+
+.today {
+  color: white;
+  background-color: var(--acc-green);
+}
