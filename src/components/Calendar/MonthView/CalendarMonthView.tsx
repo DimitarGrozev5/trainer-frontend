@@ -85,7 +85,7 @@ const CalendarMonthView: React.FC<Props> = ({
   };
 
   return (
-    <div className={styles["calendar-container"]}>
+    <>
       <CalendarHeader
         title={`${getMonthName(targetDate)} ${targetDate.getFullYear()}`}
         onChnagePeriod={changeMonthHandler}
@@ -125,7 +125,7 @@ const CalendarMonthView: React.FC<Props> = ({
           ))}
         </tbody>
       </table>
-    </div>
+    </>
   );
 };
 

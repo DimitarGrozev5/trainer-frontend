@@ -16,9 +16,10 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
 
   const [targetDate, setTargetDate] = useState(new Date());
 
+  let calendar = <></>;
   switch (viewMode) {
     case "month":
-      return (
+      calendar = (
         <CalendarMonthView
           targetDate={targetDate}
           setTargetDate={setTargetDate}
@@ -27,10 +28,13 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
           onChangeViewMode={setViewMode.bind(null, "year")}
         />
       );
+      break;
 
     default:
-      return <></>;
+      calendar = <></>;
   }
+
+  return <div className={styles["calendar-container"]}>{calendar}</div>;
 };
 
 export default Calendar;
