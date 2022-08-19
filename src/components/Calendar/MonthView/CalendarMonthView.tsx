@@ -1,3 +1,4 @@
+import { add } from "date-fns";
 import React, { useMemo } from "react";
 import { getMonthName } from "../../../util/date";
 import styles from "./MonthView.module.css";
@@ -48,18 +49,12 @@ const CalendarMonthView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
   }, [targetDate]);
 
   const changeMonthHandler = (direction: 1 | -1) => () => {
-    let prevMonthNum: number = targetDate.getMonth() + direction;
-    if (prevMonthNum < 0) {
-      prevMonthNum = 12;
-    }
-    if (prevMonthNum > 12) {
-      prevMonthNum = 0;
-    }
-
-    const prevMonth: Date = new Date(targetDate.getTime());
-    prevMonth.setMonth(prevMonthNum);
-
+    const prevMonth: Date = add(targetDate, { months: direction });
     setTargetDate(prevMonth);
+  };
+
+  const setMonthToToday = () => {
+    setTargetDate(new Date());
   };
 
   return (
@@ -80,7 +75,9 @@ const CalendarMonthView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
         >
           {">"}
         </button>
-        <button className={styles["header__today"]}>19</button>
+        <button onClick={setMonthToToday} className={styles["header__today"]}>
+          {new Date().getDate()}
+        </button>
       </header>
       <table className={styles["calendar"]}>
         <thead>
