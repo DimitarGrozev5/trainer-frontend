@@ -120,7 +120,7 @@ export const useHttpClient = () => {
         throw err;
       }
     },
-    [userData, dispatch]
+    [userData.token, dispatch]
   );
 
   useEffect(
