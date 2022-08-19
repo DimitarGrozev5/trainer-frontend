@@ -96,7 +96,6 @@ const HomePage = () => {
         body,
         auth: false,
       });
-      console.log(userData);
     } catch (err: any) {
       console.log(err);
       return;
