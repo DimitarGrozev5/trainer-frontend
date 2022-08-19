@@ -66,7 +66,9 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
       break;
 
     case "dacade":
-      title = targetDate.getFullYear().toString();
+      title = `${targetDate.getFullYear() - 5} - ${
+        targetDate.getFullYear() + 5
+      }`;
       headerTarget = "dacade";
       changePeriodHandler = changePeriod("dacade");
       calendar = (
