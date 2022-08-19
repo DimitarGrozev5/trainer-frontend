@@ -4,6 +4,7 @@ import { getMonthName } from "../../util/date";
 import styles from "./Calendar.module.css";
 import CalendarHeader from "./CalendarHeader/CalendarHeader";
 import CalendarMonthView from "./MonthView/CalendarMonthView";
+import CalendarYearView from "./YearView/CalendarYearView";
 
 interface Props {
   selectedDate: Date;
@@ -42,6 +43,20 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
           targetDate={targetDate}
           selectedDate={selectedDate}
           setSelectedDate={onChangeDate}
+        />
+      );
+      break;
+
+    case "year":
+      title = targetDate.getFullYear().toString();
+      changePeriodHandler = changePeriod("years");
+      calendar = (
+        <CalendarYearView
+          targetDate={targetDate}
+          setTargetDate={(target: Date) => {
+            setViewMode("month");
+            setTargetDate(target);
+          }}
         />
       );
       break;
