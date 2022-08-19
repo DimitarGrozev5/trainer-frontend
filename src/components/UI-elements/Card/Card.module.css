@@ -1,4 +1,7 @@
 .card {
+  display: flex;
+  flex-direction: column;
+
   padding: 1rem;
   border-radius: 1rem;
   background-color: var(--light-1);
