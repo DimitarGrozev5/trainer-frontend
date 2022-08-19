@@ -19,7 +19,7 @@ interface Config {
 }
 
 export const useHttpClient = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user);
 
