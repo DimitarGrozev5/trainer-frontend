@@ -1,5 +1,12 @@
 table.calendar {
   flex-grow: 1;
-  
+
   border-spacing: 0px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  height: 25%;
+  margin-bottom: 0.5rem;
 }
