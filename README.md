@@ -62,6 +62,14 @@ The **BaseTemplate** header is designed to display either the **h1** title, or t
 
 The **HomePage** Component renders a form for Loging or Registering a user. The user can switch between the two forms, by clicking a button. The **Register** form uses a custom hook - **useForm**, to handle user input and validation. The Component also handles sending Login or Register data to the backend.
 
+### Calendar Component
+
+The **Calendar** Component renders a *calendar*. The calendar displays by default one month. The Component has three view modes - month view, year view and decade view. The contents of the component are rendered conditionaly based on the current view.
+
+The Calendar itself is structured with a *header* and a *body*. The header has the label of the current month/year/decade and buttons to navigate forwards or backwards in time. The calendar body depends on the current view.
+
+The **CalendarMonthView** Component renders a calendar body with one month displayed. The month is stored as an array of *weeks*, each week beong an array of Dates. The month is calculated in a *useMemo* hook to store the calculated values between Component renders, if the target month hasn't changed. To populte the *month* array, the function determines the Date of the dirst Sunday, before the first of the month (The week is set to start on Sunday). It then goes through a nested `for` loop. It loops through six weeks and for each week, through seven days, populating the *month* array along the way. The contents of the *month* array are then rendered as a *table* element.
+
 ## UI Components
 
 ### Button Component

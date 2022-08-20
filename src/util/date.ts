@@ -34,6 +34,8 @@ export const sameMonth = (date1: Date, date2: Date): boolean => {
 };
 
 // Generate an array of the days of a month, based on a Date from that month
+type DateUTC = number;
+export type DateOption = Date | -1;
 export const getMonthArr = (
   date: Date,
   { numberOfWeeks = 6, skipDaysFromOtherMonths = false } = {}
@@ -54,7 +56,6 @@ export const getMonthArr = (
     firstDay.getTime() - firstDayOfWeek * 24 * 60 * 60 * 1000;
 
   // Generate array for month
-  type DateUTC = number;
   const month: Date[][] = [];
   for (let week = 0; week < numberOfWeeks; week++) {
     const weekArr: Date[] = [];
@@ -64,7 +65,11 @@ export const getMonthArr = (
           week * 7 * 24 * 60 * 60 * 1000 +
           day * 24 * 60 * 60 * 1000
       );
-      weekArr.push(today);
+      let t = today;
+      if (skipDaysFromOtherMonths && today.getMonth() !== date.getMonth()) {
+        t = new Date(0);
+      }
+      weekArr.push(t);
     }
     month.push(weekArr);
   }
