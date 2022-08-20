@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { sameDate, sameMonth } from "../../../util/date";
+import { getMonthArr, sameDate, sameMonth } from "../../../util/date";
 import styles from "./MonthView.module.css";
 
 interface Props {
@@ -7,11 +7,6 @@ interface Props {
   selectedDate: Date;
   setSelectedDate: (d: Date) => void;
 }
-
-type DateUTC = number;
-
-const WEEKS = 7 * 24 * 60 * 60 * 1000;
-const DAYS = 24 * 60 * 60 * 1000;
 
 // Function to set the style of a Calendar day
 const setStyles = (
@@ -36,35 +31,7 @@ const CalendarMonthView: React.FC<Props> = ({
   setSelectedDate,
 }) => {
   // Get the days of the month
-  const month: Date[][] = useMemo(() => {
-    // Get first day of month
-    const firstDay: Date = new Date(targetDate.getTime());
-    firstDay.setMilliseconds(0);
-    firstDay.setSeconds(0);
-    firstDay.setMinutes(0);
-    firstDay.setHours(0);
-    firstDay.setDate(1);
-
-    // Get day of week
-    const firstDayOfWeek: number = firstDay.getDay();
-
-    // Get date of monday
-    const mondayDateUTC: DateUTC =
-      firstDay.getTime() - (firstDayOfWeek) * DAYS;
-
-    // Generate array for month
-    const month: Date[][] = [];
-    for (let week = 0; week < 6; week++) {
-      const weekArr: Date[] = [];
-      for (let day = 0; day < 7; day++) {
-        const today = new Date(mondayDateUTC + week * WEEKS + day * DAYS);
-        weekArr.push(today);
-      }
-      month.push(weekArr);
-    }
-
-    return month;
-  }, [targetDate]);
+  const month: Date[][] = useMemo(() => getMonthArr(targetDate), [targetDate]);
 
   return (
     <table className={styles["calendar"]}>
