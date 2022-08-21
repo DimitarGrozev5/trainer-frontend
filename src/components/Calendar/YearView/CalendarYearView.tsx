@@ -8,8 +8,6 @@ interface Props {
   setTargetDate: (d: Date) => void;
 }
 
-type DateUTC = number;
-
 const CalendarYearView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
   const year: Date[][][] = useMemo(() => {
     // Build the calendar
