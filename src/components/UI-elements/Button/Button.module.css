@@ -17,6 +17,10 @@
   width: max-content;
 }
 
+.button.stretch {
+  width: 100%;
+}
+
 .button:disabled {
   cursor: not-allowed;
   color: var(--light-5);

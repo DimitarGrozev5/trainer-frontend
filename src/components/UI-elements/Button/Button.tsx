@@ -6,6 +6,7 @@ interface Props {
   children: string;
   to?: string;
   disabled?: boolean;
+  stretch?: boolean;
   accent?: boolean;
   plain?: boolean;
   type?: "button" | "submit";
@@ -15,6 +16,7 @@ interface Props {
 const Button: React.FC<Props> = ({
   disabled,
   accent,
+  stretch,
   plain,
   to,
   children,
@@ -23,6 +25,7 @@ const Button: React.FC<Props> = ({
 }) => {
   const classNames = [styles.button];
   disabled && classNames.push(styles.disabled);
+  stretch && classNames.push(styles.stretch);
   accent && classNames.push(styles.accent);
   plain && classNames.push(styles.plain);
 
