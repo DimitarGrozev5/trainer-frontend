@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Outlet, useLocation } from "react-router-dom";
 import styles from "./BaseTemplate.module.css";
@@ -10,6 +10,15 @@ import { useAppSelector } from "../../../hooks/redux-hooks";
 import Button from "../../UI-elements/Button/Button";
 
 const BaseTemplate = () => {
+  // Handle menu open
+  const isLoggedIn = useAppSelector((state) => !!state.user.token);
+  const [menuIsOpen, , { setStateTo: setMenuIsOpenTo }] = useSState(false);
+
+  const links: ContextmenuItem[] = [
+    { caption: "Manage programs", path: "/manage-programs" },
+    { caption: "Logout", path: "/logout" },
+  ];
+
   // Get path context and change page title
   const path = useLocation().pathname;
   const pageTitle = { "/manage-programs": "Programs" }[path];
@@ -82,14 +91,6 @@ const BaseTemplate = () => {
       }
     }
   };
-
-  // Handle menu open
-  const isLoggedIn = useAppSelector((state) => !!state.user.token);
-  const [menuIsOpen, , { setStateTo: setMenuIsOpenTo }] = useSState(false);
-  const links: ContextmenuItem[] = [
-    { caption: "Manage programs", path: "/manage-programs" },
-    { caption: "Logout", path: "/logout" },
-  ];
 
   return (
     <div
