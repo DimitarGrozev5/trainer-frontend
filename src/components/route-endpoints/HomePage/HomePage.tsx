@@ -123,7 +123,9 @@ const HomePage = () => {
         onChange={setLoginPass}
       />
 
-      <Button type="submit">Login</Button>
+      <Button type="submit" stretch>
+        Login
+      </Button>
     </>
   );
 
@@ -163,7 +165,7 @@ const HomePage = () => {
         onBlur={onBlur("re-pass")}
       />
 
-      <Button type="submit" disabled={!registerFormIsValid}>
+      <Button type="submit" disabled={!registerFormIsValid} stretch>
         Register
       </Button>
     </>
