@@ -1,3 +1,5 @@
+import { add } from "date-fns";
+
 // Get month name
 export const getMonthName = (date: Date) => {
   return [
@@ -37,7 +39,7 @@ export const sameMonth = (date1: Date, date2: Date): boolean => {
 type DateUTC = number;
 export type DateOption = Date | -1;
 
-const lastVal = (arr: Date[][]): number => {
+const nextDaysMonth = (arr: Date[][]): number => {
   const last = arr.length;
   if (!last) {
     return -1;
@@ -48,7 +50,12 @@ const lastVal = (arr: Date[][]): number => {
     return -1;
   }
 
-  return arr[last - 1][lastValLen - 1].getMonth();
+  const today = arr[last - 1][lastValLen - 1];
+  const nextDay = add(today, { days: 1 });
+
+  return today.getMonth() === 11 && nextDay.getMonth() === 0
+    ? 12
+    : nextDay.getMonth();
 };
 
 export const getMonthArr = (
@@ -75,7 +82,7 @@ export const getMonthArr = (
 
   // Generate array for month
   const month: Date[][] = [];
-  while (month.length < getNumOfWeeks || lastVal(month) === currentMonth) {
+  while (month.length < getNumOfWeeks || nextDaysMonth(month) <= currentMonth) {
     const weekArr: Date[] = [];
     for (let day = 0; day < 7; day++) {
       const today = new Date(
