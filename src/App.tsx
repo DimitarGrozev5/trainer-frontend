@@ -18,6 +18,7 @@ function App() {
         {!!token && (
           <>
             <Route index element={<TrainingHub />} />
+            <Route path="/manage-programs" element={<TrainingHub />} />
           </>
         )}
       </Route>
