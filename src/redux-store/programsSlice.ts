@@ -2,9 +2,10 @@ import { createSlice, Middleware } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 // All valid programIds will be stored here
-type ProgramId = "ETK" | "Q&D";
+export type ProgramId = "ETK" | "Q&D";
 
-type ProgramState =
+// Type of individual program
+export type ProgramState =
   | {
       id: ProgramId;
       active: true;
@@ -16,6 +17,7 @@ type ProgramState =
       data: null;
     };
 
+// Redux type
 type ProgramsState = {
   [programId in ProgramId]: ProgramState;
 };
