@@ -1,14 +1,19 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import styles from "./BaseTemplate.module.css";
 import ContextMenu, {
   ContextmenuItem,
 } from "../../UI-elements/ContextMenu/ContextMenu";
 import { useSState } from "../../../hooks/useSState";
 import { useAppSelector } from "../../../hooks/redux-hooks";
+import Button from "../../UI-elements/Button/Button";
 
 const BaseTemplate = () => {
+  // Get path context and change page title
+  const path = useLocation().pathname;
+  const pageTitle = { "/manage-programs": "Programs" }[path];
+
   // Get ref to container div
   const containerRef: React.Ref<HTMLDivElement> = useRef(null);
   const h1Ref: React.Ref<HTMLDivElement> = useRef(null);
@@ -94,14 +99,21 @@ const BaseTemplate = () => {
     >
       <header>
         <motion.h1 ref={h1Ref} style={{ opacity: fadeOutAnim, y: yOutAnim }}>
-          Trainer
+          {pageTitle || "Trainer"}
         </motion.h1>
         <div className={styles.menu} ref={menuRef}>
+          {pageTitle && (
+            <Button to="/" plain>
+              {"<"}
+            </Button>
+          )}
+
           <motion.h3 ref={h3Ref} style={{ opacity: fadeInAnim }} layout>
-            Trainer
+            {pageTitle || "Trainer"}
           </motion.h3>
+
           <div className={styles.button}>
-            {isLoggedIn && (
+            {isLoggedIn && !pageTitle && (
               <>
                 <button onClick={setMenuIsOpenTo(true)}>
                   <img src="/menu.png" alt="menu" />

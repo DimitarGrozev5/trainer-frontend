@@ -37,9 +37,15 @@
   z-index: 2;
 
   align-self: stretch;
+
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+
   background-color: var(--light-2);
+}
+
+.menu h3 {
+  flex-grow: 1;
 }
 
 .button {
