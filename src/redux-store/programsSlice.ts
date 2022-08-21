@@ -19,21 +19,28 @@ export type ProgramState =
 
 // Redux type
 type ProgramsState = {
-  [programId in ProgramId]: ProgramState;
+  byId: {
+    [programId in ProgramId]: ProgramState;
+  };
+  arr: ProgramId[];
 };
 
 const programsSlice = createSlice({
   name: "programs",
 
   initialState: {
-    ETK: { id: "ETK", active: false, data: null },
+    byId: {
+      ETK: { id: "ETK", active: false, data: null },
+      "Q&D": { id: "Q&D", active: false, data: null },
+    },
+    arr: ["ETK", "Q&D"],
   } as ProgramsState,
 
   reducers: {
     updateProgramsState: (state, action: PayloadAction<ProgramState[]>) => {
       action.payload.forEach((program) => {
         const id = program.id;
-        state[id] = { ...state[id], ...program };
+        state.byId[id] = { ...state.byId[id], ...program };
       });
     },
   },
