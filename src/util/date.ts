@@ -39,16 +39,16 @@ export type DateOption = Date | -1;
 
 const lastVal = (arr: Date[][]): number => {
   const last = arr.length;
-  if (last) {
+  if (!last) {
     return -1;
   }
 
-  const lastValLen = arr[last].length;
-  if (lastValLen) {
+  const lastValLen = arr[last - 1].length;
+  if (!lastValLen) {
     return -1;
   }
 
-  return arr[last][lastValLen].getMonth();
+  return arr[last - 1][lastValLen - 1].getMonth();
 };
 
 export const getMonthArr = (
@@ -83,11 +83,7 @@ export const getMonthArr = (
           month.length * 7 * 24 * 60 * 60 * 1000 +
           day * 24 * 60 * 60 * 1000
       );
-      let t = today;
-      if (skipDaysFromOtherMonths && today.getMonth() !== date.getMonth()) {
-        t = new Date(0);
-      }
-      weekArr.push(t);
+      weekArr.push(today);
     }
     month.push(weekArr);
   }
