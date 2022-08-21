@@ -42,9 +42,11 @@
   background-color: var(--light-2);
 }
 
-.menu > button {
+.button {
   position: relative;
-  
+}
+
+.button button {
   border: none;
   background-color: var(--light-2);
 

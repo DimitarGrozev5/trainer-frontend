@@ -2,6 +2,8 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Outlet } from "react-router-dom";
 import styles from "./BaseTemplate.module.css";
+import ContextMenu from "../../UI-elements/ContextMenu/ContextMenu";
+import { useSState } from "../../../hooks/useSState";
 
 const BaseTemplate = () => {
   // Get ref to container div
@@ -73,6 +75,9 @@ const BaseTemplate = () => {
     }
   };
 
+  // Handle menu open
+  const [menuIsOpen, , { setStateTo: setMenuIsOpenTo }] = useSState(false);
+
   return (
     <div
       className={styles.container}
@@ -87,9 +92,12 @@ const BaseTemplate = () => {
           <motion.h3 ref={h3Ref} style={{ opacity: fadeInAnim }} layout>
             Trainer
           </motion.h3>
-          <button>
-            <img src="/menu.png" alt="menu" />
-          </button>
+          <div className={styles.button}>
+            <button onClick={setMenuIsOpenTo(true)}>
+              <img src="/menu.png" alt="menu" />
+            </button>
+            <ContextMenu show={menuIsOpen} onClose={setMenuIsOpenTo(false)} />
+          </div>
         </div>
       </header>
       <main>
