@@ -34,6 +34,7 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
 
   let title = "";
   let headerTarget: CalendarView = "month";
+  let resetValue: string = new Date().getDate().toString();
   let changePeriodHandler = changePeriod("");
   let calendar = <></>;
   switch (viewMode) {
@@ -53,6 +54,7 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
     case "year":
       title = targetDate.getFullYear().toString();
       headerTarget = "dacade";
+      resetValue = new Date().getFullYear().toString().substring(2);
       changePeriodHandler = changePeriod("years");
       calendar = (
         <CalendarYearView
@@ -70,6 +72,7 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
         targetDate.getFullYear() + 5
       }`;
       headerTarget = "dacade";
+      resetValue = new Date().getFullYear().toString().substring(2);
       changePeriodHandler = changePeriod("dacade");
       calendar = (
         <CalendarDecadeView
@@ -90,6 +93,7 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
     <div className={styles["calendar-container"]}>
       <CalendarHeader
         title={title}
+        resetValue={resetValue}
         onChnagePeriod={changePeriodHandler}
         onPeriodToToday={setPeriodToToday}
         onChangeViewMode={setViewMode.bind(null, headerTarget)}

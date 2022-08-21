@@ -3,6 +3,7 @@ import styles from "./CalendarHeader.module.css";
 
 interface Props {
   title: string;
+  resetValue: string;
   onChnagePeriod: (d: 1 | -1) => () => void;
   onPeriodToToday: () => void;
   onChangeViewMode: () => void;
@@ -10,6 +11,7 @@ interface Props {
 
 const CalendarHeader: React.FC<Props> = ({
   title,
+  resetValue,
   onChnagePeriod,
   onPeriodToToday,
   onChangeViewMode,
@@ -26,7 +28,7 @@ const CalendarHeader: React.FC<Props> = ({
         {">"}
       </button>
       <button onClick={onPeriodToToday} className={styles["header__today"]}>
-        {new Date().getDate()}
+        {resetValue}
       </button>
     </header>
   );

@@ -27,8 +27,6 @@ const CalendarYearView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
 
     return year;
   }, [targetDate]);
-  console.log(year);
-  
 
   return (
     <div className={styles.calendar}>
