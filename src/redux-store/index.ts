@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { programsReducer } from "./programsSlice";
 import { userMiddleware, userReducer } from "./userSlice";
 
 const store = configureStore({
   reducer: {
     user: userReducer,
+    programs: programsReducer,
   },
   middleware: [userMiddleware],
 });
