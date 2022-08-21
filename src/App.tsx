@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import HomePage from "./components/route-endpoints/HomePage/HomePage";
 import Logout from "./components/route-endpoints/Logout/Logout";
+import ManagePrograms from "./components/route-endpoints/ManagePrograms/ManagePrograms";
 import TrainingHub from "./components/route-endpoints/TrainingHub/TrainingHub";
 import BaseTemplate from "./components/templates/BaseTemplate/BaseTemplate";
 import { useAuth } from "./hooks/useAuth";
@@ -18,7 +19,7 @@ function App() {
         {!!token && (
           <>
             <Route index element={<TrainingHub />} />
-            <Route path="/manage-programs" element={<TrainingHub />} />
+            <Route path="/manage-programs" element={<ManagePrograms />} />
           </>
         )}
       </Route>
