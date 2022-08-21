@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Outlet, useLocation } from "react-router-dom";
 import styles from "./BaseTemplate.module.css";

@@ -19,7 +19,7 @@ const Logout = () => {
       }
       dispatch(userActions.clearUserData());
     })();
-  }, [sendRequest]);
+  }, [sendRequest, dispatch, userId]);
 
   return (
     <>
