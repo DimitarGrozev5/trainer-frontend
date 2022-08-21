@@ -2,7 +2,9 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Outlet } from "react-router-dom";
 import styles from "./BaseTemplate.module.css";
-import ContextMenu from "../../UI-elements/ContextMenu/ContextMenu";
+import ContextMenu, {
+  ContextmenuItem,
+} from "../../UI-elements/ContextMenu/ContextMenu";
 import { useSState } from "../../../hooks/useSState";
 
 const BaseTemplate = () => {
@@ -77,6 +79,10 @@ const BaseTemplate = () => {
 
   // Handle menu open
   const [menuIsOpen, , { setStateTo: setMenuIsOpenTo }] = useSState(false);
+  const links: ContextmenuItem[] = [
+    { caption: "Manage programs", path: "/manage-programs" },
+    { caption: "Logout", path: "/logout" },
+  ];
 
   return (
     <div
@@ -96,7 +102,13 @@ const BaseTemplate = () => {
             <button onClick={setMenuIsOpenTo(true)}>
               <img src="/menu.png" alt="menu" />
             </button>
-            <ContextMenu show={menuIsOpen} onClose={setMenuIsOpenTo(false)} />
+
+            <ContextMenu
+              show={menuIsOpen}
+              onClose={setMenuIsOpenTo(false)}
+              links={links}
+              direction={"left"}
+            />
           </div>
         </div>
       </header>
