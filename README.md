@@ -30,7 +30,11 @@ The App global state will be handled with Redux Toolkit. A _Slice_ is created fo
 ### User Slice
 
 The **User Slice** contains data about the logged in user. If no user is logged in, the data is _null_.  
-A *user middleware* is added to the Redux Store. The middleware handles storing and removing the passed user data to localStorage.
+A _user middleware_ is added to the Redux Store. The middleware handles storing and removing the passed user data to localStorage.
+
+### Programs Slice
+
+The **Programs Slice** contains data about all of the supported programs. Each program has an _id_, an _active_ status and a _data_ property. The `ProgramId` data type contains all valid ids of training programs. If a training program is active, it must have a *data* property, that is an Object.
 
 ## Routing
 
@@ -58,7 +62,7 @@ When the **h1** title element drops out of view, the **h3** title changes it's `
 
 The **BaseTemplate** header is designed to display either the **h1** title, or the **h3** title. The transition between them is made to look nice, but when the user stops scrolling, the page has to snap to one of the two positions. This is achieved using the _header_ element's `scrollTop` property. An event handler is added to the `touchEnd` Event, so when the user stops scrolling the page will autoscroll to one of the two positions.
 
-The Template looks at the current *url path* and changes the *h1* and *h3* title text to corespond to the *path*.
+The Template looks at the current _url path_ and changes the _h1_ and _h3_ title text to corespond to the _path_.
 
 ### HomePage Component
 
@@ -66,9 +70,9 @@ The **HomePage** Component renders a form for Loging or Registering a user. The 
 
 ### Calendar Component
 
-The **Calendar** Component renders a *calendar*. The calendar displays by default one month. The Component has three view modes - month view, year view and decade view. The contents of the component are rendered conditionaly based on the current view.
+The **Calendar** Component renders a _calendar_. The calendar displays by default one month. The Component has three view modes - month view, year view and decade view. The contents of the component are rendered conditionaly based on the current view.
 
-The Calendar itself is structured with a *header* and a *body*. The header has the label of the current month/year/decade and buttons to navigate forwards or backwards in time. The calendar body depends on the current view. There are three Components that render a different calendar body, depending on the current view.
+The Calendar itself is structured with a _header_ and a _body_. The header has the label of the current month/year/decade and buttons to navigate forwards or backwards in time. The calendar body depends on the current view. There are three Components that render a different calendar body, depending on the current view.
 
 ## UI Components
 
@@ -168,4 +172,4 @@ The function expects the following parameters
 
 ### useAuth
 
-The **useAuth** hook check _localStorage_ for user authentication data. It then tries to decode the token, update the global state and if the token is close to expiring it tries to refresh it by sending a refresh request to the backend. The hook uses the `headers` option of `sendRequest`, to manualy set the *Authorization* header of the request for refresh.
+The **useAuth** hook check _localStorage_ for user authentication data. It then tries to decode the token, update the global state and if the token is close to expiring it tries to refresh it by sending a refresh request to the backend. The hook uses the `headers` option of `sendRequest`, to manualy set the _Authorization_ header of the request for refresh.
