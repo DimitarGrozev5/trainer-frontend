@@ -33,7 +33,7 @@ const Button: React.FC<Props> = ({
 
   if (to) {
     return (
-      <Link to={to} className={className}>
+      <Link to={to} className={className} onClick={onClick}>
         {children}
       </Link>
     );
