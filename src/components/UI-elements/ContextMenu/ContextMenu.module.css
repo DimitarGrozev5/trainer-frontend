@@ -31,3 +31,36 @@
 .menu.right {
   left: 0px;
 }
+
+.menu.entering,
+.menu.entered {
+  animation: openMenu 0.2s ease-out forwards;
+  transform-origin: top right;
+}
+
+.menu.exiting {
+  animation: closeMenu 0.2s ease-out forwards;
+  transform-origin: top right;
+}
+
+@keyframes openMenu {
+  0% {
+    opacity: 0;
+    transform: scale(50%);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(100%);
+  }
+}
+
+@keyframes closeMenu {
+  0% {
+    opacity: 1;
+    transform: scale(100%);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(50%);
+  }
+}

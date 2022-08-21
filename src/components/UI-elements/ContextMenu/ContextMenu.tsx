@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Transition } from "react-transition-group";
 import Button from "../Button/Button";
 import styles from "./ContextMenu.module.css";
 
@@ -25,11 +26,13 @@ interface Props {
 
 const ContextMenu: React.FC<Props> = ({ show, onClose, links, direction }) => {
   return (
-    <>
-      {show && (
+    <Transition in={show} timeout={200} mountOnEnter unmountOnExit>
+      {(state) => (
         <>
           <Overlay onClose={onClose} />
-          <div className={`${styles.menu} ${styles[direction]}`}>
+          <div
+            className={`${styles.menu} ${styles[state]} ${styles[direction]}`}
+          >
             {links.map((link) => (
               <Button key={link.caption} to={link.path} plain>
                 {link.caption}
@@ -38,7 +41,7 @@ const ContextMenu: React.FC<Props> = ({ show, onClose, links, direction }) => {
           </div>
         </>
       )}
-    </>
+    </Transition>
   );
 };
 
