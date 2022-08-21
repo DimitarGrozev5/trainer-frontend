@@ -120,6 +120,12 @@ The **Modal** utilizes a library `react-transition-group`, used for animating it
 
 The **ErrorModal** Component internaly uses a **Modal**, but abstracts away the common props, used in all Error messages - the title and the buttons.
 
+### ContextMenu Component
+
+The **ContextMenu** Component renders a floating modal, that is attached to it's parent component, by using `position: absolute`. The Component also renders a transperant Overlay, that has an onClick event handler, trigering the closing of the Context Menu.
+
+The Component expects to receive a list of links, that will be rendered as Link components.
+
 ## Custom Hooks
 
 ### useForm
