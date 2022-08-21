@@ -1,0 +1,33 @@
+.overlay {
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.menu {
+  position: absolute;
+  top: 0.2rem;
+  z-index: 100;
+  min-width: 40vw;
+  min-height: 7rem;
+
+  background-color: var(--light-1);
+
+  padding: 0.5rem 1rem;
+
+  border-radius: 1rem;
+
+  filter: drop-shadow(0 0 0.5rem rgba(1, 1, 1, 0.2));
+}
+
+.menu.left {
+  right: 0px;
+}
+.menu.right {
+  left: 0px;
+}
