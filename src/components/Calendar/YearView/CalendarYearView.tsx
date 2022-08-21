@@ -1,6 +1,4 @@
-import { add } from "date-fns";
 import React, { useMemo } from "react";
-import { addToArr, getArr } from "../../../util/array";
 import { getMonthArr } from "../../../util/date";
 import MonthViewSub from "./MonthViewSub/MonthViewSub";
 import styles from "./YearView.module.css";
