@@ -1,6 +1,7 @@
 import { add } from "date-fns";
 import React, { useMemo } from "react";
 import { addToArr, getArr } from "../../../util/array";
+import { getMonthArr } from "../../../util/date";
 import MonthViewSub from "./MonthViewSub/MonthViewSub";
 import styles from "./YearView.module.css";
 
@@ -12,50 +13,28 @@ interface Props {
 type DateUTC = number;
 
 const CalendarYearView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
-  const year: DateUTC[][][] = useMemo(() => {
+  const year: Date[][][] = useMemo(() => {
     // Build the calendar
-    const year: DateUTC[][][] = [];
+    const year: Date[][][] = [];
     const currentYear = targetDate.getFullYear();
 
     for (let month = 0; month < 12; month++) {
-      const monthArr: DateUTC[][] = [];
-      let currentDate = new Date(currentYear, month, 1);
-
-      let week: DateUTC[] = [];
-      if (currentDate.getDay() > 0) {
-        week = getArr(currentDate.getDay(), -1);
-      }
-      monthArr.push(week);
-      let currentWeek = 0;
-
-      monthArr[currentWeek].push(currentDate.getTime());
-      currentDate = add(currentDate, { days: 1 });
-
-      while (currentDate.getDate() !== 1) {
-        if (currentDate.getDay() === 0) {
-          monthArr.push([]);
-          currentWeek++;
-        }
-
-        monthArr[currentWeek].push(currentDate.getTime());
-        currentDate = add(currentDate, { days: 1 });
-      }
-
-      if (currentDate.getDay() > 0) {
-        monthArr[currentWeek] = addToArr(monthArr[currentWeek], 7, -1);
-      }
-
+      const monthArr: Date[][] = getMonthArr(new Date(currentYear, month, 1), {
+        getNumOfWeeks: 0,
+      });
       year.push(monthArr);
     }
 
     return year;
   }, [targetDate]);
+  console.log(year);
+  
 
   return (
     <div className={styles.calendar}>
       <div className={styles.row}>
         {year.slice(0, 3).map((month) => (
-          <div key={new Date(month[0][6]).getMonth()}>
+          <div key={month[0][6].getMonth()}>
             <MonthViewSub month={month} setTargetDate={setTargetDate} />
           </div>
         ))}
