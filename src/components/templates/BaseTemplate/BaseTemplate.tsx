@@ -6,6 +6,7 @@ import ContextMenu, {
   ContextmenuItem,
 } from "../../UI-elements/ContextMenu/ContextMenu";
 import { useSState } from "../../../hooks/useSState";
+import { useAppSelector } from "../../../hooks/redux-hooks";
 
 const BaseTemplate = () => {
   // Get ref to container div
@@ -78,6 +79,7 @@ const BaseTemplate = () => {
   };
 
   // Handle menu open
+  const isLoggedIn = useAppSelector((state) => !!state.user.token);
   const [menuIsOpen, , { setStateTo: setMenuIsOpenTo }] = useSState(false);
   const links: ContextmenuItem[] = [
     { caption: "Manage programs", path: "/manage-programs" },
@@ -99,16 +101,20 @@ const BaseTemplate = () => {
             Trainer
           </motion.h3>
           <div className={styles.button}>
-            <button onClick={setMenuIsOpenTo(true)}>
-              <img src="/menu.png" alt="menu" />
-            </button>
+            {isLoggedIn && (
+              <>
+                <button onClick={setMenuIsOpenTo(true)}>
+                  <img src="/menu.png" alt="menu" />
+                </button>
 
-            <ContextMenu
-              show={menuIsOpen}
-              onClose={setMenuIsOpenTo(false)}
-              links={links}
-              direction={"left"}
-            />
+                <ContextMenu
+                  show={menuIsOpen}
+                  onClose={setMenuIsOpenTo(false)}
+                  links={links}
+                  direction={"left"}
+                />
+              </>
+            )}
           </div>
         </div>
       </header>
