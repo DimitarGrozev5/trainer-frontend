@@ -34,7 +34,7 @@ const ContextMenu: React.FC<Props> = ({ show, onClose, links, direction }) => {
             className={`${styles.menu} ${styles[state]} ${styles[direction]}`}
           >
             {links.map((link) => (
-              <Button key={link.caption} to={link.path} plain>
+              <Button key={link.caption} to={link.path} onClick={onClose} plain>
                 {link.caption}
               </Button>
             ))}
