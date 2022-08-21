@@ -5,7 +5,7 @@
   left: 0px;
   right: 0px;
   z-index: 1;
-  
+
   overflow: auto;
 
   padding: 0.5rem;
@@ -21,22 +21,40 @@
   justify-content: center;
   align-items: center;
 }
+
 .container > header > h1 {
   flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.container > header > h3 {
-  align-self: flex-start;
 
+.menu {
   position: relative;
   left: 0px;
   right: 0px;
   top: 0px;
   z-index: 2;
 
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
   background-color: var(--light-2);
+}
+
+.menu > button {
+  border: none;
+  background-color: var(--light-2);
+
+  width: 2rem;
+  height: 2rem;
+
+  padding: 0.1rem;
+}
+
+.menu img {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 .container > main {

@@ -7,6 +7,7 @@ const BaseTemplate = () => {
   // Get ref to container div
   const containerRef: React.Ref<HTMLDivElement> = useRef(null);
   const h1Ref: React.Ref<HTMLDivElement> = useRef(null);
+  const menuRef: React.Ref<HTMLDivElement> = useRef(null);
   const h3Ref: React.Ref<HTMLDivElement> = useRef(null);
 
   // Get current scroll position, relative to header H1
@@ -37,17 +38,19 @@ const BaseTemplate = () => {
 
   // Change H3 position to fixed when it's on top
   scrollYProgress.onChange((latest) => {
-    if (!h3Ref.current) {
+    if (!menuRef.current) {
       return;
     }
     if (latest >= 1) {
-      h3Ref.current.style.position = "fixed";
-      h3Ref.current.style.left = "0.5rem";
+      menuRef.current.style.position = "fixed";
+      menuRef.current.style.left = "0.5rem";
+      menuRef.current.style.right = "0.5rem";
       return;
     }
-    if (latest < 0.99) {
-      h3Ref.current.style.position = "relative";
-      h3Ref.current.style.left = "0px";
+    if (latest < 0.9) {
+      menuRef.current.style.position = "relative";
+      menuRef.current.style.left = "0px";
+      menuRef.current.style.right = "0px";
     }
   });
 
@@ -64,8 +67,8 @@ const BaseTemplate = () => {
       containerRef.current.scrollTop = 0;
     }
     if (latest > 0.5 && latest < 1) {
-      if (h3Ref.current) {
-        containerRef.current.scrollTop = h3Ref.current.offsetTop;
+      if (menuRef.current) {
+        containerRef.current.scrollTop = menuRef.current.offsetTop;
       }
     }
   };
@@ -80,9 +83,14 @@ const BaseTemplate = () => {
         <motion.h1 ref={h1Ref} style={{ opacity: fadeOutAnim, y: yOutAnim }}>
           Trainer
         </motion.h1>
-        <motion.h3 ref={h3Ref} style={{ opacity: fadeInAnim }} layout>
-          Trainer
-        </motion.h3>
+        <div className={styles.menu} ref={menuRef}>
+          <motion.h3 ref={h3Ref} style={{ opacity: fadeInAnim }} layout>
+            Trainer
+          </motion.h3>
+          <button>
+            <img src="/menu.png" alt="menu" />
+          </button>
+        </div>
       </header>
       <main>
         <Outlet />
