@@ -6,9 +6,13 @@ import {
 import styles from "./ManagePrograms.module.css";
 import Card from "../../UI-elements/Card/Card";
 import Input from "../../UI-elements/Input/Input";
-import { useState } from "react";
-import Button from "../../UI-elements/Button/Button";
 import { useSState } from "../../../hooks/useSState";
+import { ProgramState } from "../../../redux-store/programsSlice";
+
+const match = (query: string) => (program: ProgramState) => {
+  // TODO: change to name & description
+  return program.id.toLowerCase().includes(query.toLowerCase());
+};
 
 const ManagePrograms = () => {
   // Get all programs
@@ -39,7 +43,7 @@ const ManagePrograms = () => {
           addClearBtn
         />
         <ul>
-          {inactivePrograms.map((p) => (
+          {inactivePrograms.filter(match(query)).map((p) => (
             <li key={p.id}>{p.id}</li>
           ))}
         </ul>
