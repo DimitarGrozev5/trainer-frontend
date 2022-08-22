@@ -18,12 +18,7 @@ interface Props {
   onAdd: () => void;
 }
 
-const AddWorkoutModal: React.FC<Props> = ({
-  show,
-  id,
-  onCancel,
-  onAdd,
-}) => {
+const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel, onAdd }) => {
   const getter = id ? populateProgram(id) : voidGetter;
   const workout = useAppSelector<TrainingProgram | void>(getter);
 
@@ -42,7 +37,12 @@ const AddWorkoutModal: React.FC<Props> = ({
 
   if (workout) {
     output = (
-      <Modal title={workout.name} show={show} buttons={btns} onClose={onCancel}>
+      <Modal
+        title={"Add " + workout.name}
+        show={show}
+        buttons={btns}
+        onClose={onCancel}
+      >
         {workout.shortDesc}
       </Modal>
     );
