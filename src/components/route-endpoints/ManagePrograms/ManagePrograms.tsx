@@ -49,6 +49,7 @@ const ManagePrograms = () => {
   };
 
   const addProgramHandler = () => {
+    setAddModal(null);
     console.log("Add program");
   };
 
