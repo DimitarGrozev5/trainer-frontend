@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   populateProgram,
   useAppSelector,
@@ -36,12 +36,15 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel, onAdd }) => {
   // Set the output to dummy modal, so an exiting animation will play
   const { name, InitComponent } = workout || {
     name: "",
-    InitComponent: ({ onSubmit }) => <></>,
+    InitComponent: ({ value, onChange }) => <></>,
   };
+
+  // Get state for InitComponent
+  const [initState, setInitState] = useState<Object>({});
 
   return (
     <Modal title={"Add " + name} show={show} buttons={btns} onClose={onCancel}>
-      <InitComponent onSubmit={} />
+      <InitComponent value={initState} onChange={setInitState} />
     </Modal>
   );
 };
