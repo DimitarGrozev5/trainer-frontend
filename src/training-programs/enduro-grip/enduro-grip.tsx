@@ -2,6 +2,7 @@ import { TrainingProgram } from "../data-types";
 import { useForm } from "../../hooks/useForm/useForm";
 import Input from "../../components/UI-elements/Input/Input";
 import { useSState } from "../../hooks/useSState";
+import { useState } from "react";
 
 export const enduroGrip: TrainingProgram = {
   // Basic data
@@ -16,18 +17,26 @@ export const enduroGrip: TrainingProgram = {
 
   // Initializing training program
   InitComponent: ({ value, onChange }) => {
-    const [startToday, setStartToday, { setStateTo: setStartTodayTo }] =
-      useSState(true);
-
-    console.log(startToday);
+    const [startToday, setStartToday] = useState(true);
+    const [startDate, setStartDate] = useState(new Date());
 
     return (
-      <Input
-        label="Start today"
-        type="checkbox"
-        value={startToday}
-        onChange={setStartToday}
-      />
+      <>
+        <Input
+          label="Start today"
+          type="checkbox"
+          value={startToday}
+          onChange={setStartToday}
+        />
+        {/* {!startToday && (
+          <Input
+            label="Select start Date"
+            type="date"
+            value={startDate}
+            onChange={setStartDate}
+          />
+        )} */}
+      </>
     );
   },
   getInitData: (vals) => ({}),
