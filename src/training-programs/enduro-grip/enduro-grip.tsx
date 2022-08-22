@@ -3,6 +3,7 @@ import { useForm } from "../../hooks/useForm/useForm";
 import Input from "../../components/UI-elements/Input/Input";
 import { useSState } from "../../hooks/useSState";
 import { useState } from "react";
+import { useEffect } from "react";
 
 export const enduroGrip: TrainingProgram = {
   // Basic data
@@ -19,6 +20,16 @@ export const enduroGrip: TrainingProgram = {
   InitComponent: ({ value, onChange }) => {
     const [startToday, setStartToday] = useState(true);
     const [startDate, setStartDate] = useState(new Date());
+
+    // Reset startDate to today when startToday is false
+    useEffect(() => {
+      !startToday && setStartDate(new Date());
+    }, [startToday]);
+
+    // Update value when settings change
+    useEffect(() => {
+      value !== startDate && onChange({ startDate });
+    }, [startDate]);
 
     return (
       <>
