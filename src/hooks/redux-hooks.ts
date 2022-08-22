@@ -22,3 +22,5 @@ export const populateProgram = (id: ProgramId) => (state: RootState) => {
     ...programs.get(id),
   } as TrainingProgram;
 };
+
+export const voidGetter = (state: RootState) => {};
