@@ -1,5 +1,4 @@
 import React from "react";
-import { populateProgram, useAppSelector } from "../../../../hooks/redux-hooks";
 import { ProgramId } from "../../../../training-programs/data-types";
 import Button from "../../../UI-elements/Button/Button";
 import Modal from "../../../UI-elements/Modal/Modal";

@@ -14,6 +14,7 @@ import {
 import Button from "../../UI-elements/Button/Button";
 import ViewWorkoutDescModal from "./ViewWorkoutDescModal/ViewWorkoutDescModal";
 import { useSState } from "../../../hooks/useSState";
+import AddWorkoutModal from "./AddWorkoutModal/AddWorkoutModal";
 
 const match = (query: string) => (program: TrainingProgram) => {
   return (
@@ -44,7 +45,11 @@ const ManagePrograms = () => {
 
   const descToAddHandler = () => {
     setDescModal(null);
-    setAddModal(null);
+    descModal && setAddModal(descModal.id);
+  };
+
+  const addProgramHandler = () => {
+    console.log("Add program");
   };
 
   return (
@@ -54,6 +59,12 @@ const ManagePrograms = () => {
         data={descModal}
         onClose={setDescModalTo(null)}
         onAdd={descToAddHandler}
+      />
+      <AddWorkoutModal
+        show={!!addModal}
+        id={addModal}
+        onCancel={setAddModalTo(null)}
+        onAdd={addProgramHandler}
       />
       <Card>
         <h1 className={styles.h1}>Your Programs:</h1>
@@ -90,7 +101,9 @@ const ManagePrograms = () => {
                 >
                   i
                 </Button>
-                <Button circle>+</Button>
+                <Button onClick={setAddModalTo(p.id)} circle>
+                  +
+                </Button>
               </div>
             </li>
           ))}
