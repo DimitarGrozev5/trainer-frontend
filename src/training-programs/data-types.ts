@@ -4,7 +4,8 @@ import React from "react";
 export type ProgramId = "EnduroGrip" | "Q&D";
 
 interface InitProps {
-  onSubmit: (initData: Object) => void;
+  value: Object;
+  onChange: (initData: Object) => void;
 }
 export type InitComponent = React.FC<InitProps>;
 

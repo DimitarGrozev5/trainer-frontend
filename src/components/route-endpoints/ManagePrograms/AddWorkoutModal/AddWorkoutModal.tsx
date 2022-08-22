@@ -34,11 +34,14 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel, onAdd }) => {
   );
 
   // Set the output to dummy modal, so an exiting animation will play
-  const { name, shortDesc } = workout || { name: "", shortDesc: "" };
+  const { name, InitComponent } = workout || {
+    name: "",
+    InitComponent: ({ onSubmit }) => <></>,
+  };
 
   return (
     <Modal title={"Add " + name} show={show} buttons={btns} onClose={onCancel}>
-      {shortDesc}
+      <InitComponent onSubmit={} />
     </Modal>
   );
 };

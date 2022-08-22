@@ -9,6 +9,6 @@ export const enduroGrip: TrainingProgram = {
   longDesc:
     "This training protocol uses hangs between 30s and 60s, always to failure. You will be in pain. You will be able to hang for longer in the end.",
 
-  InitComponent: ({ onSubmit }) => <></>,
+  InitComponent: ({ value, onChange }) => <></>,
   getInitData: (vals) => ({}),
 };
