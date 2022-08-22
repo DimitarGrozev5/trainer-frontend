@@ -5,15 +5,38 @@ import styles from "./Input.module.css";
 import { useTState } from "../../../hooks/useTState";
 
 // Props type definitions
-interface Props {
+// interface Props {
+//   label: string;
+//   type: "text" | "email" | "password";
+//   error?: string;
+//   value: string;
+//   onChange: (val: string) => void;
+//   onBlur?: (val: string) => void;
+//   addClearBtn?: boolean;
+// }
+
+interface CommonProps {
   label: string;
-  type: "text" | "email" | "password";
   error?: string;
-  value: string;
-  onChange: (val: string) => void;
-  onBlur?: (val: string) => void;
-  addClearBtn?: boolean;
 }
+
+type CombinationProps =
+  | {
+      type: "text" | "email";
+      value: string;
+      onChange: (val: string) => void;
+      onBlur?: (val: string) => void;
+      addClearBtn?: boolean;
+    }
+  | {
+      type: "password";
+      value: string;
+      onChange: (val: string) => void;
+      onBlur?: (val: string) => void;
+      addClearBtn?: never;
+    };
+
+type Props = CommonProps & CombinationProps;
 
 const Input: React.FC<Props> = ({
   label,
