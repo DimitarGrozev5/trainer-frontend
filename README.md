@@ -98,6 +98,7 @@ The Component has a couple of properties:
 The **Input** Component has some special behaviours:
 
 - If the provided `type` is `password`, a _show password_ button is added to the input component
+- If you provide a `addClearBtn` prop, the Component will add a *Clear* button to the input
 
 ### LoadingSpinner Component
 
