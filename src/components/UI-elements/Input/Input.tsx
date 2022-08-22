@@ -151,8 +151,9 @@ const Input: React.FC<Props> = ({
       break;
 
     case "checkbox":
+      classNames.push(styles.checkbox);
       inputElement = (
-        <label>
+        <label className={styles.checkbox}>
           <input
             className={classNames.join(" ")}
             type="checkbox"
@@ -172,9 +173,11 @@ const Input: React.FC<Props> = ({
 
   return (
     <div className={`${styles.container} ${invalid ? styles.error : ""}`}>
-      <label className={styles.label} htmlFor={id}>
-        {label}
-      </label>
+      {type !== "checkbox" && (
+        <label className={styles.label} htmlFor={id}>
+          {label}
+        </label>
+      )}
 
       {inputElement}
 
