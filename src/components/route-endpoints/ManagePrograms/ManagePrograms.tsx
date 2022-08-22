@@ -51,11 +51,11 @@ const ManagePrograms = () => {
         <ul className={styles["inactive-programs"]}>
           {inactivePrograms.filter(match(query)).map((p) => (
             <li key={p.id} className={styles["new-program"]}>
-              <div>
+              <div className={styles["new_program__desc"]}>
                 <h2>{p.name}</h2>
                 <p>{p.shortDesc}</p>
               </div>
-              <div>
+              <div className={styles["new_program__actions"]}>
                 <Button circle>i</Button>
                 <Button circle>+</Button>
               </div>

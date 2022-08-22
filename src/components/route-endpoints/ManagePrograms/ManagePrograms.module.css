@@ -19,6 +19,10 @@ li.new-program {
   gap: 0.5rem;
 }
 
-li.new-program h2 {
+.new_program__desc > h2 {
   font-size: 1.1rem;
+}
+
+.new_program__actions {
+  display: flex;
 }
