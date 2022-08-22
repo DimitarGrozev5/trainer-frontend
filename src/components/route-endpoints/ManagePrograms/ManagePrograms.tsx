@@ -7,8 +7,13 @@ import {
 import styles from "./ManagePrograms.module.css";
 import Card from "../../UI-elements/Card/Card";
 import Input from "../../UI-elements/Input/Input";
-import { TrainingProgram } from "../../../training-programs/data-types";
+import {
+  ProgramId,
+  TrainingProgram,
+} from "../../../training-programs/data-types";
 import Button from "../../UI-elements/Button/Button";
+import ViewWorkoutDescModal from "./ViewWorkoutDescModal/ViewWorkoutDescModal";
+import { useSState } from "../../../hooks/useSState";
 
 const match = (query: string) => (program: TrainingProgram) => {
   return (
@@ -27,8 +32,29 @@ const ManagePrograms = () => {
   // Handle a search query
   const [query, setQuery] = useState("");
 
+  // Handle modals
+  const [descModal, setDescModal, { setStateTo: setDescModalTo }] = useSState<{
+    id: ProgramId;
+    title: string;
+    desc: string;
+  } | null>(null);
+
+  const [addModal, setAddModal, { setStateTo: setAddModalTo }] =
+    useSState<ProgramId | null>(null);
+
+  const descToAddHandler = () => {
+    setDescModal(null);
+    setAddModal(null);
+  };
+
   return (
     <>
+      <ViewWorkoutDescModal
+        show={!!descModal}
+        data={descModal}
+        onClose={setDescModalTo(null)}
+        onAdd={descToAddHandler}
+      />
       <Card>
         <h1 className={styles.h1}>Your Programs:</h1>
         <ul>
@@ -54,7 +80,16 @@ const ManagePrograms = () => {
                 <p>{p.shortDesc}</p>
               </div>
               <div className={styles["new_program__actions"]}>
-                <Button circle>i</Button>
+                <Button
+                  onClick={setDescModalTo({
+                    id: p.id,
+                    title: p.name,
+                    desc: p.longDesc,
+                  })}
+                  circle
+                >
+                  i
+                </Button>
                 <Button circle>+</Button>
               </div>
             </li>

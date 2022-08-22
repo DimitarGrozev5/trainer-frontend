@@ -1,7 +1,7 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../redux-store/index";
 import { programs } from "../training-programs";
-import { TrainingProgram } from "../training-programs/data-types";
+import { ProgramId, TrainingProgram } from "../training-programs/data-types";
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
 export const useAppDispatch: () => AppDispatch = useDispatch;
@@ -15,3 +15,10 @@ export const populateProgramsArr = () => (state: RootState) =>
         ...programs.get(id),
       } as TrainingProgram)
   );
+
+export const populateProgram = (id: ProgramId) => (state: RootState) => {
+  return {
+    ...state.programs.byId[id],
+    ...programs.get(id),
+  } as TrainingProgram;
+};

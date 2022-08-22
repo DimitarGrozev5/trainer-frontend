@@ -34,7 +34,7 @@ A _user middleware_ is added to the Redux Store. The middleware handles storing 
 
 ### Programs Slice
 
-The **Programs Slice** contains data about all of the supported programs. Each program has an _id_, an _active_ status and a _data_ property. The `ProgramId` data type contains all valid ids of training programs. If a training program is active, it must have a *data* property, that is an Object.
+The **Programs Slice** contains data about all of the supported programs. Each program has an _id_, an _active_ status and a _data_ property. The `ProgramId` data type contains all valid ids of training programs. If a training program is active, it must have a _data_ property, that is an Object.
 
 ## Routing
 
@@ -98,7 +98,7 @@ The Component has a couple of properties:
 The **Input** Component has some special behaviours:
 
 - If the provided `type` is `password`, a _show password_ button is added to the input component
-- If you provide a `addClearBtn` prop, the Component will add a *Clear* button to the input
+- If you provide a `addClearBtn` prop, the Component will add a _Clear_ button to the input
 
 ### LoadingSpinner Component
 
@@ -174,3 +174,9 @@ The function expects the following parameters
 ### useAuth
 
 The **useAuth** hook check _localStorage_ for user authentication data. It then tries to decode the token, update the global state and if the token is close to expiring it tries to refresh it by sending a refresh request to the backend. The hook uses the `headers` option of `sendRequest`, to manualy set the _Authorization_ header of the request for refresh.
+
+## Special data
+
+### Training Programs
+
+The training programs are a special _data type_ - `TrainingProgram`. Every program has to have a specific set of properties and methods, in order to be able to be called from other parts of the program.
