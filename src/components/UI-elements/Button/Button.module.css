@@ -20,6 +20,9 @@
 .button.stretch {
   width: 100%;
 }
+.button.circle {
+  width: calc(2rem + 2px);
+}
 
 .button:disabled {
   cursor: not-allowed;

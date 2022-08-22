@@ -56,8 +56,8 @@ const ManagePrograms = () => {
                 <p>{p.shortDesc}</p>
               </div>
               <div>
-                <Button>i</Button>
-                <Button>+</Button>
+                <Button circle>i</Button>
+                <Button circle>+</Button>
               </div>
             </li>
           ))}

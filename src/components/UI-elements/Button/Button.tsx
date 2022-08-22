@@ -6,29 +6,33 @@ interface Props {
   children: string;
   to?: string;
   disabled?: boolean;
-  stretch?: boolean;
   accent?: boolean;
   plain?: boolean;
+  stretch?: boolean;
+  circle?: boolean;
   type?: "button" | "submit";
   onClick?: () => void;
 }
 
 const Button: React.FC<Props> = ({
   disabled,
-  accent,
-  stretch,
-  plain,
   to,
+  accent,
+  plain,
+  stretch,
+  circle,
   children,
   onClick,
   type,
 }) => {
   const classNames = [styles.button];
   disabled && classNames.push(styles.disabled);
-  stretch && classNames.push(styles.stretch);
   accent && classNames.push(styles.accent);
   plain && classNames.push(styles.plain);
 
+  stretch && classNames.push(styles.stretch);
+  circle && classNames.push(styles.circle);
+  
   const className = classNames.join(" ");
 
   if (to) {
