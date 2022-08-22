@@ -8,4 +8,7 @@ export const quickDead: TrainingProgram = {
   shortDesc: "The Quick and The Dead",
   longDesc:
     "A kettlebell based training program for improving you strength endurance, anaerobic alactic power and promote mitochondria growth in fast twitch fibers",
+
+  InitComponent: ({ onSubmit }) => <></>,
+  getInitData: (vals) => ({}),
 };
