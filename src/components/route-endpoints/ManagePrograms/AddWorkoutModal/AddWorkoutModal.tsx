@@ -34,26 +34,13 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel, onAdd }) => {
   );
 
   // Set the output to dummy modal, so an exiting animation will play
-  let output = (
-    <Modal title="Add workout" show={show} buttons={btns} onClose={onCancel}>
-      ""
+  const { name, shortDesc } = workout || { name: "", shortDesc: "" };
+
+  return (
+    <Modal title={"Add " + name} show={show} buttons={btns} onClose={onCancel}>
+      {shortDesc}
     </Modal>
   );
-
-  if (workout) {
-    output = (
-      <Modal
-        title={"Add " + workout.name}
-        show={show}
-        buttons={btns}
-        onClose={onCancel}
-      >
-        {workout.shortDesc}
-      </Modal>
-    );
-  }
-
-  return output;
 };
 
 export default AddWorkoutModal;
