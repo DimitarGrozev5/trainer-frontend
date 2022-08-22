@@ -36,6 +36,7 @@ const ManagePrograms = () => {
           type="text"
           value={query}
           onChange={setQuery}
+          addClearBtn
         />
         <ul>
           {inactivePrograms.map((p) => (

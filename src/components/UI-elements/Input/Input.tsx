@@ -12,6 +12,7 @@ interface Props {
   value: string;
   onChange: (val: string) => void;
   onBlur?: (val: string) => void;
+  addClearBtn?: boolean;
 }
 
 const Input: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const Input: React.FC<Props> = ({
   value,
   onChange,
   onBlur,
+  addClearBtn,
 }) => {
   // Generate Id for accessibility purposes
   const id = `$label{}_${nanoid()}`;
@@ -54,6 +56,30 @@ const Input: React.FC<Props> = ({
       onBlur={blurHandler}
     />
   );
+
+  // If the user needs a clear button
+  if (addClearBtn) {
+    inputElement = (
+      <div className={styles.password}>
+        <input
+          className={classNames.join(" ")}
+          type={type}
+          id={id}
+          name={id}
+          value={value}
+          onChange={changeHandler}
+          onBlur={blurHandler}
+        />
+        <button
+          type="button"
+          onClick={onChange.bind(null, "")}
+          className={styles.password}
+        >
+          {value && "Clear"}
+        </button>
+      </div>
+    );
+  }
 
   // Create Component for password input
   if (type === "password") {
