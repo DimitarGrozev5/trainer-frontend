@@ -11,7 +11,6 @@ import { TrainingProgram } from "../../../training-programs/data-types";
 import Button from "../../UI-elements/Button/Button";
 
 const match = (query: string) => (program: TrainingProgram) => {
-  // TODO: change to name & description
   return (
     program.name.toLowerCase().includes(query.toLowerCase()) ||
     program.shortDesc.toLowerCase().includes(query.toLowerCase()) ||
@@ -20,7 +19,6 @@ const match = (query: string) => (program: TrainingProgram) => {
 };
 
 const ManagePrograms = () => {
-  // TODO: map redux state to Programs functions
   // Get all programs
   const allPrograms = useAppSelector(populateProgramsArr());
   const activePrograms = allPrograms.filter((pr) => pr.active);
