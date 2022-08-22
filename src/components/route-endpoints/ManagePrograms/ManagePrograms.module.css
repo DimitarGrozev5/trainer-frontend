@@ -1,3 +1,24 @@
+.new-programs {
+  gap: 0.5rem;
+}
+
 .h1 {
   font-size: 1.2rem;
+}
+
+.inactive-programs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+li.new-program {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+li.new-program h2 {
+  font-size: 1.1rem;
 }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   populateProgramsArr,
   useAppSelector,
@@ -6,12 +7,16 @@ import {
 import styles from "./ManagePrograms.module.css";
 import Card from "../../UI-elements/Card/Card";
 import Input from "../../UI-elements/Input/Input";
-import { useSState } from "../../../hooks/useSState";
-import { ProgramState } from "../../../redux-store/programsSlice";
+import { TrainingProgram } from "../../../training-programs/data-types";
+import Button from "../../UI-elements/Button/Button";
 
-const match = (query: string) => (program: ProgramState) => {
+const match = (query: string) => (program: TrainingProgram) => {
   // TODO: change to name & description
-  return program.id.toLowerCase().includes(query.toLowerCase());
+  return (
+    program.name.toLowerCase().includes(query.toLowerCase()) ||
+    program.shortDesc.toLowerCase().includes(query.toLowerCase()) ||
+    program.longDesc.toLowerCase().includes(query.toLowerCase())
+  );
 };
 
 const ManagePrograms = () => {
@@ -22,7 +27,7 @@ const ManagePrograms = () => {
   const inactivePrograms = allPrograms.filter((pr) => !pr.active);
 
   // Handle a search query
-  const [query, setQuery, { setStateTo: setQueryTo }] = useSState("");
+  const [query, setQuery] = useState("");
 
   return (
     <>
@@ -34,7 +39,7 @@ const ManagePrograms = () => {
           ))}
         </ul>
       </Card>
-      <Card>
+      <Card className={styles["new-programs"]}>
         <h1 className={styles.h1}>Add a new program:</h1>
         <Input
           label="Quick find:"
@@ -43,9 +48,18 @@ const ManagePrograms = () => {
           onChange={setQuery}
           addClearBtn
         />
-        <ul>
+        <ul className={styles["inactive-programs"]}>
           {inactivePrograms.filter(match(query)).map((p) => (
-            <li key={p.id}>{p.id}</li>
+            <li key={p.id} className={styles["new-program"]}>
+              <div>
+                <h2>{p.name}</h2>
+                <p>{p.shortDesc}</p>
+              </div>
+              <div>
+                <Button>i</Button>
+                <Button>+</Button>
+              </div>
+            </li>
           ))}
         </ul>
       </Card>
