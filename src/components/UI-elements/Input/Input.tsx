@@ -1,19 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { nanoid } from "nanoid";
 
 import styles from "./Input.module.css";
 import { useTState } from "../../../hooks/useTState";
-
-// Props type definitions
-// interface Props {
-//   label: string;
-//   type: "text" | "email" | "password";
-//   error?: string;
-//   value: string;
-//   onChange: (val: string) => void;
-//   onBlur?: (val: string) => void;
-//   addClearBtn?: boolean;
-// }
+import DateInput from "./DateInput/DateInput";
 
 interface CommonProps {
   label: string;
@@ -39,6 +29,13 @@ type CombinationProps =
       type: "checkbox";
       value: boolean;
       onChange: (val: boolean) => void;
+      onBlur?: never;
+      addClearBtn?: never;
+    }
+  | {
+      type: "date";
+      value: Date;
+      onChange: (val: Date) => void;
       onBlur?: never;
       addClearBtn?: never;
     };
@@ -165,6 +162,10 @@ const Input: React.FC<Props> = ({
           {label}
         </label>
       );
+      break;
+
+    case "date":
+      inputElement = <DateInput value={value} onChange={onChange} />;
       break;
 
     default:

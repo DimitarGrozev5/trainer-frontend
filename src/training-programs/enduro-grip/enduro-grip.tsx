@@ -39,14 +39,20 @@ export const enduroGrip: TrainingProgram = {
           value={startToday}
           onChange={setStartToday}
         />
-        {/* {!startToday && (
+        <Input
+          label="Start today"
+          type="text"
+          value={"startToday"}
+          onChange={(a: string) => {}}
+        />
+        {!startToday && (
           <Input
-            label="Select start Date"
+            label="Select start Date:"
             type="date"
             value={startDate}
             onChange={setStartDate}
           />
-        )} */}
+        )}
       </>
     );
   },

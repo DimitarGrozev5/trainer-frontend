@@ -18,6 +18,11 @@ export const getMonthName = (date: Date) => {
   ][date.getMonth()];
 };
 
+// Function to add leading zeroes
+export const lz = (num: number, length: number = 2): string => {
+  return (100000 + num).toString().substring(6 - length);
+};
+
 // Check if two dates are the same, ignoring hours, minutes, seconds and miliseconds
 export const sameDate = (date1: Date, date2: Date): boolean => {
   return (

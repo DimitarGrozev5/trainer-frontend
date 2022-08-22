@@ -1,0 +1,7 @@
+.date-input {
+  display: inline-block;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--dark-7);
+  border-radius: 0.5rem;
+}
