@@ -2,6 +2,7 @@ import { TrainingProgram } from "../data-types";
 
 export const enduroGrip: TrainingProgram = {
   id: "EnduroGrip",
+  active: false,
 
   name: "EnduroGrip",
   shortDesc: "Slow twitch endurance protocol for the grip",
