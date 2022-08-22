@@ -15,6 +15,7 @@ const match = (query: string) => (program: ProgramState) => {
 };
 
 const ManagePrograms = () => {
+  // TODO: map redux state to Programs functions
   // Get all programs
   const allPrograms = useAppSelector(populateProgramsArr());
   const activePrograms = allPrograms.filter((pr) => pr.active);
