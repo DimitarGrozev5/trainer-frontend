@@ -1,8 +1,7 @@
 import { createSlice, Middleware } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
-// All valid programIds will be stored here
-export type ProgramId = "ETK" | "Q&D";
+import { ProgramId } from "../training-programs/data-types";
 
 // Type of individual program
 export type ProgramState =
