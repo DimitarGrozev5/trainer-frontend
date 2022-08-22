@@ -29,10 +29,10 @@ const programsSlice = createSlice({
 
   initialState: {
     byId: {
-      ETK: { id: "ETK", active: false, data: null },
+      EnduroGrip: { id: "EnduroGrip", active: false, data: null },
       "Q&D": { id: "Q&D", active: false, data: null },
     },
-    arr: ["ETK", "Q&D"],
+    arr: ["EnduroGrip", "Q&D"],
   } as ProgramsState,
 
   reducers: {

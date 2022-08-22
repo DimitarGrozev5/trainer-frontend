@@ -1,5 +1,5 @@
 // All valid programIds will be stored here
-export type ProgramId = "ETK" | "Q&D";
+export type ProgramId = "EnduroGrip" | "Q&D";
 
 export interface TrainingProgram {
   id: ProgramId;
