@@ -34,6 +34,13 @@ type CombinationProps =
       onChange: (val: string) => void;
       onBlur?: (val: string) => void;
       addClearBtn?: never;
+    }
+  | {
+      type: "checkbox";
+      value: boolean;
+      onChange: (val: boolean) => void;
+      onBlur?: never;
+      addClearBtn?: never;
     };
 
 type Props = CommonProps & CombinationProps;
@@ -62,28 +69,28 @@ const Input: React.FC<Props> = ({
   invalid && classNames.push(styles.error);
 
   // Create handlers for onChange and onBlur
-  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
-    onChange(e.currentTarget.value);
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    switch (type) {
+      case "text":
+      case "email":
+      case "password":
+        return onChange(e.currentTarget.value);
+
+      case "checkbox":
+        return onChange(!value);
+
+      default:
+        break;
+    }
+  };
   const blurHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     onBlur && onBlur(e.currentTarget.value);
 
-  // Create Component for text or email Input
-  let inputElement = (
-    <input
-      className={classNames.join(" ")}
-      type={type}
-      id={id}
-      name={id}
-      value={value}
-      onChange={changeHandler}
-      onBlur={blurHandler}
-    />
-  );
-
-  // If the user needs a clear button
-  if (addClearBtn) {
-    inputElement = (
-      <div className={styles.password}>
+  let inputElement = <></>;
+  switch (type) {
+    case "text":
+    case "password":
+      inputElement = (
         <input
           className={classNames.join(" ")}
           type={type}
@@ -93,39 +100,74 @@ const Input: React.FC<Props> = ({
           onChange={changeHandler}
           onBlur={blurHandler}
         />
-        <button
-          type="button"
-          onClick={onChange.bind(null, "")}
-          className={styles.password}
-        >
-          {value && "Clear"}
-        </button>
-      </div>
-    );
-  }
+      );
 
-  // Create Component for password input
-  if (type === "password") {
-    inputElement = (
-      <div className={styles.password}>
-        <input
-          className={classNames.join(" ")}
-          type={showPassword ? "text" : "password"}
-          id={id}
-          name={id}
-          value={value}
-          onChange={changeHandler}
-          onBlur={blurHandler}
-        />
-        <button
-          type="button"
-          onClick={toggleShowPassword}
-          className={styles.password}
-        >
-          {showPassword ? "Hide" : "Show"}
-        </button>
-      </div>
-    );
+      // If the user needs a clear button
+      if (addClearBtn) {
+        inputElement = (
+          <div className={styles.password}>
+            <input
+              className={classNames.join(" ")}
+              type={type}
+              id={id}
+              name={id}
+              value={value}
+              onChange={changeHandler}
+              onBlur={blurHandler}
+            />
+            <button
+              type="button"
+              onClick={onChange.bind(null, "")}
+              className={styles.password}
+            >
+              {value && "Clear"}
+            </button>
+          </div>
+        );
+      }
+      break;
+
+    case "password":
+      inputElement = (
+        <div className={styles.password}>
+          <input
+            className={classNames.join(" ")}
+            type={showPassword ? "text" : "password"}
+            id={id}
+            name={id}
+            value={value}
+            onChange={changeHandler}
+            onBlur={blurHandler}
+          />
+          <button
+            type="button"
+            onClick={toggleShowPassword}
+            className={styles.password}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+      );
+      break;
+
+    case "checkbox":
+      inputElement = (
+        <label>
+          <input
+            className={classNames.join(" ")}
+            type="checkbox"
+            id={id}
+            name={id}
+            checked={value}
+            onChange={changeHandler}
+          />
+          {label}
+        </label>
+      );
+      break;
+
+    default:
+      break;
   }
 
   return (
