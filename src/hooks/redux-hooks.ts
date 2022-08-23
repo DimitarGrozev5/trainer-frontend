@@ -8,13 +8,12 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const populateProgramsArr = () => (state: RootState) =>
-  state.programs.arr.map(
-    (id) =>
-      ({
-        ...state.programs.byId[id],
-        ...programs.get(id),
-      } as TrainingProgram)
-  );
+  state.programs.arr.map((id) => {
+    return {
+      ...programs.get(id),
+      ...state.programs.byId[id],
+    } as TrainingProgram;
+  });
 
 export const populateProgram = (id: ProgramId) => (state: RootState) => {
   return {
