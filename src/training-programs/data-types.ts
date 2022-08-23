@@ -3,9 +3,7 @@ import React from "react";
 // All valid programIds will be stored here
 export type ProgramId = "EnduroGrip" | "Q&D";
 
-// export interface EnduroGripInit {
-//   startDate: Date;
-// }
+export type WorkoutFrequency = "weekly" | "regular"
 
 export interface InitProps {
   value: any;
