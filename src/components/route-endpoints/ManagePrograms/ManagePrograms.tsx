@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   populateProgramsArr,
+  useAppDispatch,
   useAppSelector,
 } from "../../../hooks/redux-hooks";
 
@@ -15,6 +16,8 @@ import Button from "../../UI-elements/Button/Button";
 import ViewWorkoutDescModal from "./ViewWorkoutDescModal/ViewWorkoutDescModal";
 import { useSState } from "../../../hooks/useSState";
 import AddWorkoutModal from "./AddWorkoutModal/AddWorkoutModal";
+import ConfirmModal from "../../UI-elements/Modal/ConfirmModal";
+import { programsActions } from "../../../redux-store/programsSlice";
 
 const match = (query: string) => (program: TrainingProgram) => {
   return (
@@ -25,6 +28,8 @@ const match = (query: string) => (program: TrainingProgram) => {
 };
 
 const ManagePrograms = () => {
+  const dispatch = useAppDispatch();
+
   // Get all programs and divide them in active and inactive
   const allPrograms = useAppSelector(populateProgramsArr());
   const activePrograms = allPrograms.filter((pr) => pr.active);
@@ -49,6 +54,28 @@ const ManagePrograms = () => {
     descModal && setAddModal(descModal.id);
   };
 
+  const [
+    showConfirmModal,
+    setShowConfirmModal,
+    { setStateTo: setShowConfirmModalTo },
+  ] = useSState<ProgramId | false>(false);
+
+  const removeWorkout =
+    (confirmed: boolean, id: ProgramId | undefined = undefined) =>
+    () => {
+      if (confirmed) {
+        setShowConfirmModal(false);
+        showConfirmModal &&
+          dispatch(
+            programsActions.updateProgramsState([
+              { id: showConfirmModal, active: false, data: null },
+            ])
+          );
+      } else {
+        id && setShowConfirmModal(id);
+      }
+    };
+
   return (
     <>
       <ViewWorkoutDescModal
@@ -61,6 +88,12 @@ const ManagePrograms = () => {
         show={!!addModal}
         id={addModal}
         onCancel={setAddModalTo(null)}
+      />
+      <ConfirmModal
+        show={!!showConfirmModal}
+        onClose={setShowConfirmModalTo(false)}
+        onConfirm={removeWorkout(true)}
+        message="Are tou sure you want to remove this program?"
       />
 
       <Card>
@@ -84,7 +117,7 @@ const ManagePrograms = () => {
                 >
                   i
                 </Button>
-                <Button onClick={setAddModalTo(p.id)} circle>
+                <Button onClick={removeWorkout(false, p.id)} circle>
                   X
                 </Button>
               </div>

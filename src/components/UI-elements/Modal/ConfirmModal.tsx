@@ -9,7 +9,7 @@ interface Props {
   onConfirm: () => void;
 }
 
-const ErrorModal: React.FC<Props> = ({ show, message, onClose, onConfirm }) => {
+const ConfirmModal: React.FC<Props> = ({ show, message, onClose, onConfirm }) => {
   return (
     <Modal
       show={show}
@@ -31,4 +31,4 @@ const ErrorModal: React.FC<Props> = ({ show, message, onClose, onConfirm }) => {
   );
 };
 
-export default ErrorModal;
+export default ConfirmModal;
