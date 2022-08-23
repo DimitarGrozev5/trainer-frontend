@@ -62,7 +62,7 @@ When the **h1** title element drops out of view, the **h3** title changes it's `
 
 The **BaseTemplate** header is designed to display either the **h1** title, or the **h3** title. The transition between them is made to look nice, but when the user stops scrolling, the page has to snap to one of the two positions. This is achieved using the _header_ element's `scrollTop` property. An event handler is added to the `touchEnd` Event, so when the user stops scrolling the page will autoscroll to one of the two positions.
 
-The Template looks at the current _url path_ and changes the _h1_ and _h3_ title text to corespond to the _path_.
+The Template looks at the current _url path_ and changes the _h1_ and _h3_ title text to corespond to the _path_. Ther is a map that maps the current _path_ to a _title text_.
 
 ### HomePage Component
 
@@ -87,18 +87,21 @@ The Component has a couple of key properties:
 
 ### Input Component
 
-The **Input** Component is used to abastract awat common Controlled Input functionality and to provide uniform style for all inputs. It Renders a _label_, an _input_ and if provided an _error message_.  
-The Component has a couple of properties:
+The **Input** Component is used to abastract awat common Controlled Input functionality and to provide uniform style for all inputs. It Renders a _label_, an _input_ and if provided an _error message_. The Component displays _polymorphic_ behavior. It renders different components, depending on the **_type_** prop.  
+The Component has a couple of common props:
 
 - `label` - text for the _label_ element
 - `type` - type for the _input_ element
 - `error` - error message. If an empty string is provided, no error message is shown.
 - `value` and `onChange` - props for creating a controlled component
 
-The **Input** Component has some special behaviours:
+The **Input** Component has some special behaviours, depending on the provided **_type_**:
 
-- If the provided `type` is `password`, a _show password_ button is added to the input component
-- If you provide a `addClearBtn` prop, the Component will add a _Clear_ button to the input
+- `type= text` & `type= email` - render a _text_ or _email_ input, and optionaly render a `Clear` button, to clear the input value
+- `type= password`, render a password field with a _Show/Hide_ field on the end, to change the field type between `password` and `text`
+- `type= checkbox`, render a checkbox
+- `type= date`, render a build in date picker
+- `type= radio`, render radio buttons
 
 ### LoadingSpinner Component
 
@@ -122,10 +125,6 @@ The Component expects the following props:
 - `onClose` - A function that change the `show` state to false
 
 The **Modal** utilizes a library `react-transition-group`, used for animating it. The library is used here for it's simplicity over `framer-motion`.
-
-### ErrorModal Component
-
-The **ErrorModal** Component internaly uses a **Modal**, but abstracts away the common props, used in all Error messages - the title and the buttons.
 
 ### ContextMenu Component
 
@@ -180,3 +179,7 @@ The **useAuth** hook check _localStorage_ for user authentication data. It then 
 ### Training Programs
 
 The training programs are a special _data type_ - `TrainingProgram`. Every program has to have a specific set of properties and methods, in order to be able to be called from other parts of the program.
+
+- `id`, `active` - properties needed for the Redux store
+- `name`, `shortDesc`, `longDesc` - properties that describe the training program
+- `InitComponent` - component used to gather data for initializing the training program
