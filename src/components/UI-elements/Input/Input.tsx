@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 import styles from "./Input.module.css";
 import { useTState } from "../../../hooks/useTState";
 import DateInput from "./DateInput/DateInput";
+import CheckBoxInput from "./CheckBoxInput/CheckBoxInput";
 
 interface CommonProps {
   label: string;
@@ -72,9 +73,6 @@ const Input: React.FC<Props> = ({
       case "email":
       case "password":
         return onChange(e.currentTarget.value);
-
-      case "checkbox":
-        return onChange(!value);
 
       default:
         break;
@@ -148,19 +146,8 @@ const Input: React.FC<Props> = ({
       break;
 
     case "checkbox":
-      classNames.push(styles.checkbox);
       inputElement = (
-        <label className={styles.checkbox}>
-          <input
-            className={classNames.join(" ")}
-            type="checkbox"
-            id={id}
-            name={id}
-            checked={value}
-            onChange={changeHandler}
-          />
-          {label}
-        </label>
+        <CheckBoxInput label={label} value={value} onChange={onChange} />
       );
       break;
 
