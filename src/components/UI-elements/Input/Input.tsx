@@ -5,6 +5,9 @@ import styles from "./Input.module.css";
 import { useTState } from "../../../hooks/useTState";
 import DateInput from "./DateInput/DateInput";
 import CheckBoxInput from "./CheckBoxInput/CheckBoxInput";
+import RadioButtonInput, {
+  RadioOption,
+} from "./RadioButtonInput/RadioButtonInput";
 
 interface CommonProps {
   label: string;
@@ -17,6 +20,7 @@ type CombinationProps =
       value: string;
       onChange: (val: string) => void;
       onBlur?: (val: string) => void;
+      options?: never;
       addClearBtn?: boolean;
     }
   | {
@@ -24,6 +28,7 @@ type CombinationProps =
       value: string;
       onChange: (val: string) => void;
       onBlur?: (val: string) => void;
+      options?: never;
       addClearBtn?: never;
     }
   | {
@@ -31,6 +36,7 @@ type CombinationProps =
       value: boolean;
       onChange: (val: boolean) => void;
       onBlur?: never;
+      options?: never;
       addClearBtn?: never;
     }
   | {
@@ -38,6 +44,15 @@ type CombinationProps =
       value: Date;
       onChange: (val: Date) => void;
       onBlur?: never;
+      options?: never;
+      addClearBtn?: never;
+    }
+  | {
+      type: "radio";
+      value: string;
+      onChange: (val: string) => () => void;
+      onBlur?: never;
+      options: RadioOption[];
       addClearBtn?: never;
     };
 
@@ -50,6 +65,7 @@ const Input: React.FC<Props> = ({
   value,
   onChange,
   onBlur,
+  options,
   addClearBtn,
 }) => {
   // Generate Id for accessibility purposes
@@ -153,6 +169,12 @@ const Input: React.FC<Props> = ({
 
     case "date":
       inputElement = <DateInput value={value} onChange={onChange} />;
+      break;
+
+    case "radio":
+      inputElement = (
+        <RadioButtonInput value={value} onChange={onChange} options={options} />
+      );
       break;
 
     default:
