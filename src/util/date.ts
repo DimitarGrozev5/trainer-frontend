@@ -18,6 +18,9 @@ export const getMonthName = (date: Date) => {
   ][date.getMonth()];
 };
 
+export const getWeekDayShortName = (day: number) =>
+  ["Mon", "Thu", "Thi", "Wed", "Fri", "Sat", "Sun"][day % 7];
+
 // Function to add leading zeroes
 export const lz = (num: number, length: number = 2): string => {
   return (100000 + num).toString().substring(6 - length);
