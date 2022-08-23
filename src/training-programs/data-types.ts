@@ -24,5 +24,5 @@ export interface TrainingProgram {
   longDesc: string;
 
   InitComponent: InitComponent;
-  getInitData: (initVals: Object) => Object;
+  getInitData: (initVals: any) => any;
 }

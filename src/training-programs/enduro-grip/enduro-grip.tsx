@@ -204,5 +204,5 @@ export const enduroGrip: TrainingProgram = {
       </>
     );
   },
-  getInitData: (vals: Object) => ({}),
+  getInitData: (vals: any) => vals,
 };

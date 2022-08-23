@@ -15,28 +15,32 @@ interface Props {
   show: boolean;
   id: ProgramId | null;
   onCancel: () => void;
-  onAdd: () => void;
-  initState: any;
-  setInitState: (val: any) => void;
 }
 
-const AddWorkoutModal: React.FC<Props> = ({
-  show,
-  id,
-  onCancel,
-  onAdd,
-  initState,
-  setInitState,
-}) => {
+const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
   const getter = id ? populateProgram(id) : voidGetter;
   const workout = useAppSelector<TrainingProgram | void>(getter);
+
+  // Get state for InitComponent
+  const [initState, setInitState] = useState<any>({});
+
+
+  const addProgramHandler = () => {
+    // onCancel()
+    console.log("Add program");
+
+    // Get InitState
+    const initData = initState;
+
+    // Update Redux
+  };
 
   const btns = (
     <>
       <Button onClick={onCancel} plain>
         Cancel
       </Button>
-      <Button onClick={onAdd} plain>
+      <Button onClick={addProgramHandler} plain>
         Add
       </Button>
     </>
