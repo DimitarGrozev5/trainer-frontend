@@ -43,6 +43,9 @@ const ManagePrograms = () => {
   const [addModal, setAddModal, { setStateTo: setAddModalTo }] =
     useSState<ProgramId | null>(null);
 
+  // Get state for InitComponent
+  const [initState, setInitState] = useState<any>({});
+
   const descToAddHandler = () => {
     setDescModal(null);
     descModal && setAddModal(descModal.id);
@@ -52,6 +55,9 @@ const ManagePrograms = () => {
     setAddModal(null);
     console.log("Add program");
     // Get InitState
+    console.log(initState);
+    
+
     // Update Redux
   };
 
@@ -68,6 +74,8 @@ const ManagePrograms = () => {
         id={addModal}
         onCancel={setAddModalTo(null)}
         onAdd={addProgramHandler}
+        initState={initState}
+        setInitState={setInitState}
       />
       <Card>
         <h1 className={styles.h1}>Your Programs:</h1>

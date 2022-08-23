@@ -24,6 +24,11 @@ export const enduroGrip: TrainingProgram = {
     const [startDate, setStartDate] = useState(new Date());
     const [weekly, , { setStateTo: setWeeklyTo }] = useSState<string>("weekly");
 
+    // Run on first try to init the data
+    useEffect(() => {
+      onChange({ startDate, weekly });
+    }, []);
+
     // Reset startDate to today when startToday is false
     useEffect(() => {
       !startToday && setStartDate(new Date());
@@ -31,8 +36,10 @@ export const enduroGrip: TrainingProgram = {
 
     // Update value when settings change
     useEffect(() => {
-      isEqual(value.startDate, startDate) && onChange({ startDate });
-    }, [startDate, value.startDate, onChange]);
+      if (!isEqual(value.startDate, startDate) || value.weekly !== weekly) {
+        onChange({ startDate, weekly });
+      }
+    }, [startDate, weekly, value.startDate, value.weekly, onChange]);
 
     // Visuals for Schedule
     const scheduleVisual =

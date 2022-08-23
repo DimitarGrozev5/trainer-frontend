@@ -16,9 +16,18 @@ interface Props {
   id: ProgramId | null;
   onCancel: () => void;
   onAdd: () => void;
+  initState: any;
+  setInitState: (val: any) => void;
 }
 
-const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel, onAdd }) => {
+const AddWorkoutModal: React.FC<Props> = ({
+  show,
+  id,
+  onCancel,
+  onAdd,
+  initState,
+  setInitState,
+}) => {
   const getter = id ? populateProgram(id) : voidGetter;
   const workout = useAppSelector<TrainingProgram | void>(getter);
 
@@ -38,9 +47,6 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel, onAdd }) => {
     name: "",
     InitComponent: ({ value, onChange }) => <></>,
   };
-
-  // Get state for InitComponent
-  const [initState, setInitState] = useState<Object>({});
 
   return (
     <Modal title={"Add " + name} show={show} buttons={btns} onClose={onCancel}>
