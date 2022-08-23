@@ -19,6 +19,7 @@ export const enduroGrip: TrainingProgram = {
   InitComponent: ({ value, onChange }) => {
     const [startToday, setStartToday] = useState(true);
     const [startDate, setStartDate] = useState(new Date());
+    // const [weekly, setWeekly] = useState(true);
 
     // Reset startDate to today when startToday is false
     useEffect(() => {
@@ -32,6 +33,11 @@ export const enduroGrip: TrainingProgram = {
 
     return (
       <>
+        <div>
+          Test how long you can hang from a bar. If you can hang for longer than
+          a minute, add weight so you'll be able to have sets between 30s and
+          60s.
+        </div>
         <Input
           label="Start today"
           type="checkbox"
