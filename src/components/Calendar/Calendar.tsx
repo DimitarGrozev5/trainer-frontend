@@ -1,5 +1,6 @@
 import { add } from "date-fns";
 import React, { useState } from "react";
+import { ScheduleService } from "../../hooks/ScheduleService/training-schedule-types";
 import { getMonthName } from "../../util/date";
 import styles from "./Calendar.module.css";
 import CalendarHeader from "./CalendarHeader/CalendarHeader";
@@ -10,12 +11,16 @@ import CalendarYearView from "./YearView/CalendarYearView";
 interface Props {
   selectedDate: Date;
   onChangeDate: (num: Date) => void;
-  // scheduleService: ScheduleService;
+  scheduleService?: ScheduleService;
 }
 
 type CalendarView = "month" | "year" | "dacade";
 
-const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
+const Calendar: React.FC<Props> = ({
+  selectedDate,
+  onChangeDate,
+  scheduleService,
+}) => {
   // Calendar view mode
   const [viewMode, setViewMode] = useState<CalendarView>("month");
 
