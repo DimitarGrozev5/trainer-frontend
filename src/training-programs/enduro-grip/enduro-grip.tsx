@@ -23,12 +23,12 @@ export const enduroGrip: TrainingProgram = {
     const [startToday, setStartToday] = useState(true);
     const [startDate, setStartDate] = useState(new Date());
     const [schedule, , { setStateTo: setScheduleTo }] = useSState<number[]>([
-      3, 4,
+      4, 3,
     ]);
 
     // Run on first try to init the data
     useEffect(() => {
-      onChange({ startDate, weekly: schedule });
+      onChange({ startDate, schedule: schedule });
     }, []);
 
     // Reset startDate to today when startToday is false
@@ -38,10 +38,10 @@ export const enduroGrip: TrainingProgram = {
 
     // Update value when settings change
     useEffect(() => {
-      if (!isEqual(value.startDate, startDate) || value.weekly !== schedule) {
-        onChange({ startDate, weekly: schedule });
+      if (!isEqual(value.startDate, startDate) || value.schedule !== schedule) {
+        onChange({ startDate, schedule: schedule });
       }
-    }, [startDate, schedule, value.startDate, value.weekly, onChange]);
+    }, [startDate, schedule, value.startDate, value.schedule, onChange]);
 
     return (
       <>
@@ -70,7 +70,7 @@ export const enduroGrip: TrainingProgram = {
           options={[
             {
               label: "Two times a week",
-              value: [3, 4],
+              value: [4, 3],
             },
             {
               label: "Every four days",
@@ -83,5 +83,20 @@ export const enduroGrip: TrainingProgram = {
         <ScheduleVisual pattern={schedule} />
       </>
     );
+  },
+  getInitData: ({
+    startDate,
+    schedule,
+  }: {
+    startDate: Date;
+    schedule: number[];
+  }) => {
+    return {
+      nextSessionDate: startDate,
+      nextSessionType: 0, // 0 - Hard; 1 - Light
+      lastHeavySessionSets: 9,
+      schedule,
+      currentScheduleIndex: 0,
+    };
   },
 };

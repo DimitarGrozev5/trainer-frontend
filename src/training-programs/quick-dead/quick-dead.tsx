@@ -10,4 +10,5 @@ export const quickDead: TrainingProgram = {
     "A kettlebell based training program for improving you strength endurance, anaerobic alactic power and promote mitochondria growth in fast twitch fibers",
 
   InitComponent: ({ value, onChange }) => <></>,
+  getInitData: (val) => val,
 };

@@ -3,7 +3,7 @@ import React from "react";
 // All valid programIds will be stored here
 export type ProgramId = "EnduroGrip" | "Q&D";
 
-export type WorkoutFrequency = "weekly" | "regular"
+export type WorkoutFrequency = "weekly" | "regular";
 
 export interface InitProps {
   value: any;
@@ -11,7 +11,6 @@ export interface InitProps {
 }
 
 export type InitComponent = React.FC<InitProps>;
-
 
 export interface TrainingProgram {
   id: ProgramId;
@@ -22,4 +21,5 @@ export interface TrainingProgram {
   longDesc: string;
 
   InitComponent: InitComponent;
+  getInitData: (val: any) => any;
 }
