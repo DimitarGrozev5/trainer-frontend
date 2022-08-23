@@ -9,6 +9,7 @@ interface Props {
     id: ProgramId;
     title: string;
     desc: string;
+    new: boolean;
   } | null;
   onClose: () => void;
   onAdd: () => void;
@@ -22,11 +23,18 @@ const ViewWorkoutDescModal: React.FC<Props> = ({
 }) => {
   const title = data ? data.title : "";
   const desc = data ? data.desc : "";
+  const newPr = data ? data.new : "";
 
   const btns = (
     <>
-      <Button onClick={onClose} plain>Close</Button>
-      <Button onClick={onAdd} plain>Add</Button>
+      <Button onClick={onClose} plain>
+        Close
+      </Button>
+      {newPr && (
+        <Button onClick={onAdd} plain>
+          Add
+        </Button>
+      )}
     </>
   );
   return (

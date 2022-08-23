@@ -25,7 +25,7 @@ const match = (query: string) => (program: TrainingProgram) => {
 };
 
 const ManagePrograms = () => {
-  // Get all programs
+  // Get all programs and divide them in active and inactive
   const allPrograms = useAppSelector(populateProgramsArr());
   const activePrograms = allPrograms.filter((pr) => pr.active);
   const inactivePrograms = allPrograms.filter((pr) => !pr.active);
@@ -33,11 +33,12 @@ const ManagePrograms = () => {
   // Handle a search query
   const [query, setQuery] = useState("");
 
-  // Handle modals
+  // Handle modals visibility
   const [descModal, setDescModal, { setStateTo: setDescModalTo }] = useSState<{
     id: ProgramId;
     title: string;
     desc: string;
+    new: boolean;
   } | null>(null);
 
   const [addModal, setAddModal, { setStateTo: setAddModalTo }] =
@@ -61,11 +62,33 @@ const ManagePrograms = () => {
         id={addModal}
         onCancel={setAddModalTo(null)}
       />
+
       <Card>
         <h1 className={styles.h1}>Your Programs:</h1>
         <ul>
           {activePrograms.map((p) => (
-            <li key={p.id}>{p.id}</li>
+            <li key={p.id} className={styles["new-program"]}>
+              <div className={styles["new_program__desc"]}>
+                <h2>{p.name}</h2>
+                <p>{p.shortDesc}</p>
+              </div>
+              <div className={styles["new_program__actions"]}>
+                <Button
+                  onClick={setDescModalTo({
+                    id: p.id,
+                    title: p.name,
+                    desc: p.longDesc,
+                    new: false,
+                  })}
+                  circle
+                >
+                  i
+                </Button>
+                <Button onClick={setAddModalTo(p.id)} circle>
+                  X
+                </Button>
+              </div>
+            </li>
           ))}
         </ul>
       </Card>
@@ -91,6 +114,7 @@ const ManagePrograms = () => {
                     id: p.id,
                     title: p.name,
                     desc: p.longDesc,
+                    new: true,
                   })}
                   circle
                 >
