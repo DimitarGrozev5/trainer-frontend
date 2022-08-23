@@ -1,7 +1,26 @@
 .date-input {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+
   padding: 0.5rem;
   font-size: 1rem;
   border: 1px solid var(--dark-7);
   border-radius: 0.5rem;
+}
+
+.date-input > input {
+  width: 1.8rem;
+  padding: 0.3rem 0.1rem;
+  font-size: 1rem;
+  text-align: center;
+
+  border: none;
+}
+
+.date-input > input.date-input__year {
+  width: 3rem;
+}
+
+.date-input__button {
+  justify-self: flex-end;
 }
