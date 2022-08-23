@@ -60,6 +60,7 @@ const ManagePrograms = () => {
     { setStateTo: setShowConfirmModalTo },
   ] = useSState<ProgramId | false>(false);
 
+  // Remove Workout handler
   const removeWorkout =
     (confirmed: boolean, id: ProgramId | undefined = undefined) =>
     () => {
