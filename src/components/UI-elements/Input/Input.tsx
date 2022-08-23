@@ -49,8 +49,8 @@ type CombinationProps =
     }
   | {
       type: "radio";
-      value: string;
-      onChange: (val: string) => () => void;
+      value: any;
+      onChange: (val: any) => () => void;
       onBlur?: never;
       options: RadioOption[];
       addClearBtn?: never;
