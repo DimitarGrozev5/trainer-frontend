@@ -8,7 +8,7 @@ export type ProgramState =
   | {
       id: ProgramId;
       active: true;
-      data: Object;
+      data: any;
     }
   | {
       id: ProgramId;

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+
 import {
   populateProgram,
+  useAppDispatch,
   useAppSelector,
   voidGetter,
 } from "../../../../hooks/redux-hooks";
@@ -10,6 +12,10 @@ import {
 } from "../../../../training-programs/data-types";
 import Button from "../../../UI-elements/Button/Button";
 import Modal from "../../../UI-elements/Modal/Modal";
+import {
+  programsActions,
+  ProgramState,
+} from "../../../../redux-store/programsSlice";
 
 interface Props {
   show: boolean;
@@ -18,21 +24,28 @@ interface Props {
 }
 
 const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
+  const dispatch = useAppDispatch();
+
   const getter = id ? populateProgram(id) : voidGetter;
   const workout = useAppSelector<TrainingProgram | void>(getter);
 
   // Get state for InitComponent
   const [initState, setInitState] = useState<any>({});
 
-
   const addProgramHandler = () => {
-    // onCancel()
-    console.log("Add program");
+    if (workout) {
+      // Get InitState
+      const initData = workout.getInitData(initState);
 
-    // Get InitState
-    const initData = initState;
+      // Update Redux
+      dispatch(
+        programsActions.updateProgramsState([
+          { id: workout.id, active: true, data: initData } as ProgramState,
+        ])
+      );
+    }
 
-    // Update Redux
+    onCancel();
   };
 
   const btns = (
