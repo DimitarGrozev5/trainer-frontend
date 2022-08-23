@@ -34,13 +34,10 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
 
   const addProgramHandler = () => {
     if (workout) {
-      // Get InitState
-      const initData = workout.getInitData(initState);
-
       // Update Redux
       dispatch(
         programsActions.updateProgramsState([
-          { id: workout.id, active: true, data: initData } as ProgramState,
+          { id: workout.id, active: true, data: initState } as ProgramState,
         ])
       );
     }
