@@ -7,12 +7,14 @@ export type ProgramId = "EnduroGrip" | "Q&D";
 //   startDate: Date;
 // }
 
-interface InitProps {
+export interface InitProps {
   value: any;
   onChange: (initData: any) => void;
 }
+
 export type InitComponent = React.FC<InitProps>;
-0;
+
+
 export interface TrainingProgram {
   id: ProgramId;
   active: boolean;
