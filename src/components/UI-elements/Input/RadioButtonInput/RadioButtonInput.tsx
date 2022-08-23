@@ -23,7 +23,7 @@ const RadioButtonInput: React.FC<Props> = ({ value, onChange, options }) => {
             className={styles["radio__button"]}
             type="radio"
             checked={
-              Array.isArray(value) ? value === op.value : eqArr(value, op.value)
+              Array.isArray(value) ? eqArr(value, op.value) : value === op.value
             }
             onChange={onChange(op.value)}
           />
