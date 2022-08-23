@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { isEqual } from "date-fns";
 import { useSState } from "../../hooks/useSState";
 
-import styles from "./Styles.module.css";
 import ScheduleVisual from "../common-components/ScheduleVisual";
 
 export const enduroGrip: TrainingProgram = {
@@ -23,11 +22,13 @@ export const enduroGrip: TrainingProgram = {
   InitComponent: ({ value, onChange }) => {
     const [startToday, setStartToday] = useState(true);
     const [startDate, setStartDate] = useState(new Date());
-    const [weekly, , { setStateTo: setWeeklyTo }] = useSState<string>("weekly");
+    const [schedule, , { setStateTo: setScheduleTo }] = useSState<number[]>([
+      3, 4,
+    ]);
 
     // Run on first try to init the data
     useEffect(() => {
-      onChange({ startDate, weekly });
+      onChange({ startDate, weekly: schedule });
     }, []);
 
     // Reset startDate to today when startToday is false
@@ -37,132 +38,10 @@ export const enduroGrip: TrainingProgram = {
 
     // Update value when settings change
     useEffect(() => {
-      if (!isEqual(value.startDate, startDate) || value.weekly !== weekly) {
-        onChange({ startDate, weekly });
+      if (!isEqual(value.startDate, startDate) || value.weekly !== schedule) {
+        onChange({ startDate, weekly: schedule });
       }
-    }, [startDate, weekly, value.startDate, value.weekly, onChange]);
-
-    // Visuals for Schedule
-    // const scheduleVisual =
-    //   weekly === "weekly" ? (
-    //     <div className={styles.week}>
-    //       <div>
-    //         <span>Mon</span>
-    //         <span className={styles.workout}>1</span>
-    //       </div>
-    //       <div>
-    //         <span>Thu</span>
-    //         <span>2</span>
-    //       </div>
-    //       <div>
-    //         <span>Thi</span>
-    //         <span>3</span>
-    //       </div>
-    //       <div>
-    //         <span>Wed</span>
-    //         <span className={styles.workout}>4</span>
-    //       </div>
-    //       <div>
-    //         <span>Fri</span>
-    //         <span>5</span>
-    //       </div>
-    //       <div className={styles.weekend}>
-    //         <span>Sat</span>
-    //         <span>6</span>
-    //       </div>
-    //       <div className={styles.weekend}>
-    //         <span>Sun</span>
-    //         <span>7</span>
-    //       </div>
-    //       <div>
-    //         <span>Mon</span>
-    //         <span className={styles.workout}>8</span>
-    //       </div>
-    //       <div>
-    //         <span>Thu</span>
-    //         <span>9</span>
-    //       </div>
-    //       <div>
-    //         <span>Thi</span>
-    //         <span>10</span>
-    //       </div>
-    //       <div>
-    //         <span>Wed</span>
-    //         <span className={styles.workout}>11</span>
-    //       </div>
-    //       <div>
-    //         <span>Fri</span>
-    //         <span>12</span>
-    //       </div>
-    //       <div className={styles.weekend}>
-    //         <span>Sat</span>
-    //         <span>13</span>
-    //       </div>
-    //       <div className={styles.weekend}>
-    //         <span>Sun</span>
-    //         <span>14</span>
-    //       </div>
-    //     </div>
-    //   ) : (
-    //     <div className={styles.week}>
-    //       <div>
-    //         <span>Mon</span>
-    //         <span className={styles.workout}>1</span>
-    //       </div>
-    //       <div>
-    //         <span>Thu</span>
-    //         <span>2</span>
-    //       </div>
-    //       <div>
-    //         <span>Thi</span>
-    //         <span>3</span>
-    //       </div>
-    //       <div>
-    //         <span>Wed</span>
-    //         <span>4</span>
-    //       </div>
-    //       <div>
-    //         <span>Fri</span>
-    //         <span className={styles.workout}>5</span>
-    //       </div>
-    //       <div className={styles.weekend}>
-    //         <span>Sat</span>
-    //         <span>6</span>
-    //       </div>
-    //       <div className={styles.weekend}>
-    //         <span>Sun</span>
-    //         <span>7</span>
-    //       </div>
-    //       <div>
-    //         <span>Mon</span>
-    //         <span>8</span>
-    //       </div>
-    //       <div>
-    //         <span>Thu</span>
-    //         <span className={styles.workout}>9</span>
-    //       </div>
-    //       <div>
-    //         <span>Thi</span>
-    //         <span>10</span>
-    //       </div>
-    //       <div>
-    //         <span>Wed</span>
-    //         <span>11</span>
-    //       </div>
-    //       <div>
-    //         <span>Fri</span>
-    //         <span>12</span>
-    //       </div>
-    //       <div className={styles.weekend}>
-    //         <span>Sat</span>
-    //         <span className={styles.workout}>13</span>
-    //       </div>
-    //       <div className={styles.weekend}>
-    //         <span>Sun</span>
-    //         <span>14</span>
-    //       </div>
-    //     </div>
-    //   );
+    }, [startDate, schedule, value.startDate, value.weekly, onChange]);
 
     return (
       <>
@@ -191,17 +70,17 @@ export const enduroGrip: TrainingProgram = {
           options={[
             {
               label: "Two times a week",
-              value: "weekly",
+              value: [3, 4],
             },
             {
               label: "Every four days",
-              value: "regular",
+              value: [4],
             },
           ]}
-          value={weekly}
-          onChange={setWeeklyTo}
+          value={schedule}
+          onChange={setScheduleTo}
         />
-        <ScheduleVisual weekly={weekly} frequency={4} pattern={[0, 3]} />
+        <ScheduleVisual pattern={schedule} />
       </>
     );
   },
