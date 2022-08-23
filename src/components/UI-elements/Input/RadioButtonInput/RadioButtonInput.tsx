@@ -1,15 +1,16 @@
 import React from "react";
+import { eqArr } from "../../../../util/array";
 
 import styles from "./RadioButtonInput.module.css";
 
 export interface RadioOption {
   label: string;
-  value: string;
+  value: any;
 }
 
 interface Props {
-  value: string;
-  onChange: (val: string) => () => void;
+  value: any;
+  onChange: (val: any) => () => void;
   options: RadioOption[];
 }
 
@@ -21,7 +22,7 @@ const RadioButtonInput: React.FC<Props> = ({ value, onChange, options }) => {
           <input
             className={styles["radio__button"]}
             type="radio"
-            checked={value === op.value}
+            checked={eqArr(value, op.value)}
             onChange={onChange(op.value)}
           />
           {op.label}
