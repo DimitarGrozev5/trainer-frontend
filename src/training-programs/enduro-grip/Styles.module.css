@@ -1,0 +1,22 @@
+.week {
+  display: flex;
+  justify-content: space-between;
+}
+
+.week > div {
+  width: 7.14%;
+  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+
+  text-align: center;
+}
+
+.weekend {
+  color: var(--acc-red);
+}
+
+.workout {
+  border: 1px solid var(--acc-green);
+  border-radius: 10000px;
+}
