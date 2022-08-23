@@ -17,3 +17,14 @@ export const addToArr = <T>(arr: T[], toSize: number, contents: T): T[] => {
   const a = getArr(dt, contents);
   return [...arr, ...a];
 };
+
+// Function that copares two arrays and makes sure every element is equal between them
+// Will fail if elements are objects
+export const eqArr = <T>(a: T[], b: T[]): boolean => {
+  return (
+    Array.isArray(a) &&
+    Array.isArray(b) &&
+    a.length === b.length &&
+    a.every((val, index) => val === b[index])
+  );
+};
