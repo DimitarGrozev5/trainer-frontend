@@ -1,9 +1,8 @@
-import { TrainingProgram } from "../data-types";
-import { useForm } from "../../hooks/useForm/useForm";
+import { InitComponent, TrainingProgram } from "../data-types";
 import Input from "../../components/UI-elements/Input/Input";
-import { useSState } from "../../hooks/useSState";
 import { useState } from "react";
 import { useEffect } from "react";
+import { isEqual } from "date-fns";
 
 export const enduroGrip: TrainingProgram = {
   // Basic data
@@ -28,8 +27,8 @@ export const enduroGrip: TrainingProgram = {
 
     // Update value when settings change
     useEffect(() => {
-      value !== startDate && onChange({ startDate });
-    }, [startDate]);
+      isEqual(value.startDate, startDate) && onChange({ startDate });
+    }, [startDate, value.startDate, onChange]);
 
     return (
       <>
@@ -38,12 +37,6 @@ export const enduroGrip: TrainingProgram = {
           type="checkbox"
           value={startToday}
           onChange={setStartToday}
-        />
-        <Input
-          label="Start today"
-          type="text"
-          value={"startToday"}
-          onChange={(a: string) => {}}
         />
         {!startToday && (
           <Input
@@ -56,5 +49,5 @@ export const enduroGrip: TrainingProgram = {
       </>
     );
   },
-  getInitData: (vals) => ({}),
+  getInitData: (vals: Object) => ({}),
 };

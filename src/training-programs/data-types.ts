@@ -3,12 +3,16 @@ import React from "react";
 // All valid programIds will be stored here
 export type ProgramId = "EnduroGrip" | "Q&D";
 
+// export interface EnduroGripInit {
+//   startDate: Date;
+// }
+
 interface InitProps {
-  value: Object;
-  onChange: (initData: Object) => void;
+  value: any;
+  onChange: (initData: any) => void;
 }
 export type InitComponent = React.FC<InitProps>;
-
+0;
 export interface TrainingProgram {
   id: ProgramId;
   active: boolean;
