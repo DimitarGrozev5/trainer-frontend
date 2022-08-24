@@ -26,6 +26,37 @@ export const lz = (num: number, length: number = 2): string => {
   return (100000 + num).toString().substring(6 - length);
 };
 
+// Remove hours minutes and seconds from Date
+export const roundDate = (
+  date: Date,
+  to: "miliseconds" | "seconds" | "minutes" | "hours" = "hours"
+): Date => {
+  const d = new Date(date);
+
+  switch (to) {
+    // @ts-ignore
+    case "hours": // eslint-disable-line
+      d.setHours(0);
+
+    // @ts-ignore
+    case "minutes": // eslint-disable-line
+      d.setMinutes(0);
+
+    // @ts-ignore
+    case "seconds": // eslint-disable-line
+      d.setSeconds(0);
+
+    // @ts-ignore
+    case "miliseconds": // eslint-disable-line
+      d.setMilliseconds(0);
+
+    default: // eslint-disable-line
+      break;
+  }
+
+  return d;
+};
+
 // Check if two dates are the same, ignoring hours, minutes, seconds and miliseconds
 export const sameDate = (date1: Date, date2: Date): boolean => {
   return (
