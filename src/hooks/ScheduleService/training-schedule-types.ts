@@ -1,7 +1,13 @@
-export interface ScheduledSession {
+export class ScheduledSession {
   name: string;
   shortDesc: string;
-  params: any;
+  sessionDesc: any;
+
+  constructor(name: string, shortDesc: string, sessionDesc: any) {
+    this.name = name;
+    this.shortDesc = shortDesc;
+    this.sessionDesc = sessionDesc;
+  }
 }
 
 export type DailySchedule = ScheduledSession[];

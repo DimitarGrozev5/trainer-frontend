@@ -22,6 +22,10 @@ export interface TrainingProgram {
   InitComponent: InitComponent;
   getInitData: (val: any) => any;
 
-  getNextState: (state: any, achieved: any) => any;
+  getNextState: (
+    state: { sessionDate: Date } & any,
+    achieved: any,
+    forceProgess: boolean
+  ) => { sessionDate: Date } & any;
   getDescFromState: (state: any) => string;
 }

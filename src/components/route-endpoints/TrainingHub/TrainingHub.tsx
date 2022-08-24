@@ -1,3 +1,4 @@
+import { add } from "date-fns";
 import { useState } from "react";
 import { useScheduleService } from "../../../hooks/ScheduleService/useScheduleService";
 import Calendar from "../../Calendar/Calendar";
@@ -9,6 +10,8 @@ const TrainingHub = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const scheduleService = useScheduleService();
+
+  console.log(scheduleService(new Date(), add(new Date(), { days: 10 })));
 
   return (
     <>

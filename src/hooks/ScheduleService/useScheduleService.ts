@@ -1,4 +1,4 @@
-import { compareAsc } from "date-fns";
+import { add, compareAsc, differenceInDays } from "date-fns";
 import { useCallback } from "react";
 import { roundDate } from "../../util/date";
 import { populateProgramsArr, useAppSelector } from "../redux-hooks";
@@ -39,11 +39,43 @@ export const useScheduleService = (): ScheduleService => {
         ed = now;
       }
 
+      // End date must be no less than 6 months away
+      if (differenceInDays(now, endDate) > 183) {
+        endDate = add(now, { days: 183 });
+      }
+
       //// Remove hours minutes and seconds from start and end dates
       sd = roundDate(sd);
       ed = roundDate(ed);
 
       //// Loop from start to end date and populate them
+      activePrograms.forEach((program) => {
+        let currentState = program.state;
+        let currentDate = currentState.sessionDate;
+
+        while (compareAsc(currentDate, ed) <= 0) {
+          if (compareAsc(currentDate, sd) < 0) {
+            const session = new ScheduledSession(
+              program.name,
+              program.shortDesc,
+              program.getDescFromState(currentState)
+            );
+
+            let arr: DailySchedule | undefined = [session];
+            if (schedule.has(currentDate)) {
+              const item = schedule.get(currentDate);
+              arr = item && [...item, session];
+            }
+            arr && schedule.set(currentDate, arr);
+          }
+          // console.log(currentDate);
+          // console.log(ed);
+          // console.log(compareAsc(currentDate, ed));
+
+          currentState = program.getNextState(currentState, 0, true);
+          currentDate = currentState.sessionDate;
+        }
+      });
 
       return schedule;
     },
