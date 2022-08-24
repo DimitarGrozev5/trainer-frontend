@@ -2,15 +2,20 @@ import { TrainingProgram } from "../data-types";
 import Input from "../../components/UI-elements/Input/Input";
 import { useState } from "react";
 import { useEffect } from "react";
-import { isEqual } from "date-fns";
+import { add, isEqual } from "date-fns";
 import { useSState } from "../../hooks/useSState";
 
 import ScheduleVisual from "../common-components/ScheduleVisual";
+import { CircularArray } from "../../util/array";
+import { roundDate } from "../../util/date";
+
+const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
 export const enduroGrip: TrainingProgram = {
   // Basic data
   id: "EnduroGrip",
   active: false,
+  state: {},
 
   // Metadata
   name: "EnduroGrip",
@@ -92,11 +97,63 @@ export const enduroGrip: TrainingProgram = {
     schedule: number[];
   }) => {
     return {
-      nextSessionDate: startDate,
-      nextSessionType: 0, // 0 - Hard; 1 - Light
-      lastHeavySessionSets: 9,
+      sessionDate: startDate,
+      sessionIndex: 0,
+      lastHeavySessionAchieved: 9,
       schedule,
       currentScheduleIndex: 0,
     };
   },
+
+  getNextState: (prevState: any, achieved: any) => {
+    const {
+      sessionIndex,
+      lastHeavySessionAchieved,
+      schedule,
+      currentScheduleIndex,
+    } = prevState;
+
+    const trainingPlan = new CircularArray(trainingRotation, sessionIndex);
+
+    const schedulePlan = new CircularArray<number>(
+      schedule,
+      currentScheduleIndex
+    );
+
+    const nextSessionDate = roundDate(
+      add(new Date(), { days: schedulePlan.i(0) })
+    );
+    const nextScheduleIndex = schedulePlan.getIndex(+1);
+
+    let nextSessionIndex = sessionIndex;
+    let heavySessionAchieved = achieved;
+
+    // If the session was heavy always move to the next session and record the achieved result
+    if (sessionIndex % 2 === 0) {
+      nextSessionIndex = trainingPlan.getIndex(+1);
+      heavySessionAchieved = achieved;
+    }
+
+    // If the session was light decide wheter to move to the next session or the previous and don't record the achieved result
+    else {
+      heavySessionAchieved = lastHeavySessionAchieved;
+
+      // If the last heavy session the user achieved the required number of sets, progress
+      if (lastHeavySessionAchieved === trainingPlan.i(-1)) {
+        nextSessionIndex = trainingPlan.getIndex(+1);
+      } else {
+        nextSessionIndex = trainingPlan.getIndex(-1);
+      }
+    }
+
+    return {
+      sessionDate: nextSessionDate,
+      sessionIndex: nextSessionIndex,
+      lastHeavySessionAchieved: heavySessionAchieved,
+      schedule,
+      currentScheduleIndex: nextScheduleIndex,
+    };
+  },
+  getDescFromState: (state: any) =>
+    `Do x${trainingRotation[state.sessionIndex]} sets to failure`,
 };

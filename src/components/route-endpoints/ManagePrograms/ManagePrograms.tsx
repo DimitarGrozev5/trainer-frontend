@@ -69,7 +69,7 @@ const ManagePrograms = () => {
         showConfirmModal &&
           dispatch(
             programsActions.updateProgramsState([
-              { id: showConfirmModal, active: false, data: null },
+              { id: showConfirmModal, active: false, state: null },
             ])
           );
       } else {

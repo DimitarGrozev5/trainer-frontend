@@ -40,7 +40,7 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
       // Update Redux
       dispatch(
         programsActions.updateProgramsState([
-          { id: workout.id, active: true, data: initData } as ProgramState,
+          { id: workout.id, active: true, state: initData } as ProgramState,
         ])
       );
     }

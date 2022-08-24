@@ -3,6 +3,7 @@ import { TrainingProgram } from "../data-types";
 export const quickDead: TrainingProgram = {
   id: "Q&D",
   active: false,
+  state: {},
 
   name: "Q&D",
   shortDesc: "The Quick and The Dead",

@@ -13,6 +13,7 @@ export type InitComponent = React.FC<InitProps>;
 export interface TrainingProgram {
   id: ProgramId;
   active: boolean;
+  state: any;
 
   name: string;
   shortDesc: string;

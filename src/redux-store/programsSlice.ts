@@ -8,12 +8,12 @@ export type ProgramState =
   | {
       id: ProgramId;
       active: true;
-      data: any;
+      state: any;
     }
   | {
       id: ProgramId;
       active: false;
-      data: null;
+      state: null;
     };
 
 // Redux type
@@ -29,8 +29,8 @@ const programsSlice = createSlice({
 
   initialState: {
     byId: {
-      EnduroGrip: { id: "EnduroGrip", active: false, data: null },
-      "Q&D": { id: "Q&D", active: false, data: null },
+      EnduroGrip: { id: "EnduroGrip", active: false, state: null },
+      "Q&D": { id: "Q&D", active: false, state: null },
     },
     arr: ["EnduroGrip", "Q&D"],
   } as ProgramsState,
