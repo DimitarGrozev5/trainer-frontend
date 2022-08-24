@@ -54,7 +54,7 @@ export const useScheduleService = (): ScheduleService => {
         let currentDate = currentState.sessionDate;
 
         while (compareAsc(currentDate, ed) <= 0) {
-          if (compareAsc(currentDate, sd) < 0) {
+          if (compareAsc(currentDate, ed) < 0) {
             const session = new ScheduledSession(
               program.name,
               program.shortDesc,

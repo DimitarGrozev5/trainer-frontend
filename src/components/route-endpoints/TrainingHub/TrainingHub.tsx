@@ -11,8 +11,6 @@ const TrainingHub = () => {
 
   const scheduleService = useScheduleService();
 
-  console.log(scheduleService(new Date(), add(new Date(), { days: 10 })));
-
   return (
     <>
       <Card className={styles.calendar}>
