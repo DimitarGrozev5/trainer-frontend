@@ -129,6 +129,7 @@ export const enduroGrip: TrainingProgram = {
     const nextSessionDate = roundDate(
       add(fromDate, { days: schedulePlan.i(0) })
     );
+
     const nextScheduleIndex = schedulePlan.getIndex(+1);
 
     let nextSessionIndex = sessionIndex;

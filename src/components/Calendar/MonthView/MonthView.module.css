@@ -5,15 +5,19 @@ table.calendar {
   border-spacing: 0px;
 }
 
-.calendar th {
-  padding: 0.2rem;
-}
-
 .calendar td,
 .calendar th {
+  /* Border is set to white for removing a bug in the visualization of selected months */
   border: 1px solid var(--light-1);
   width: 14.28571428%;
   text-align: center;
+
+  position: relative;
+}
+
+.calendar th {
+  padding: 0.2rem;
+  text-align: left;
 }
 
 td.other-month {

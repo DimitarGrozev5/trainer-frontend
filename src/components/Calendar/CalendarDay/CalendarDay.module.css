@@ -1,0 +1,16 @@
+.day {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+.day > header {
+  text-align: left;
+}
+
+.day > section {
+  font-size: 0.6rem;
+  overflow: hidden;
+}

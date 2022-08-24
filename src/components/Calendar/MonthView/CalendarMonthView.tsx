@@ -4,6 +4,7 @@ import {
   ScheduleService,
 } from "../../../hooks/ScheduleService/training-schedule-types";
 import { getMonthArr, sameDate, sameMonth } from "../../../util/date";
+import CalendarDay from "../CalendarDay/CalendarDay";
 import styles from "./MonthView.module.css";
 
 interface Props {
@@ -72,13 +73,7 @@ const CalendarMonthView: React.FC<Props> = ({
                 className={setStyles(day, targetDate, new Date(), selectedDate)}
                 onClick={setSelectedDate.bind(null, day)}
               >
-                <>
-                  {day.getDate()}
-                  {schedule &&
-                    schedule
-                      .get(day.getTime())
-                      ?.map((t, i) => <p key={i}>{t.name}</p>)}
-                </>
+                <CalendarDay date={day} schedule={schedule} />
               </td>
             ))}
           </tr>

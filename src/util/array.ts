@@ -38,7 +38,7 @@ export class CircularArray<T> {
     if (!arr.length) {
       throw new Error("array is empty");
     }
-    this.arr = [...arr.slice(startingIndex), ...arr.slice(0, startingIndex)];
+    this.arr = [...arr];
     this.index = startingIndex;
   }
 
