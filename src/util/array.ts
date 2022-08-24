@@ -28,3 +28,45 @@ export const eqArr = <T>(a: T[], b: T[]): boolean => {
     a.every((val, index) => val === b[index])
   );
 };
+
+// Datatype to rotate around an array
+export class CircularArray<T> {
+  arr: T[];
+  index: number;
+
+  constructor(arr: T[], startingIndex: number) {
+    if (!arr.length) {
+      throw new Error("array is empty");
+    }
+    this.arr = [...arr.slice(startingIndex), ...arr.slice(0, startingIndex)];
+    this.index = startingIndex;
+  }
+
+  // Get the current element and mutate the array to push it to the back
+  next(): T {
+    const first = this.arr[this.index];
+    this.index = (this.index + 1) % this.arr.length;
+
+    return first;
+  }
+
+  // Get an item, relative to the current index
+  i(relIndex: number): T {
+    let i = this.getIndex(relIndex);
+
+    return this.arr[i];
+  }
+
+  // Get the absolute index, relative to the current
+  getIndex(relIndex: number): number {
+    let i = this.index + relIndex;
+
+    if (relIndex < 0) {
+      while (i < 0) {
+        i += this.arr.length;
+      }
+    }
+
+    return i % this.arr.length;
+  }
+}
