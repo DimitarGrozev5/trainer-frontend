@@ -11,4 +11,7 @@ export const quickDead: TrainingProgram = {
 
   InitComponent: ({ value, onChange }) => <></>,
   getInitData: (val) => val,
+
+  getNextState: (val: any) => val,
+  getDescFromState: (val: any) => "Do stuff",
 };

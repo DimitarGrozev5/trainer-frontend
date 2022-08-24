@@ -3,8 +3,6 @@ import React from "react";
 // All valid programIds will be stored here
 export type ProgramId = "EnduroGrip" | "Q&D";
 
-export type WorkoutFrequency = "weekly" | "regular";
-
 export interface InitProps {
   value: any;
   onChange: (initData: any) => void;
@@ -22,4 +20,7 @@ export interface TrainingProgram {
 
   InitComponent: InitComponent;
   getInitData: (val: any) => any;
+
+  getNextState: (state: any, achieved: any) => any;
+  getDescFromState: (state: any) => string;
 }
