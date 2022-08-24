@@ -52,6 +52,7 @@ const Calendar: React.FC<Props> = ({
           targetDate={targetDate}
           selectedDate={selectedDate}
           setSelectedDate={onChangeDate}
+          scheduleService={scheduleService}
         />
       );
       break;

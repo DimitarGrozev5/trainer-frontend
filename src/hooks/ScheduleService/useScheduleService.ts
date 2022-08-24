@@ -16,7 +16,7 @@ export const useScheduleService = (): ScheduleService => {
 
   const scheduleService = useCallback(
     (startDate: Date, endDate: Date) => {
-      const schedule = new Map<Date, DailySchedule>();
+      const schedule = new Map<number, DailySchedule>();
 
       const now = new Date();
 
@@ -51,7 +51,7 @@ export const useScheduleService = (): ScheduleService => {
       //// Loop from start to end date and populate them
       activePrograms.forEach((program) => {
         let currentState = program.state;
-        let currentDate = currentState.sessionDate;
+        let currentDate: Date = currentState.sessionDate;
 
         while (compareAsc(currentDate, ed) <= 0) {
           if (compareAsc(currentDate, ed) < 0) {
@@ -62,11 +62,11 @@ export const useScheduleService = (): ScheduleService => {
             );
 
             let arr: DailySchedule | undefined = [session];
-            if (schedule.has(currentDate)) {
-              const item = schedule.get(currentDate);
+            if (schedule.has(currentDate.getTime())) {
+              const item = schedule.get(currentDate.getTime());
               arr = item && [...item, session];
             }
-            arr && schedule.set(currentDate, arr);
+            arr && schedule.set(currentDate.getTime(), arr);
           }
           // console.log(currentDate);
           // console.log(ed);

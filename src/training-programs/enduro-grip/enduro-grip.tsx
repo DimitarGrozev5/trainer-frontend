@@ -26,7 +26,7 @@ export const enduroGrip: TrainingProgram = {
   // Initializing training program
   InitComponent: ({ value, onChange }) => {
     const [startToday, setStartToday] = useState(true);
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(roundDate(new Date()));
     const [schedule, , { setStateTo: setScheduleTo }] = useSState<number[]>([
       4, 3,
     ]);
@@ -38,7 +38,7 @@ export const enduroGrip: TrainingProgram = {
 
     // Reset startDate to today when startToday is false
     useEffect(() => {
-      !startToday && setStartDate(new Date());
+      !startToday && setStartDate(roundDate(new Date()));
     }, [startToday]);
 
     // Update value when settings change

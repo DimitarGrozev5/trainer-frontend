@@ -1,4 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  DailySchedule,
+  ScheduleService,
+} from "../../../hooks/ScheduleService/training-schedule-types";
 import { getMonthArr, sameDate, sameMonth } from "../../../util/date";
 import styles from "./MonthView.module.css";
 
@@ -6,6 +10,7 @@ interface Props {
   targetDate: Date;
   selectedDate: Date;
   setSelectedDate: (d: Date) => void;
+  scheduleService?: ScheduleService;
 }
 
 // Function to set the style of a Calendar day
@@ -29,9 +34,21 @@ const CalendarMonthView: React.FC<Props> = ({
   targetDate,
   selectedDate,
   setSelectedDate,
+  scheduleService,
 }) => {
   // Get the days of the month
   const month: Date[][] = useMemo(() => getMonthArr(targetDate), [targetDate]);
+
+  // Get tarining schedule from service
+  const [schedule, setSchedule] = useState<null | Map<number, DailySchedule>>(
+    null
+  );
+  useEffect(() => {
+    if (scheduleService) {
+      const sc = scheduleService(month[0][0], month[5][6]);
+      setSchedule(sc);
+    }
+  }, [scheduleService, month]);
 
   return (
     <table className={styles["calendar"]}>
@@ -55,7 +72,13 @@ const CalendarMonthView: React.FC<Props> = ({
                 className={setStyles(day, targetDate, new Date(), selectedDate)}
                 onClick={setSelectedDate.bind(null, day)}
               >
-                {day.getDate()}
+                <>
+                  {day.getDate()}
+                  {schedule &&
+                    schedule
+                      .get(day.getTime())
+                      ?.map((t, i) => <p key={i}>{t.name}</p>)}
+                </>
               </td>
             ))}
           </tr>

@@ -15,4 +15,4 @@ export type DailySchedule = ScheduledSession[];
 export type ScheduleService = (
   startDate: Date,
   endDate: Date
-) => Map<Date, DailySchedule>;
+) => Map<number, DailySchedule>;
