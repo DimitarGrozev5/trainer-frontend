@@ -20,7 +20,9 @@ const TrainingHub = () => {
           scheduleService={scheduleService}
         />
       </Card>
-      <Card className={styles.today}>Today</Card>
+      <Card className={styles.today}>
+        <h1>Today:</h1>
+      </Card>
     </>
   );
 };
