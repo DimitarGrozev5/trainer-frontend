@@ -1,9 +1,6 @@
 import { compareAsc } from "date-fns";
 import { useState } from "react";
-import {
-  populateProgramsArr,
-  useAppSelector,
-} from "../../../hooks/redux-hooks";
+import { useAppSelector } from "../../../hooks/redux-hooks";
 import { useScheduleService } from "../../../hooks/ScheduleService/useScheduleService";
 import { roundDate } from "../../../util/date";
 import Calendar from "../../Calendar/Calendar";

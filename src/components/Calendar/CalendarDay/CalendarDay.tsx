@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  DailySchedule,
-  ScheduleService,
-} from "../../../hooks/ScheduleService/training-schedule-types";
+import { ScheduleService } from "../../../hooks/ScheduleService/training-schedule-types";
 
 import styles from "./CalendarDay.module.css";
 

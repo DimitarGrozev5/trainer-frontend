@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { ProgramId } from "../../training-programs/data-types";
-import { populateProgramsArr, useAppSelector } from "../redux-hooks";
+import { useAppSelector } from "../redux-hooks";
 import { ScheduledSession } from "./training-schedule-types";
 
 export const ScheduleCacheContext = createContext<
