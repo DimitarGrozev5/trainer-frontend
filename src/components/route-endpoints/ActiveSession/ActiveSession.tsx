@@ -1,14 +1,21 @@
 import { useParams } from "react-router-dom";
 import { populateProgram, useAppSelector } from "../../../hooks/redux-hooks";
-import { ProgramId } from "../../../training-programs/data-types";
+import {
+  ProgramId,
+  SessionComponent,
+} from "../../../training-programs/data-types";
 
 const ActiveSession = () => {
-  // const programId = useParams().programId;
+  const programId = useParams().programId as ProgramId;
 
-  // const selector = programId ? populateProgram(programId) : () => null;
+  const program = useAppSelector(populateProgram(programId));
 
-  // const program = useAppSelector(selector);
-  return <div>test</div>;
+  let Component: SessionComponent = () => <></>;
+  if (program && program.SessionComponent) {
+    Component = program.SessionComponent;
+  }
+
+  return <Component program={program} />;
 };
 
 export default ActiveSession;
