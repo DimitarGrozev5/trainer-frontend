@@ -9,14 +9,14 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const populateProgramsArr =
-  (option: boolean | null = null) =>
+  (filter: boolean | null = null) =>
   (state: RootState) => {
     // Filter programs based on option
     // True - active
     // False - !active
-    if (option !== null) {
+    if (typeof filter === "boolean") {
       return state.programs.arr.flatMap((id) => {
-        return state.programs.byId[id].active === option
+        return state.programs.byId[id].active === filter
           ? ({
               ...programs.get(id),
               ...state.programs.byId[id],
@@ -24,6 +24,7 @@ export const populateProgramsArr =
           : [];
       });
     }
+
     return state.programs.arr.map((id) => {
       return {
         ...programs.get(id),
@@ -31,6 +32,13 @@ export const populateProgramsArr =
       } as TrainingProgram;
     });
   };
+export const populateProgramsState = (state: ProgramsState) =>
+  state.arr.map((id) => {
+    return {
+      ...programs.get(id),
+      ...state.byId[id],
+    } as TrainingProgram;
+  });
 
 export const populateProgram = (id: ProgramId) => (state: RootState) => {
   return {

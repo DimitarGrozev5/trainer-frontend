@@ -17,7 +17,7 @@ export type ProgramState =
     };
 
 // Redux type
-type ProgramsState = {
+export type ProgramsState = {
   byId: {
     [programId in ProgramId]: ProgramState;
   };

@@ -1,7 +1,6 @@
-import { useCallback, useContext, useEffect, useRef } from "react";
-import { ProgramId } from "../../training-programs/data-types";
+import { useCallback, useContext } from "react";
 import { last } from "../../util/array";
-import { populateProgramsArr, useAppSelector } from "../redux-hooks";
+import { populateProgramsState, useAppSelector } from "../redux-hooks";
 import {
   DailySchedule,
   ScheduleService,
@@ -11,21 +10,23 @@ import { ScheduleCacheContext } from "../ScheduleService/schedule-cache-context"
 
 export const useScheduleService = (): ScheduleService => {
   // Get all active programs
-  const activePrograms = useAppSelector(populateProgramsArr()).filter(
-    (p) => p.active
-  );
+  const programsState = useAppSelector((state) => state.programs);
 
   // Set caching of values
   const sessionsCache = useContext(ScheduleCacheContext);
 
   const scheduleService = useCallback(
     (targetDate: Date) => {
+      const activePrograms = populateProgramsState(programsState).filter(
+        (p) => p.active
+      );
+
       const target: number = targetDate.getTime();
 
       // I am using a flat map. If one of the workouts doens't return a value, the function
       // will return [], and flatMap will collapse it. In essence I am combining map + filter
       const schedule = activePrograms.flatMap((program) => {
-        // console.log("Get session");
+        console.log("Get session");
 
         // Get cached schedule for current program
         let prSchedule = sessionsCache.get(program.id);
@@ -53,7 +54,7 @@ export const useScheduleService = (): ScheduleService => {
         }
 
         // Generate sessions
-        // console.log("Generate Session");
+        console.log("Generate Session");
 
         let [currentDate, currentState] = lastCachedDate
           ? last(Array.from(prSchedule.entries()))
@@ -62,6 +63,7 @@ export const useScheduleService = (): ScheduleService => {
         prSchedule.set(
           currentDate,
           new ScheduledSession(
+            program.id,
             program.name,
             program.shortDesc,
             program.getDescFromState(currentState),
@@ -76,6 +78,7 @@ export const useScheduleService = (): ScheduleService => {
           prSchedule.set(
             currentDate,
             new ScheduledSession(
+              program.id,
               program.name,
               program.shortDesc,
               program.getDescFromState(currentState),
@@ -94,7 +97,7 @@ export const useScheduleService = (): ScheduleService => {
 
       return schedule ? (schedule as DailySchedule) : ([] as DailySchedule);
     },
-    [sessionsCache]
+    [sessionsCache, programsState]
   );
 
   return scheduleService;
