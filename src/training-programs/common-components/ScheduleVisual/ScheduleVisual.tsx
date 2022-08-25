@@ -1,5 +1,5 @@
 import React from "react";
-import { getWeekDayShortName } from "../../util/date";
+import { getWeekDayShortName } from "../../../util/date";
 
 import styles from "./ScheduleVisual.module.css";
 

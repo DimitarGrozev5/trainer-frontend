@@ -5,9 +5,10 @@ import { useEffect } from "react";
 import { add, isEqual } from "date-fns";
 import { useSState } from "../../hooks/useSState";
 
-import ScheduleVisual from "../common-components/ScheduleVisual";
+import ScheduleVisual from "../common-components/ScheduleVisual/ScheduleVisual";
 import { CircularArray } from "../../util/array";
 import { roundDate } from "../../util/date";
+import Card from "../../components/UI-elements/Card/Card";
 
 const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
@@ -168,7 +169,21 @@ export const enduroGrip: TrainingProgram = {
   getDescFromState: (state: any) =>
     `Do x${trainingRotation[state.sessionIndex]} sets to failure`,
 
-  SessionComponent: () => {
-    return <div>test1</div>;
+  SessionComponent: ({ program }) => {
+    const sets = trainingRotation[program.state.sessionIndex];
+
+    return (
+      <>
+        <Card>
+          <h1>{program.name}</h1>
+          <div>Prepare to do x{sets} Sets of dead hangs.</div>
+          <div>
+            Every set should last between 30s and 60s. Strap weight to yourself
+            if needed, to get in that range.
+          </div>
+
+        </Card>
+      </>
+    );
   },
 };
