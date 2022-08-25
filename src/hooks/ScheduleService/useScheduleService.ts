@@ -26,7 +26,7 @@ export const useScheduleService = (): ScheduleService => {
       // I am using a flat map. If one of the workouts doens't return a value, the function
       // will return [], and flatMap will collapse it. In essence I am combining map + filter
       const schedule = activePrograms.flatMap((program) => {
-        console.log("Get session");
+        // console.log("Get session");
 
         // Get cached schedule for current program
         let prSchedule = sessionsCache.get(program.id);
@@ -54,7 +54,7 @@ export const useScheduleService = (): ScheduleService => {
         }
 
         // Generate sessions
-        console.log("Generate Session");
+        // console.log("Generate Session");
 
         let [currentDate, currentState] = lastCachedDate
           ? last(Array.from(prSchedule.entries()))
@@ -72,7 +72,10 @@ export const useScheduleService = (): ScheduleService => {
         );
 
         while (currentDate < target) {
-          currentState = program.getNextState(currentState, 0, true);
+          currentState = program.getNextState(currentState, 0, {
+            forceProgress: true,
+            fromToday: false,
+          });
           currentDate = currentState.sessionDate.getTime();
 
           prSchedule.set(

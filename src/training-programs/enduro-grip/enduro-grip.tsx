@@ -109,7 +109,10 @@ export const enduroGrip: TrainingProgram = {
   getNextState: (
     prevState: any,
     achieved: any,
-    forceProgess: boolean = false
+    { forceProgress = false, fromToday = true } = {
+      forceProgress: false,
+      fromToday: true,
+    }
   ) => {
     const {
       sessionDate,
@@ -126,7 +129,7 @@ export const enduroGrip: TrainingProgram = {
       currentScheduleIndex
     );
 
-    const fromDate = !forceProgess ? new Date() : sessionDate;
+    const fromDate = fromToday ? new Date() : sessionDate;
     const nextSessionDate = roundDate(
       add(fromDate, { days: schedulePlan.i(0) })
     );
@@ -147,7 +150,7 @@ export const enduroGrip: TrainingProgram = {
       heavySessionAchieved = lastHeavySessionAchieved;
 
       // If the last heavy session the user achieved the required number of sets, progress
-      if (forceProgess || lastHeavySessionAchieved === trainingPlan.i(-1)) {
+      if (forceProgress || lastHeavySessionAchieved === trainingPlan.i(-1)) {
         nextSessionIndex = trainingPlan.getIndex(+1);
       } else {
         nextSessionIndex = trainingPlan.getIndex(-1);

@@ -25,7 +25,10 @@ export interface TrainingProgram {
   getNextState: (
     state: { sessionDate: Date } & any,
     achieved: any,
-    forceProgess: boolean
+    options?: {
+      forceProgress?: boolean;
+      fromToday?: boolean;
+    }
   ) => { sessionDate: Date } & any;
   getDescFromState: (state: any) => string;
 }
