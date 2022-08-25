@@ -169,6 +169,6 @@ export const enduroGrip: TrainingProgram = {
     `Do x${trainingRotation[state.sessionIndex]} sets to failure`,
 
   SessionComponent: () => {
-    return <></>;
+    return <div>test1</div>;
   },
 };
