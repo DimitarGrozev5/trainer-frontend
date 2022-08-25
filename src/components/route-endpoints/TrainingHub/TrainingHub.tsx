@@ -29,7 +29,6 @@ const TrainingHub = () => {
 
   const skipSessionHandler = (id: ProgramId) => () => {
     const workout = populateProgramFromState(id, workouts);
-    console.log(workout);
 
     const nextState = workout.getNextState(
       workout.state,
@@ -57,19 +56,21 @@ const TrainingHub = () => {
         <h1>Today:</h1>
         <ul>
           {today.map((s) => (
-            <li key={s.name}>
+            <li key={s.name} className={styles.scheduled}>
               <h2>{s.name}</h2>
-              <p>{s.sessionDesc}</p>
+              <div className={styles["scheduled__desc"]}>{s.sessionDesc}</div>
               {compareAsc(
                 workouts.byId[s.id].state.sessionDate,
                 selectedDate
               ) === 0 && (
-                <>
+                <div className={styles["scheduled__ctrl"]}>
                   <Button onClick={skipSessionHandler(s.id)} plain>
                     Skip
                   </Button>
-                  <Button>Start</Button>
-                </>
+                  <Button to={`/active/${s.id}`} stretch>
+                    Start
+                  </Button>
+                </div>
               )}
             </li>
           ))}
