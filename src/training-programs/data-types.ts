@@ -10,6 +10,11 @@ export interface InitProps {
 
 export type InitComponent = React.FC<InitProps>;
 
+export interface SessionProps {
+  program: TrainingProgram;
+}
+export type SessionComponent = React.FC<SessionProps>;
+
 export interface TrainingProgram {
   id: ProgramId;
   active: boolean;
@@ -31,4 +36,6 @@ export interface TrainingProgram {
     }
   ) => { sessionDate: Date } & any;
   getDescFromState: (state: any) => string;
+
+  SessionComponent: SessionComponent;
 }

@@ -15,4 +15,8 @@ export const quickDead: TrainingProgram = {
 
   getNextState: (val: any) => val,
   getDescFromState: (val: any) => "Do stuff",
+
+  SessionComponent: () => {
+    return <></>;
+  },
 };

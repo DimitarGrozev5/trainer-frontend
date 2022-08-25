@@ -167,4 +167,8 @@ export const enduroGrip: TrainingProgram = {
   },
   getDescFromState: (state: any) =>
     `Do x${trainingRotation[state.sessionIndex]} sets to failure`,
+
+  SessionComponent: () => {
+    return <></>;
+  },
 };
