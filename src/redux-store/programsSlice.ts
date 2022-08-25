@@ -1,4 +1,4 @@
-import { createSlice, Middleware } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 import { ProgramId } from "../training-programs/data-types";

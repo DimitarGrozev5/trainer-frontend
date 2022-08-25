@@ -34,6 +34,7 @@ export const enduroGrip: TrainingProgram = {
     // Run on first try to init the data
     useEffect(() => {
       onChange({ startDate, schedule: schedule });
+      // eslint-disable-next-line
     }, []);
 
     // Reset startDate to today when startToday is false

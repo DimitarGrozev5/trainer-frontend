@@ -1,8 +1,6 @@
-import { add, compareAsc, differenceInDays } from "date-fns";
 import { useCallback, useEffect, useRef } from "react";
 import { ProgramId } from "../../training-programs/data-types";
 import { last } from "../../util/array";
-import { roundDate } from "../../util/date";
 import { populateProgramsArr, useAppSelector } from "../redux-hooks";
 import {
   DailySchedule,
