@@ -25,4 +25,4 @@ const CalendarDay: React.FC<Props> = ({ date, schedule }) => {
   );
 };
 
-export default CalendarDay;
+export default React.memo(CalendarDay);
