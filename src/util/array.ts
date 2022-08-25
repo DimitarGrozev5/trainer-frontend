@@ -70,3 +70,6 @@ export class CircularArray<T> {
     return i % this.arr.length;
   }
 }
+
+// Get last element of array
+export const last = <T>(arr: T[]): T => arr[arr.length];

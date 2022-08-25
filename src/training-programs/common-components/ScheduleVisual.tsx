@@ -9,9 +9,6 @@ type Props = {
 
 const isWeekend = (i: number) => i % 7 > 4;
 
-const isRegular = (fr: number) => (i: number) => i % fr === 0;
-const isPattern = (pt: number[]) => (i: number) => pt.includes(i % 7);
-
 const ScheduleVisual: React.FC<Props> = ({ pattern }) => {
   // const isWorkout =
   //   weekly === "weekly" ? isPattern(pattern) : isRegular(frequency);

@@ -2,17 +2,16 @@ export class ScheduledSession {
   name: string;
   shortDesc: string;
   sessionDesc: any;
+  state: any;
 
-  constructor(name: string, shortDesc: string, sessionDesc: any) {
+  constructor(name: string, shortDesc: string, sessionDesc: any, state: any) {
     this.name = name;
     this.shortDesc = shortDesc;
     this.sessionDesc = sessionDesc;
+    this.state = state;
   }
 }
 
 export type DailySchedule = ScheduledSession[];
 
-export type ScheduleService = (
-  startDate: Date,
-  endDate: Date
-) => Map<number, DailySchedule>;
+export type ScheduleService = (targetDate: Date) => DailySchedule;

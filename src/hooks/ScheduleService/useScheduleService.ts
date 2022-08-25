@@ -1,5 +1,7 @@
 import { add, compareAsc, differenceInDays } from "date-fns";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { ProgramId } from "../../training-programs/data-types";
+import { last } from "../../util/array";
 import { roundDate } from "../../util/date";
 import { populateProgramsArr, useAppSelector } from "../redux-hooks";
 import {
@@ -14,72 +16,91 @@ export const useScheduleService = (): ScheduleService => {
     (p) => p.active
   );
 
+  // Set caching of values
+  const sessions = useRef<Map<ProgramId, Map<number, ScheduledSession>>>();
+
+  useEffect(() => {
+    sessions.current = new Map<ProgramId, Map<number, ScheduledSession>>();
+    console.log("clear cache");
+  }, [activePrograms]);
+
   const scheduleService = useCallback(
-    (startDate: Date, endDate: Date) => {
-      const schedule = new Map<number, DailySchedule>();
+    (targetDate: Date) => {
+      const target: number = targetDate.getTime();
 
-      const now = new Date();
+      // I am using a flat map. If one of the workouts doens't return a value, the function
+      // will return [], and flatMap will collapse it. In essence I am combining map + filter
+      const schedule = activePrograms.flatMap((program) => {
+        console.log("Get session");
 
-      //// Adjust start and end dates
-      let sd = startDate;
-      let ed = endDate;
+        // Get cached schedule for current program
+        let prSchedule = sessions.current?.get(program.id);
+        if (!prSchedule) {
+          prSchedule = new Map<number, ScheduledSession>();
+          sessions.current?.set(program.id, prSchedule);
+        }
 
-      // Start date must be before end date
-      if (compareAsc(startDate, endDate) >= 0) {
-        return schedule;
-      }
+        // Look in cached schedule for targetDate
+        if (prSchedule.has(target)) {
+          return prSchedule.get(target);
+        }
 
-      // Start date must be after end date
-      if (compareAsc(startDate, now) > 0) {
-        sd = now;
-      }
+        // If the last date in cached scedule is greather than the targetDate,
+        // and the targetDate is not in the Map,
+        // then the targetDate doesn't have a scheduled session
+        const lastCachedDate = last(Array.from(prSchedule.keys()));
+        if (target < lastCachedDate) {
+          return [];
+        }
 
-      // End date must be after today
-      if (compareAsc(now, endDate) > 0) {
-        ed = now;
-      }
+        // If the target date is before the next scheduled session, return nothing
+        if (target < program.state.sessionDate.getTime()) {
+          return [];
+        }
 
-      // End date must be no less than 6 months away
-      if (differenceInDays(now, endDate) > 183) {
-        endDate = add(now, { days: 183 });
-      }
+        // Generate sessions
+        console.log("Generate Session");
 
-      //// Remove hours minutes and seconds from start and end dates
-      sd = roundDate(sd);
-      ed = roundDate(ed);
+        let [currentDate, currentState] = lastCachedDate
+          ? last(Array.from(prSchedule.entries()))
+          : [program.state.sessionDate.getTime(), program.state];
 
-      //// Loop from start to end date and populate them
-      activePrograms.forEach((program) => {
-        let currentState = program.state;
-        let currentDate: Date = currentState.sessionDate;
+        prSchedule.set(
+          currentDate,
+          new ScheduledSession(
+            program.name,
+            program.shortDesc,
+            program.getDescFromState(currentState),
+            currentState
+          )
+        );
 
-        while (compareAsc(currentDate, ed) <= 0) {
-          if (compareAsc(currentDate, ed) < 0) {
-            const session = new ScheduledSession(
+        while (currentDate < target) {
+          currentState = program.getNextState(currentState, 0, true);
+          currentDate = currentState.sessionDate.getTime();
+
+          prSchedule.set(
+            currentDate,
+            new ScheduledSession(
               program.name,
               program.shortDesc,
-              program.getDescFromState(currentState)
-            );
-
-            let arr: DailySchedule | undefined = [session];
-            if (schedule.has(currentDate.getTime())) {
-              const item = schedule.get(currentDate.getTime());
-              arr = item && [...item, session];
-            }
-            arr && schedule.set(currentDate.getTime(), arr);
-          }
-          // console.log(currentDate);
-          // console.log(ed);
-          // console.log(compareAsc(currentDate, ed));
-
-          currentState = program.getNextState(currentState, 0, true);
-          currentDate = currentState.sessionDate;
+              program.getDescFromState(currentState),
+              currentState
+            )
+          );
         }
+
+        // Look in cached schedule for targetDate
+        if (prSchedule.has(target)) {
+          return prSchedule.get(target);
+        }
+
+        return [];
       });
 
-      return schedule;
+      return schedule ? (schedule as DailySchedule) : ([] as DailySchedule);
     },
-    [activePrograms]
+    [sessions]
   );
 
   return scheduleService;
