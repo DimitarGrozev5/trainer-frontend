@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
 import { ProgramId } from "../../training-programs/data-types";
 import { last } from "../../util/array";
 import { populateProgramsArr, useAppSelector } from "../redux-hooks";
@@ -7,6 +7,7 @@ import {
   ScheduleService,
   ScheduledSession,
 } from "./training-schedule-types";
+import { ScheduleCacheContext } from "../ScheduleService/schedule-cache-context";
 
 export const useScheduleService = (): ScheduleService => {
   // Get all active programs
@@ -15,12 +16,7 @@ export const useScheduleService = (): ScheduleService => {
   );
 
   // Set caching of values
-  const sessions = useRef<Map<ProgramId, Map<number, ScheduledSession>>>();
-
-  useEffect(() => {
-    sessions.current = new Map<ProgramId, Map<number, ScheduledSession>>();
-    console.log("clear cache");
-  }, [activePrograms]);
+  const sessionsCache = useContext(ScheduleCacheContext);
 
   const scheduleService = useCallback(
     (targetDate: Date) => {
@@ -29,13 +25,13 @@ export const useScheduleService = (): ScheduleService => {
       // I am using a flat map. If one of the workouts doens't return a value, the function
       // will return [], and flatMap will collapse it. In essence I am combining map + filter
       const schedule = activePrograms.flatMap((program) => {
-        console.log("Get session");
+        // console.log("Get session");
 
         // Get cached schedule for current program
-        let prSchedule = sessions.current?.get(program.id);
+        let prSchedule = sessionsCache.get(program.id);
         if (!prSchedule) {
           prSchedule = new Map<number, ScheduledSession>();
-          sessions.current?.set(program.id, prSchedule);
+          sessionsCache.set(program.id, prSchedule);
         }
 
         // Look in cached schedule for targetDate
@@ -57,7 +53,7 @@ export const useScheduleService = (): ScheduleService => {
         }
 
         // Generate sessions
-        console.log("Generate Session");
+        // console.log("Generate Session");
 
         let [currentDate, currentState] = lastCachedDate
           ? last(Array.from(prSchedule.entries()))
@@ -98,7 +94,7 @@ export const useScheduleService = (): ScheduleService => {
 
       return schedule ? (schedule as DailySchedule) : ([] as DailySchedule);
     },
-    [sessions]
+    [sessionsCache]
   );
 
   return scheduleService;

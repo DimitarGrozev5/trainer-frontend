@@ -12,8 +12,8 @@ interface Props {
 }
 
 const CalendarDay: React.FC<Props> = ({ date, schedule }) => {
-  // const today = (schedule && schedule(date)) || [];
-  const today: DailySchedule = [];
+  const today = (schedule && schedule(date)) || [];
+  // const today: DailySchedule = [];
 
   return (
     <div className={styles.day}>

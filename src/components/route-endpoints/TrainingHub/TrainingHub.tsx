@@ -11,7 +11,7 @@ const TrainingHub = () => {
 
   const scheduleService = useScheduleService();
 
-  console.log(scheduleService(selectedDate));
+  // console.log(scheduleService(selectedDate));
 
   return (
     <>
