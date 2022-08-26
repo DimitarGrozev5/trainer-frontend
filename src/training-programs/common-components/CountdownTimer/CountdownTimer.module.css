@@ -1,0 +1,10 @@
+.clock {
+  text-align: center;
+  font-size: 6rem;
+  font-family: "Andalé Mono", Andalé, monospace;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+}

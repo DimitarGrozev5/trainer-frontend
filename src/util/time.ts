@@ -6,7 +6,7 @@ type seconds = number;
 export const formatDurationClock = (duration: seconds): string => {
   const hours = Math.floor(duration / 60 / 60);
   const minutes = Math.floor((duration - hours * 60) / 60);
-  const seconds = Math.floor(duration - minutes * 60 - hours * 3600);
+  const seconds = Math.round(duration - minutes * 60 - hours * 3600);
 
   const result = [minutes, seconds].map((t) => lz(t));
   if (hours > 0) {

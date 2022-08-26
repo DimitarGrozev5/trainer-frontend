@@ -69,6 +69,7 @@ const CountdownTimer: React.ForwardRefRenderFunction<CountdownHandle, Props> = (
         if (startTime - dt <= 0) {
           setStartTimestamp(false);
           setStartTime(false);
+          setCurrentTime(0);
           onZero && onZero();
         }
       });
@@ -88,7 +89,7 @@ const CountdownTimer: React.ForwardRefRenderFunction<CountdownHandle, Props> = (
       <div className={styles.clock}>{timeText}</div>
       <div className={styles.controls}>
         <Button onClick={setTimer(-step)}>{`-${stepText}`}</Button>
-        <Button onClick={startTimestamp === false ? start : pause}>
+        <Button stretch onClick={startTimestamp === false ? start : pause}>
           {startTimestamp === false ? "Start" : "Pause"}
         </Button>
         <Button onClick={setTimer(step)}>{`+${stepText}`}</Button>
