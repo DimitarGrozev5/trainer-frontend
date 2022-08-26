@@ -180,7 +180,7 @@ export const enduroGrip: TrainingProgram = {
     type CountdownHandle = React.ElementRef<typeof CountdownTimer>;
     const timerRef = useRef<CountdownHandle>(null);
 
-    const [sets, setSets] = useState(
+    const [sets, setSets] = useState<boolean[]>(
       Array(trainingRotation[program.state.sessionIndex]).fill(false)
     );
 
@@ -210,8 +210,28 @@ export const enduroGrip: TrainingProgram = {
           : timerRef.current?.restart();
       }
     };
+
+    // Handle Session exit
+    const [showConfirmExit, setShowConfirmExit] = useState(false);
+    const goalAchieved =
+      sets.reduce((sum, set) => sum + Number(set), 0) === sets.length;
+
+    const endSession = (confirmed: boolean) => () => {
+      if (confirmed) {
+        console.log("save and or exit");
+        return;
+      }
+      setShowConfirmExit(true);
+    };
+
     return (
       <>
+        <ConfirmModal
+          show={showConfirmExit}
+          message={"The session is not over. Are you sure you want to exit?"}
+          onClose={setShowConfirmExit.bind(null, false)}
+          onConfirm={endSession(true)}
+        />
         <Card>
           <h1 className={styles.h1}>{program.name}</h1>
           <div className={styles.paragraph}>
@@ -243,7 +263,9 @@ export const enduroGrip: TrainingProgram = {
           </div>
         </Card>
         <Card>
-          <Button stretch>End Session</Button>
+          <Button onClick={endSession(goalAchieved)} stretch>
+            End Session
+          </Button>
         </Card>
       </>
     );
