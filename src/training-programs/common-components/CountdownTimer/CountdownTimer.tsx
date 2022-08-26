@@ -1,27 +1,36 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../../components/UI-elements/Button/Button";
+import { formatDurationClock, formatDurationText } from "../../../util/time";
 
 import styles from "./CountdownTimer.module.css";
 
 type seconds = number;
+type UTCTime = number;
 
 interface Props {
-  time: number;
-  onTick: (val: number) => void;
+  initTime: seconds;
+  onZero?: () => void;
   step?: seconds;
 }
 
-const CountdownTimer: React.FC<Props> = ({ time, onTick, step = 30 }) => {
-  const [startTime] = useState(new Date().getTime());
+const CountdownTimer: React.FC<Props> = ({
+  initTime,
+  onZero = () => {},
+  step = 30,
+}) => {
+  const [currentTime, setCurrentTime] = useState(initTime);
+  const [startTimestamp, setStartTimestamp] = useState<UTCTime | false>(false);
 
-  const timeText = time;
+  const timeText = formatDurationClock(currentTime);
+  const stepText = formatDurationText(step);
+
   return (
     <div>
       <div className={styles.clock}>{timeText}</div>
       <div className={styles.controls}>
-        <Button>{`-${step}s`}</Button>
+        <Button>{`-${stepText}`}</Button>
         <Button>Pause</Button>
-        <Button>{`+${step}s`}</Button>
+        <Button>{`+${stepText}`}</Button>
       </div>
     </div>
   );

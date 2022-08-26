@@ -189,9 +189,6 @@ export const enduroGrip: TrainingProgram = {
       }
     };
 
-    // Timer state
-    const [time, setTime] = useState(10 * 60 * 1000);
-
     return (
       <>
         <Card>
@@ -214,7 +211,7 @@ export const enduroGrip: TrainingProgram = {
               />
             ))}
           </div>
-          <CountdownTimer time={time} onTick={setTime} step={60} />
+          <CountdownTimer initTime={10 * 60} step={60} />
         </Card>
       </>
     );

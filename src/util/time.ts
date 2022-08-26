@@ -1,8 +1,19 @@
+import { lz } from "./date";
+
 type seconds = number;
 
 // Function to format duration to hours:minutes:seconds
 export const formatDurationClock = (duration: seconds): string => {
-  return duration.toString();
+  const hours = Math.floor(duration / 60 / 60);
+  const minutes = Math.floor((duration - hours * 60) / 60);
+  const seconds = duration - minutes * 60 - hours * 3600;
+
+  const result = [minutes, seconds].map((t) => lz(t));
+  if (hours > 0) {
+    result.unshift(hours.toString());
+  }
+
+  return result.join(":");
 };
 
 // Format duration to h or m or s
