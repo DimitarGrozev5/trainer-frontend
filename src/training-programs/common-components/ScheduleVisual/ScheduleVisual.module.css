@@ -13,10 +13,10 @@
 }
 
 .weekend {
-  color: var(--acc-red);
+  color: var(--acc-red-7);
 }
 
 .workout {
-  border: 1px solid var(--acc-green);
+  border: 1px solid var(--acc-green-7);
   border-radius: 10000px;
 }

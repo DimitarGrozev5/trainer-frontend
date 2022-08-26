@@ -25,9 +25,9 @@ td.other-month {
 }
 
 td.today {
-  color: var(--acc-green);
+  color: var(--acc-green-7);
 }
 
 td.selected {
-  border: 1px solid var(--acc-green);
+  border: 1px solid var(--acc-green-7);
 }

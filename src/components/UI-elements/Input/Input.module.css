@@ -42,18 +42,18 @@ button.password {
 }
 
 .error button.password {
-  border: 1px solid var(--acc-red);
+  border: 1px solid var(--acc-red-7);
   border-left: none;
-  color: var(--acc-red);
+  color: var(--acc-red-7);
 }
 
 .text-input.error {
-  border: 1px solid var(--acc-red);
-  color: var(--acc-red);
+  border: 1px solid var(--acc-red-7);
+  color: var(--acc-red-7);
 }
 
 div.error {
-  color: var(--acc-red);
+  color: var(--acc-red-7);
 }
 
 .error-box {
