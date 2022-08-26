@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../../components/UI-elements/Button/Button";
 
 import styles from "./CountdownTimer.module.css";
@@ -12,6 +12,8 @@ interface Props {
 }
 
 const CountdownTimer: React.FC<Props> = ({ time, onTick, step = 30 }) => {
+  const [startTime] = useState(new Date().getTime());
+
   const timeText = time;
   return (
     <div>
