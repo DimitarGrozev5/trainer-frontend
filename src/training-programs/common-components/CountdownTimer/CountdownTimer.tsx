@@ -86,7 +86,13 @@ const CountdownTimer: React.ForwardRefRenderFunction<CountdownHandle, Props> = (
 
   return (
     <div>
-      <div className={styles.clock}>{timeText}</div>
+      <div
+        className={`${styles.clock} ${
+          timerInitDuration > 60 * 60 ? styles.small : ""
+        }`}
+      >
+        {timeText}
+      </div>
       <div className={styles.controls}>
         <Button onClick={setTimer(-step)}>{`-${stepText}`}</Button>
         <Button stretch onClick={startTimestamp === false ? start : pause}>

@@ -1,7 +1,11 @@
 .clock {
   text-align: center;
-  font-size: 6rem;
+  font-size: 7.5rem;
   font-family: "Andalé Mono", Andalé, monospace;
+}
+
+.clock.small {
+  font-size: 5rem;
 }
 
 .controls {
