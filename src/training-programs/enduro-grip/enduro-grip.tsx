@@ -11,6 +11,7 @@ import { roundDate } from "../../util/date";
 import Card from "../../components/UI-elements/Card/Card";
 import CircularButton from "../common-components/CircularButton/CircularButton";
 import produce from "immer";
+import CountdownTimer from "../common-components/CountdownTimer/CountdownTimer";
 
 const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
@@ -188,6 +189,9 @@ export const enduroGrip: TrainingProgram = {
       }
     };
 
+    // Timer state
+    const [time, setTime] = useState(10 * 60 * 1000);
+
     return (
       <>
         <Card>
@@ -210,6 +214,7 @@ export const enduroGrip: TrainingProgram = {
               />
             ))}
           </div>
+          <CountdownTimer time={time} onTick={setTime} step={60} />
         </Card>
       </>
     );

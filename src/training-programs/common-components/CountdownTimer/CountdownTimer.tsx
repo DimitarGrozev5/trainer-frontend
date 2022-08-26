@@ -1,11 +1,28 @@
 import React from "react";
+import Button from "../../../components/UI-elements/Button/Button";
 
 import styles from "./CountdownTimer.module.css";
 
-interface Props {}
+type seconds = number;
 
-const CountdownTimer: React.FC<Props> = () => {
-  return <div>Timer</div>;
+interface Props {
+  time: number;
+  onTick: (val: number) => void;
+  step?: seconds;
+}
+
+const CountdownTimer: React.FC<Props> = ({ time, onTick, step = 30 }) => {
+  const timeText = time;
+  return (
+    <div>
+      <div className={styles.clock}>{timeText}</div>
+      <div className={styles.controls}>
+        <Button>{`-${step}s`}</Button>
+        <Button>Pause</Button>
+        <Button>{`+${step}s`}</Button>
+      </div>
+    </div>
+  );
 };
 
 export default CountdownTimer;
