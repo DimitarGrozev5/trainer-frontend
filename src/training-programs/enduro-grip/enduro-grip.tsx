@@ -15,6 +15,10 @@ import CountdownTimer from "../common-components/CountdownTimer/CountdownTimer";
 import Metronome from "../common-components/Metronome/Metronome";
 import Button from "../../components/UI-elements/Button/Button";
 import ConfirmModal from "../../components/UI-elements/Modal/ConfirmModal";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../hooks/redux-hooks";
+import { programsActions } from "../../redux-store/programsSlice";
+import Modal from "../../components/UI-elements/Modal/Modal";
 
 const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
@@ -144,12 +148,12 @@ export const enduroGrip: TrainingProgram = {
     const nextScheduleIndex = schedulePlan.getIndex(+1);
 
     let nextSessionIndex = sessionIndex;
-    let heavySessionAchieved = achieved;
+    let heavySessionAchieved = achieved.sets;
 
     // If the session was heavy always move to the next session and record the achieved result
     if (sessionIndex % 2 === 0) {
       nextSessionIndex = trainingPlan.getIndex(+1);
-      heavySessionAchieved = achieved;
+      heavySessionAchieved = achieved.sets;
     }
 
     // If the session was light decide wheter to move to the next session or the previous and don't record the achieved result
@@ -176,6 +180,9 @@ export const enduroGrip: TrainingProgram = {
     `Do x${trainingRotation[state.sessionIndex]} sets to failure`,
 
   SessionComponent: ({ program }) => {
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
     // this will be inferred as `CountdownHandle`
     type CountdownHandle = React.ElementRef<typeof CountdownTimer>;
     const timerRef = useRef<CountdownHandle>(null);
@@ -213,15 +220,32 @@ export const enduroGrip: TrainingProgram = {
 
     // Handle Session exit
     const [showConfirmExit, setShowConfirmExit] = useState(false);
+
+    const [showInfoModal, setShowInfoModal] = useState(false);
+
     const goalAchieved =
       sets.reduce((sum, set) => sum + Number(set), 0) === sets.length;
 
     const endSession = (confirmed: boolean) => () => {
-      if (confirmed) {
-        console.log("save and or exit");
-        return;
+      // If the exit is not confirmed, show modal
+      if (!confirmed) {
+        setShowConfirmExit(true);
       }
-      setShowConfirmExit(true);
+
+      // If the goal is achieved generate next state
+      if (goalAchieved) {
+        // If the goal is achieved, get next state and exit
+        const nextState = program.getNextState(program.state, {
+          sets: sets.length,
+        });
+        dispatch(
+          programsActions.updateProgramsState([
+            { id: program.id, active: program.active, state: nextState },
+          ])
+        );
+      }
+
+      setShowInfoModal(true);
     };
 
     return (
@@ -232,6 +256,14 @@ export const enduroGrip: TrainingProgram = {
           onClose={setShowConfirmExit.bind(null, false)}
           onConfirm={endSession(true)}
         />
+        <Modal
+          show={showInfoModal}
+          title={"Exiting"}
+          buttons={<Button onClick={() => navigate("/")}>OK</Button>}
+          onClose={() => navigate("/")}
+        >
+          Saving data and exiting!
+        </Modal>
         <Card>
           <h1 className={styles.h1}>{program.name}</h1>
           <div className={styles.paragraph}>
