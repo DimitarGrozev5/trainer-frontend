@@ -9,6 +9,8 @@ import ScheduleVisual from "../common-components/ScheduleVisual/ScheduleVisual";
 import { CircularArray } from "../../util/array";
 import { roundDate } from "../../util/date";
 import Card from "../../components/UI-elements/Card/Card";
+import CircularButton from "../common-components/CircularButton/CircularButton";
+import produce from "immer";
 
 const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
@@ -170,7 +172,21 @@ export const enduroGrip: TrainingProgram = {
     `Do x${trainingRotation[state.sessionIndex]} sets to failure`,
 
   SessionComponent: ({ program }) => {
-    const sets = trainingRotation[program.state.sessionIndex];
+    const [sets, setSets] = useState(
+      Array(trainingRotation[program.state.sessionIndex]).fill(false)
+    );
+
+    const nextSet = (i: number) => () => {
+      if (i === 0) {
+        setSets((state) => [true, ...state.slice(1)]);
+      } else if (sets[i - 1]) {
+        setSets(
+          produce((draft) => {
+            draft[i] = true;
+          })
+        );
+      }
+    };
 
     return (
       <>
@@ -181,7 +197,19 @@ export const enduroGrip: TrainingProgram = {
             Every set should last between 30s and 60s. Strap weight to yourself
             if needed, to get in that range.
           </div>
-
+        </Card>
+        <Card>
+          <h2>Sets:</h2>
+          <div>
+            {sets.map((set, i) => (
+              <CircularButton
+                key={i}
+                text={(i + 1).toString()}
+                onClick={nextSet(i)}
+                checked={set}
+              />
+            ))}
+          </div>
         </Card>
       </>
     );
