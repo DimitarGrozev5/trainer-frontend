@@ -25,3 +25,5 @@ const CircularButton: React.FC<Props> = ({
     </button>
   );
 };
+
+export default CircularButton;
