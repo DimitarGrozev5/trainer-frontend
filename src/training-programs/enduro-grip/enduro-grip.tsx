@@ -12,6 +12,7 @@ import Card from "../../components/UI-elements/Card/Card";
 import CircularButton from "../common-components/CircularButton/CircularButton";
 import produce from "immer";
 import CountdownTimer from "../common-components/CountdownTimer/CountdownTimer";
+import Metronome from "../common-components/Metronome/Metronome";
 
 const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
@@ -230,6 +231,10 @@ export const enduroGrip: TrainingProgram = {
             ))}
           </div>
           <CountdownTimer ref={timerRef} initTime={10 * 60} step={60} />
+        </Card>
+        <Card>
+          <Metronome timing={1000} />
+          <div>This metronome will help you count out the set duration</div>
         </Card>
       </>
     );
