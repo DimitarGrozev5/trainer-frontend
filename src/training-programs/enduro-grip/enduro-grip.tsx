@@ -1,18 +1,20 @@
+import { useEffect, useRef, useState } from "react";
+import produce from "immer";
+import { add, isEqual } from "date-fns";
+
+import styles from "./EnduroGrip.module.css";
+import { useSState } from "../../hooks/useSState";
 import { TrainingProgram } from "../data-types";
 import Input from "../../components/UI-elements/Input/Input";
-import { useState } from "react";
-import { useEffect, useRef } from "react";
-import { add, isEqual } from "date-fns";
-import { useSState } from "../../hooks/useSState";
-
 import ScheduleVisual from "../common-components/ScheduleVisual/ScheduleVisual";
 import { CircularArray } from "../../util/array";
 import { roundDate } from "../../util/date";
 import Card from "../../components/UI-elements/Card/Card";
 import CircularButton from "../common-components/CircularButton/CircularButton";
-import produce from "immer";
 import CountdownTimer from "../common-components/CountdownTimer/CountdownTimer";
 import Metronome from "../common-components/Metronome/Metronome";
+import Button from "../../components/UI-elements/Button/Button";
+import ConfirmModal from "../../components/UI-elements/Modal/ConfirmModal";
 
 const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
@@ -211,16 +213,18 @@ export const enduroGrip: TrainingProgram = {
     return (
       <>
         <Card>
-          <h1>{program.name}</h1>
-          <div>Prepare to do x{sets} Sets of dead hangs.</div>
-          <div>
+          <h1 className={styles.h1}>{program.name}</h1>
+          <div className={styles.paragraph}>
+            Prepare to do x{sets} Sets of dead hangs.
+          </div>
+          <div className={styles.paragraph}>
             Every set should last between 30s and 60s. Strap weight to yourself
             if needed, to get in that range.
           </div>
         </Card>
         <Card>
-          <h2>Sets:</h2>
-          <div>
+          <h2 className={styles.h2}>Sets:</h2>
+          <div className={styles.sets}>
             {sets.map((set, i) => (
               <CircularButton
                 key={i}
@@ -234,7 +238,12 @@ export const enduroGrip: TrainingProgram = {
         </Card>
         <Card>
           <Metronome timing={1000} />
-          <div>This metronome will help you count out the set duration</div>
+          <div className={styles.paragraph}>
+            This metronome will help you count out the set duration
+          </div>
+        </Card>
+        <Card>
+          <Button stretch>End Session</Button>
         </Card>
       </>
     );
