@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../UI-elements/Button/Button";
 import ConfirmModal from "../../UI-elements/Modal/ConfirmModal";

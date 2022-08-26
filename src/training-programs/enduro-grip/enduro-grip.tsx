@@ -1,7 +1,7 @@
 import { TrainingProgram } from "../data-types";
 import Input from "../../components/UI-elements/Input/Input";
 import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { add, isEqual } from "date-fns";
 import { useSState } from "../../hooks/useSState";
 
@@ -173,22 +173,40 @@ export const enduroGrip: TrainingProgram = {
     `Do x${trainingRotation[state.sessionIndex]} sets to failure`,
 
   SessionComponent: ({ program }) => {
+    // this will be inferred as `CountdownHandle`
+    type CountdownHandle = React.ElementRef<typeof CountdownTimer>;
+    const timerRef = useRef<CountdownHandle>(null);
+
     const [sets, setSets] = useState(
       Array(trainingRotation[program.state.sessionIndex]).fill(false)
     );
 
     const nextSet = (i: number) => () => {
+      if (sets[i]) {
+        return;
+      }
+
       if (i === 0) {
-        setSets((state) => [true, ...state.slice(1)]);
-      } else if (sets[i - 1]) {
         setSets(
           produce((draft) => {
             draft[i] = true;
           })
         );
+        timerRef.current?.start();
+        return;
+      }
+
+      if (sets[i - 1] && !sets[i]) {
+        setSets(
+          produce((draft) => {
+            draft[i] = true;
+          })
+        );
+        i === sets.length - 1
+          ? timerRef.current?.pause()
+          : timerRef.current?.restart();
       }
     };
-
     return (
       <>
         <Card>
@@ -211,7 +229,7 @@ export const enduroGrip: TrainingProgram = {
               />
             ))}
           </div>
-          <CountdownTimer initTime={10 * 60} step={60} />
+          <CountdownTimer ref={timerRef} initTime={10 * 60} step={60} />
         </Card>
       </>
     );

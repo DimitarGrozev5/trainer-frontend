@@ -2,7 +2,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../redux-store/index";
 import { programs } from "../training-programs";
 import { ProgramId, TrainingProgram } from "../training-programs/data-types";
-import { ProgramsState, ProgramState } from "../redux-store/programsSlice";
+import { ProgramsState } from "../redux-store/programsSlice";
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
 export const useAppDispatch: () => AppDispatch = useDispatch;
