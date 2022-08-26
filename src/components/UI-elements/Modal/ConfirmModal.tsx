@@ -21,7 +21,7 @@ const ConfirmModal: React.FC<Props> = ({ show, message, onClose, onConfirm }) =>
             Cancel
           </Button>
           <Button onClick={onConfirm} plain>
-            Ok
+            OK
           </Button>
         </>
       }
