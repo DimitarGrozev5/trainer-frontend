@@ -12,6 +12,7 @@ export type InitComponent = React.FC<InitProps>;
 
 export interface SessionProps {
   program: TrainingProgram;
+  onAchievedChanged: (val: any) => void;
 }
 export type SessionComponent = React.FC<SessionProps>;
 
