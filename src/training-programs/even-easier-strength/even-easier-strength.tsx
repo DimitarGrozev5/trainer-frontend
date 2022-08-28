@@ -1,5 +1,8 @@
 import { add } from "date-fns";
+import { useEffect } from "react";
 import Card from "../../components/UI-elements/Card/Card";
+import { useAppDispatch } from "../../hooks/redux-hooks";
+import { programsActions, ProgramState } from "../../redux-store/programsSlice";
 import { now, roundDate } from "../../util/date";
 import CircularButton from "../common-components/CircularButton/CircularButton";
 import { H1, H2 } from "../common-components/Headings/H";
@@ -101,6 +104,45 @@ export const ees: TrainingProgram = {
     return `Scheduled: ${dos.join(", ")}`;
   },
   SessionComponent: ({ program, onAchievedChanged }) => {
+    const dispatch = useAppDispatch();
+
+    const { setsDone } = program.state;
+    const { push, pull, squat, ab, accessory } = setsDone;
+
+    const updateSetsDone = (target: string, sets: number) => () => {
+      if (setsDone[target] + 1 === sets) {
+        const newSetsDone = {
+          push,
+          pull,
+          squat,
+          ab,
+          accessory,
+          [target]: sets,
+        };
+        dispatch(
+          programsActions.updateProgramsState([
+            {
+              id: program.id,
+              active: program.active,
+              state: {
+                sessionDate: program.state.sessionDate,
+                setsDone: newSetsDone,
+              },
+            } as ProgramState,
+          ])
+        );
+      }
+    };
+
+    // useEffect(() => {
+    //   const setsAchieved =
+    //     sets.reduce((sum, set) => sum + Number(set), 0) === sets.length;
+
+    //   const achieved = !!goalAchieved && { sets: sets.length };
+
+    //   onAchievedChanged(achieved);
+    // }, [sets, onAchievedChanged]);
+
     return (
       <>
         <Card>
@@ -116,17 +158,13 @@ export const ees: TrainingProgram = {
           <div className={styles.buttons}>
             <CircularButton
               text="1"
-              checked={false}
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              checked={push > 0}
+              onClick={updateSetsDone("push", 1)}
             />
             <CircularButton
               text="2"
-              checked={false}
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              checked={push > 1}
+              onClick={updateSetsDone("push", 2)}
             />
           </div>
           <Info>(Pushup, press, handstand press, etc.)</Info>
@@ -137,17 +175,13 @@ export const ees: TrainingProgram = {
           <div className={styles.buttons}>
             <CircularButton
               text="1"
-              checked={false}
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              checked={pull > 0}
+              onClick={updateSetsDone("pull", 1)}
             />
             <CircularButton
               text="2"
-              checked={false}
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              checked={pull > 1}
+              onClick={updateSetsDone("pull", 2)}
             />
           </div>
           <Info>(Pullup, row, clean, etc.)</Info>
@@ -158,17 +192,13 @@ export const ees: TrainingProgram = {
           <div className={styles.buttons}>
             <CircularButton
               text="1"
-              checked={false}
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              checked={squat > 0}
+              onClick={updateSetsDone("squat", 1)}
             />
             <CircularButton
               text="2"
-              checked={false}
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              checked={squat > 1}
+              onClick={updateSetsDone("squat", 2)}
             />
           </div>
           <Info>(Squat, deadlift, one leg deadlift, pistol, lunge, etc.)</Info>
@@ -179,17 +209,13 @@ export const ees: TrainingProgram = {
           <div className={styles.buttons}>
             <CircularButton
               text="1"
-              checked={false}
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              checked={ab > 0}
+              onClick={updateSetsDone("ab", 1)}
             />
             <CircularButton
               text="2"
-              checked={false}
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              checked={ab > 1}
+              onClick={updateSetsDone("ab", 2)}
             />
           </div>
           <Info>
@@ -202,17 +228,13 @@ export const ees: TrainingProgram = {
           <div className={styles.buttons}>
             <CircularButton
               text="1"
-              checked={false}
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              checked={accessory > 0}
+              onClick={updateSetsDone("accessory", 1)}
             />
             <CircularButton
               text="2"
-              checked={false}
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              checked={accessory > 1}
+              onClick={updateSetsDone("accessory", 2)}
             />
           </div>
           <Info>(Have fun. Curls and such.)</Info>
