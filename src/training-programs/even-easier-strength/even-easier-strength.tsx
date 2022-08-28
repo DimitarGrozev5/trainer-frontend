@@ -1,6 +1,11 @@
 import { add } from "date-fns";
+import Card from "../../components/UI-elements/Card/Card";
 import { now, roundDate } from "../../util/date";
+import CircularButton from "../common-components/CircularButton/CircularButton";
+import { H1, H2 } from "../common-components/Headings/H";
+import Info from "../common-components/Info/Info";
 import { TrainingProgram } from "../data-types";
+import styles from "./Styles.module.css";
 
 export const ees: TrainingProgram = {
   id: "ees",
@@ -96,7 +101,123 @@ export const ees: TrainingProgram = {
     return `Scheduled: ${dos.join(", ")}`;
   },
   SessionComponent: ({ program, onAchievedChanged }) => {
-    
-    return <div>EES</div>;
+    return (
+      <>
+        <Card>
+          <H1>Even Easier Strenght</H1>
+          <Info>
+            Pick an exercise in each category and perform two sets of 5-10 reps
+          </Info>
+          <Info>If it feels too easy to work, then it's just right</Info>
+        </Card>
+
+        <Card>
+          <H2>Push</H2>
+          <div className={styles.buttons}>
+            <CircularButton
+              text="1"
+              checked={false}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+            <CircularButton
+              text="2"
+              checked={false}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          </div>
+          <Info>(Pushup, press, handstand press, etc.)</Info>
+        </Card>
+
+        <Card>
+          <H2>Pull</H2>
+          <div className={styles.buttons}>
+            <CircularButton
+              text="1"
+              checked={false}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+            <CircularButton
+              text="2"
+              checked={false}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          </div>
+          <Info>(Pullup, row, clean, etc.)</Info>
+        </Card>
+
+        <Card>
+          <H2>Squat or Hip Hinge</H2>
+          <div className={styles.buttons}>
+            <CircularButton
+              text="1"
+              checked={false}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+            <CircularButton
+              text="2"
+              checked={false}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          </div>
+          <Info>(Squat, deadlift, one leg deadlift, pistol, lunge, etc.)</Info>
+        </Card>
+
+        <Card>
+          <H2>Abdominal</H2>
+          <div className={styles.buttons}>
+            <CircularButton
+              text="1"
+              checked={false}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+            <CircularButton
+              text="2"
+              checked={false}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          </div>
+          <Info>
+            (Plank, L-sit, hanging leg lift, full contact twist, etc.)
+          </Info>
+        </Card>
+
+        <Card>
+          <H2>Accessory</H2>
+          <div className={styles.buttons}>
+            <CircularButton
+              text="1"
+              checked={false}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+            <CircularButton
+              text="2"
+              checked={false}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          </div>
+          <Info>(Have fun. Curls and such.)</Info>
+        </Card>
+      </>
+    );
   },
 };
