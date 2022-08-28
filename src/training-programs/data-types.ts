@@ -1,7 +1,7 @@
 import React from "react";
 
 // All valid programIds will be stored here
-export type ProgramId = "EnduroGrip" | "Q&D";
+export type ProgramId = "EnduroGrip" | "ees";
 
 export interface InitProps {
   value: any;

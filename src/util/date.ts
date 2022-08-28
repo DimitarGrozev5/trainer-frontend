@@ -57,6 +57,9 @@ export const roundDate = (
   return d;
 };
 
+// Get today, rounded to hours
+export const now = () => roundDate(new Date());
+
 // Check if two dates are the same, ignoring hours, minutes, seconds and miliseconds
 export const sameDate = (date1: Date, date2: Date): boolean => {
   return (
