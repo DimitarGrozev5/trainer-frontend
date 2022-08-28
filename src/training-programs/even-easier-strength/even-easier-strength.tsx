@@ -134,14 +134,14 @@ export const ees: TrainingProgram = {
       }
     };
 
-    // useEffect(() => {
-    //   const setsAchieved =
-    //     sets.reduce((sum, set) => sum + Number(set), 0) === sets.length;
+    useEffect(() => {
+      const done =
+        push === 2 && pull === 2 && squat === 2 && ab === 2 && accessory === 2;
 
-    //   const achieved = !!goalAchieved && { sets: sets.length };
+      const achieved = !!done && { push, pull, squat, ab, accessory };
 
-    //   onAchievedChanged(achieved);
-    // }, [sets, onAchievedChanged]);
+      onAchievedChanged(achieved);
+    }, [push, pull, squat, ab, accessory, onAchievedChanged]);
 
     return (
       <>
