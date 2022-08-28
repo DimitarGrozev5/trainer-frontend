@@ -13,6 +13,7 @@ import Card from "../../components/UI-elements/Card/Card";
 import CircularButton from "../common-components/CircularButton/CircularButton";
 import CountdownTimer from "../common-components/CountdownTimer/CountdownTimer";
 import Metronome from "../common-components/Metronome/Metronome";
+import Info from "../common-components/Info/Info";
 
 const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
@@ -222,13 +223,11 @@ export const enduroGrip: TrainingProgram = {
       <>
         <Card>
           <h1 className={styles.h1}>{program.name}</h1>
-          <div className={styles.paragraph}>
-            Prepare to do x{sets} Sets of dead hangs.
-          </div>
-          <div className={styles.paragraph}>
+          <Info>Prepare to do x{sets} Sets of dead hangs.</Info>
+          <Info>
             Every set should last between 30s and 60s. Strap weight to yourself
             if needed, to get in that range.
-          </div>
+          </Info>
         </Card>
         <Card>
           <h2 className={styles.h2}>Sets:</h2>
@@ -246,9 +245,7 @@ export const enduroGrip: TrainingProgram = {
         </Card>
         <Card>
           <Metronome timing={1000} />
-          <div className={styles.paragraph}>
-            This metronome will help you count out the set duration
-          </div>
+          <Info>This metronome will help you count out the set duration</Info>
         </Card>
       </>
     );
