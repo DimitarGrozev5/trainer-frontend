@@ -49,7 +49,7 @@ export const useScheduleService = (): ScheduleService => {
         }
 
         // If the target date is before the next scheduled session, return nothing
-        if (target < program.state.sessionDate.getTime()) {
+        if (target < program.state.sessionDate) {
           return [];
         }
 
@@ -58,7 +58,7 @@ export const useScheduleService = (): ScheduleService => {
 
         let [currentDate, currentState] = lastCachedDate
           ? last(Array.from(prSchedule.entries()))
-          : [program.state.sessionDate.getTime(), program.state];
+          : [program.state.sessionDate, program.state];
 
         prSchedule.set(
           currentDate,
@@ -76,7 +76,7 @@ export const useScheduleService = (): ScheduleService => {
             forceProgress: true,
             fromToday: false,
           });
-          currentDate = currentState.sessionDate.getTime();
+          currentDate = currentState.sessionDate;
 
           prSchedule.set(
             currentDate,
