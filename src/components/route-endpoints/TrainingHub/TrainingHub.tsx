@@ -18,7 +18,7 @@ import ErrorModal from "../../UI-elements/Modal/ErrorModal";
 import styles from "./TrainingHub.module.css";
 
 const TrainingHub = () => {
-  const scheduleService = useScheduleService();
+  // const scheduleService = useScheduleService();
   const dispatch = useAppDispatch();
   const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
@@ -29,7 +29,7 @@ const TrainingHub = () => {
   const [selectedDate, setSelectedDate] = useState(roundDate(new Date()));
 
   // Get workouts for selected date
-  const today = scheduleService(selectedDate);
+  // const today = scheduleService(selectedDate);
 
   const skipSessionHandler = (id: ProgramId) => async () => {
     const program = populateProgramFromState(id, workouts);
@@ -65,13 +65,13 @@ const TrainingHub = () => {
         <Calendar
           selectedDate={selectedDate}
           onChangeDate={setSelectedDate}
-          scheduleService={scheduleService}
+          // scheduleService={scheduleService}
         />
       </Card>
       <Card className={styles.today}>
         <h1>Today:</h1>
         <ul>
-          {today.map((s) => (
+          {/* {today.map((s) => (
             <li key={s.name} className={styles.scheduled}>
               <h2>{s.name}</h2>
               <div className={styles["scheduled__desc"]}>{s.sessionDesc}</div>
@@ -89,7 +89,7 @@ const TrainingHub = () => {
                 </div>
               )}
             </li>
-          ))}
+          ))} */}
         </ul>
       </Card>
     </>
