@@ -22,9 +22,6 @@ function App() {
   // Get programs data from the backend on first app load
   const { isLoading, error, clearError } = useGetInitialData();
 
-  const cache = useAppSelector((state) => state.scheduleCahce);
-  console.log(cache);
-
   return (
     <>
       {isLoading && <LoadingSpinner asOverlay />}
