@@ -18,6 +18,9 @@ import { useSState } from "../../../hooks/useSState";
 import AddWorkoutModal from "./AddWorkoutModal/AddWorkoutModal";
 import ConfirmModal from "../../UI-elements/Modal/ConfirmModal";
 import { programsActions } from "../../../redux-store/programsSlice";
+import { useHttpClient } from "../../../hooks/useHttpClient";
+import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
+import ErrorModal from "../../UI-elements/Modal/ErrorModal";
 
 const match = (query: string) => (program: TrainingProgram) => {
   return (
@@ -29,6 +32,7 @@ const match = (query: string) => (program: TrainingProgram) => {
 
 const ManagePrograms = () => {
   const dispatch = useAppDispatch();
+  const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
   // Get all programs and divide them in active and inactive
   const allPrograms = useAppSelector(populateProgramsArr());
@@ -63,15 +67,21 @@ const ManagePrograms = () => {
   // Remove Workout handler
   const removeWorkout =
     (confirmed: boolean, id: ProgramId | undefined = undefined) =>
-    () => {
+    async () => {
       if (confirmed) {
         setShowConfirmModal(false);
-        showConfirmModal &&
-          dispatch(
-            programsActions.updateProgramsState([
-              { id: showConfirmModal, active: false, state: null },
-            ])
-          );
+        if (showConfirmModal) {
+          try {
+            await sendRequest(`/${showConfirmModal}`, { method: "DELETE" });
+            dispatch(
+              programsActions.updateProgramsState([
+                { id: showConfirmModal, active: false, state: null },
+              ])
+            );
+          } catch (err) {
+            console.log(err);
+          }
+        }
       } else {
         id && setShowConfirmModal(id);
       }
@@ -79,6 +89,9 @@ const ManagePrograms = () => {
 
   return (
     <>
+      {isLoading && <LoadingSpinner asOverlay />}
+      <ErrorModal show={!!error} error={error} onClose={clearError} />
+
       <ViewWorkoutDescModal
         show={!!descModal}
         data={descModal}
