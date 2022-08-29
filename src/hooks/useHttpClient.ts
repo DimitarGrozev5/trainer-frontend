@@ -11,6 +11,7 @@ interface HttpHeaders {
 }
 
 interface Config {
+  addUserRoute?: boolean;
   body?: any;
   method?: HttpMethod;
   headers?: HttpHeaders;
@@ -32,6 +33,7 @@ export const useHttpClient = () => {
     async (
       url: string,
       {
+        addUserRoute = true,
         body = null,
         method,
         headers,
@@ -81,11 +83,11 @@ export const useHttpClient = () => {
       config.signal = httpAbortCtrl.signal;
 
       try {
+        const userRoute = addUserRoute ? `/users/${userData.userId}` : "";
+        const fullUrl = process.env.REACT_APP_BACKEND_API + userRoute + url;
+        
         // Fetch data
-        const response = await fetch(
-          process.env.REACT_APP_BACKEND_API + url,
-          config
-        );
+        const response = await fetch(fullUrl, config);
 
         // Convert to json
         const responseData = await response.json();

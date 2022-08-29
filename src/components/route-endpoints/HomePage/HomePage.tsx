@@ -93,6 +93,7 @@ const HomePage = () => {
     let userData: UserState;
     try {
       userData = await sendRequest(endpoint, {
+        addUserRoute: false,
         body,
         auth: false,
       });
