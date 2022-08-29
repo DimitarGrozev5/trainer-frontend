@@ -58,7 +58,7 @@ const TrainingHub = () => {
 
       dispatch(
         programsActions.updateProgramsState([
-          { id: response.id, active: true, state: response.nextState },
+          { id: response.id, active: true, state: response.state },
         ])
       );
     } catch (err) {
