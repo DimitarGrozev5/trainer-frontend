@@ -119,33 +119,13 @@ const BaseTemplate = () => {
         }
       }, 50);
     }
-
-    // if (latest <= 0.5) {
-    //   containerRef.current.scrollTop = 0;
-    // }
-    // if (latest > 0.5 && latest < 1) {
-    //   if (menuRef.current) {
-    //     containerRef.current.scrollTop = menuRef.current.offsetTop;
-    //   }
-    // }
   };
-
-  // useEffect(() => {
-  //   const res = () => {
-  //     // We execute the same script as before
-  //     let vh = window.innerHeight * 0.01;
-  //     document.documentElement.style.setProperty("--vh", `${vh}px`);
-  //   };
-  //   window.addEventListener("resize", res);
-  //   return () => window.removeEventListener("resize", res);
-  // }, []);
 
   return (
     <div
       className={styles.container}
       ref={containerRef}
       onTouchStart={setTouching.bind(null, true)}
-      // onTouchEnd={setTouching.bind(null, false)}
       onTouchEnd={touchEndHandler}
     >
       <header>
