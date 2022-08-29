@@ -1,5 +1,6 @@
 import { createSlice, Middleware } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { add, compareAsc } from "date-fns";
 import { programs } from "../training-programs";
 
 import { ProgramId, TrainingProgram } from "../training-programs/data-types";
@@ -74,38 +75,24 @@ export const scheduleCacheMiddleware: Middleware =
       let cache = {} as ScheduledDate;
 
       //// Create a cache for the next three months
-      const startDate = program.state.sessionDate;
-      const endDate = startDate + 3 * 30 * 24 * 60 * 60 * 1000;
+      let currentDate = new Date(program.state.sessionDate);
+      const endDate = add(currentDate, { months: 3 });
 
-      let nextSession: ScheduledDate = {
-        [startDate]: new ScheduledSession(
-          program.id,
-          program.name,
-          program.shortDesc,
-          program.getDescFromState(program.state),
-          program.state
-        ),
-      };
-      cache = { ...cache, ...nextSession };
-      let nextState = program.getNextState(
-        program.state,
-        {},
-        { forceProgress: true, fromToday: false }
-      );
+      let nextState = program.state;
 
-      for (let i = startDate; i < endDate; i += 24 * 60 * 60 * 1000) {
+      while (compareAsc(currentDate, endDate) <= 0) {
         let today: ScheduledDate = {
-          [i]: null,
+          [currentDate.getTime()]: null,
         };
 
-        if (i === nextState.sessionDate) {
+        if (compareAsc(currentDate, nextState.sessionDate) === 0) {
           today = {
-            [startDate]: new ScheduledSession(
+            [currentDate.getTime()]: new ScheduledSession(
               program.id,
               program.name,
               program.shortDesc,
-              program.getDescFromState(program.state),
-              program.state
+              program.getDescFromState(nextState),
+              nextState
             ),
           };
 
@@ -117,7 +104,39 @@ export const scheduleCacheMiddleware: Middleware =
         }
 
         cache = { ...cache, ...today };
+
+        currentDate = add(currentDate, { days: 1 });
       }
+
+      // for (let i = startDate; i < endDate; i += 24 * 60 * 60 * 1000) {
+      //   let today: ScheduledDate = {
+      //     [i]: null,
+      //   };
+
+      //   console.log(i);
+      //   console.log(nextState.sessionDate);
+      //   console.log(i === nextState.sessionDate);
+
+      //   if (i === nextState.sessionDate) {
+      //     today = {
+      //       [startDate]: new ScheduledSession(
+      //         program.id,
+      //         program.name,
+      //         program.shortDesc,
+      //         program.getDescFromState(program.state),
+      //         program.state
+      //       ),
+      //     };
+
+      //     nextState = program.getNextState(
+      //       nextState,
+      //       {},
+      //       { forceProgress: true, fromToday: false }
+      //     );
+      //   }
+
+      //   cache = { ...cache, ...today };
+      // }
 
       dispatch(
         scheduleCacheActions.addToCache({ program: p.id, dates: cache })

@@ -1,6 +1,5 @@
 import React from "react";
 import { useAppSelector } from "../../../hooks/redux-hooks";
-import { ScheduleService } from "../../../hooks/ScheduleService/training-schedule-types";
 
 import styles from "./CalendarDay.module.css";
 
@@ -9,7 +8,6 @@ interface Props {
 }
 
 const CalendarDay: React.FC<Props> = ({ date }) => {
-  // const today = (schedule && schedule(date)) || [];
   // TODO: Move this selector in a separate function
   const today = useAppSelector((state) =>
     Object.entries(state.scheduleCache).flatMap(([, schedule]) => {
