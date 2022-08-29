@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Outlet, useLocation } from "react-router-dom";
 import styles from "./BaseTemplate.module.css";
@@ -39,67 +39,120 @@ const BaseTemplate = () => {
   // Change headers opacity and position based on scroll position
   const cutoff1 = 0.6;
   const cutoff2 = 0.75;
-  const fadeOutAnim = useTransform(
+  const h1FadeOutAnim = useTransform(
     scrollYProgress,
     [0, cutoff1, cutoff2, 1],
     [1, 0, 0, 0]
   );
-  const yOutAnim = useTransform(
+  const h1yOutAnim = useTransform(
     scrollYProgress,
     [0, cutoff1, cutoff2, 1],
     ["0vh", "8vh", "0vh", "0vh"]
   );
-  const fadeInAnim = useTransform(
+  const h3FadeInAnim = useTransform(
     scrollYProgress,
     [0, cutoff1, cutoff2, 1],
     [0, 0, 1, 1]
   );
+  const fixedMenuOpacityAnim = useTransform(
+    scrollYProgress,
+    [0, 0.999999, 1],
+    [0, 0, 1]
+  );
 
-  // Change H3 position to fixed when it's on top
-  scrollYProgress.onChange((latest) => {
-    if (!menuRef.current) {
-      return;
-    }
-    if (latest >= 1) {
-      menuRef.current.style.position = "fixed";
-      menuRef.current.style.left = "0.5rem";
-      menuRef.current.style.right = "0.5rem";
-      return;
-    }
-    if (latest < 0.9) {
-      menuRef.current.style.position = "relative";
-      menuRef.current.style.left = "0px";
-      menuRef.current.style.right = "0px";
-    }
-  });
+  // Handle sticking positions
+  const cancelableTimeout = useRef<NodeJS.Timer>();
+  const [touching, setTouching] = useState(false);
+  useEffect(() => {
+    const unsub = scrollYProgress.onChange((latest) => {
+      clearTimeout(cancelableTimeout.current);
+
+      if (!menuRef.current) {
+        return;
+      }
+      if (!touching) {
+        if (latest <= 0.5) {
+          cancelableTimeout.current = setTimeout(() => {
+            if (containerRef.current) {
+              containerRef.current.scrollTop = 0;
+            }
+          }, 50);
+        }
+        if (latest > 0.5 && latest < 1) {
+          cancelableTimeout.current = setTimeout(() => {
+            if (menuRef.current && containerRef.current) {
+              containerRef.current.scrollTop = menuRef.current.offsetTop;
+            }
+          }, 50);
+        }
+      }
+    });
+
+    return () => {
+      unsub();
+      // clearTimeout(cancelableTimeout.current);
+    };
+  }, [touching]);
 
   // Snap to H1 or H3 when the user scrolls
   // TODO: there are some bugs here
   // When the user fliks to fast scroll, the page doesn't snap to the H1 or H3
   const touchEndHandler = () => {
+    setTouching(false);
+
     const latest = scrollYProgress.get();
     if (!containerRef.current) {
       return;
     }
 
     if (latest <= 0.5) {
-      containerRef.current.scrollTop = 0;
+      cancelableTimeout.current = setTimeout(() => {
+        if (containerRef.current) {
+          containerRef.current.scrollTop = 0;
+        }
+      }, 50);
     }
     if (latest > 0.5 && latest < 1) {
-      if (menuRef.current) {
-        containerRef.current.scrollTop = menuRef.current.offsetTop;
-      }
+      cancelableTimeout.current = setTimeout(() => {
+        if (menuRef.current && containerRef.current) {
+          containerRef.current.scrollTop = menuRef.current.offsetTop;
+        }
+      }, 50);
     }
+
+    // if (latest <= 0.5) {
+    //   containerRef.current.scrollTop = 0;
+    // }
+    // if (latest > 0.5 && latest < 1) {
+    //   if (menuRef.current) {
+    //     containerRef.current.scrollTop = menuRef.current.offsetTop;
+    //   }
+    // }
   };
+
+  // useEffect(() => {
+  //   const res = () => {
+  //     // We execute the same script as before
+  //     let vh = window.innerHeight * 0.01;
+  //     document.documentElement.style.setProperty("--vh", `${vh}px`);
+  //   };
+  //   window.addEventListener("resize", res);
+  //   return () => window.removeEventListener("resize", res);
+  // }, []);
 
   return (
     <div
       className={styles.container}
       ref={containerRef}
+      onTouchStart={setTouching.bind(null, true)}
+      // onTouchEnd={setTouching.bind(null, false)}
       onTouchEnd={touchEndHandler}
     >
       <header>
-        <motion.h1 ref={h1Ref} style={{ opacity: fadeOutAnim, y: yOutAnim }}>
+        <motion.h1
+          ref={h1Ref}
+          style={{ opacity: h1FadeOutAnim, y: h1yOutAnim }}
+        >
           {pageTitle || "Trainer"}
         </motion.h1>
         <div className={styles.menu} ref={menuRef}>
@@ -109,7 +162,7 @@ const BaseTemplate = () => {
             </Button>
           )}
 
-          <motion.h3 ref={h3Ref} style={{ opacity: fadeInAnim }} layout>
+          <motion.h3 ref={h3Ref} style={{ opacity: h3FadeInAnim }} layout>
             {pageTitle || "Trainer"}
           </motion.h3>
 
@@ -130,6 +183,37 @@ const BaseTemplate = () => {
             )}
           </div>
         </div>
+        <motion.div
+          className={`${styles.menu} ${styles["menu-fixed"]}`}
+          style={{ opacity: fixedMenuOpacityAnim }}
+        >
+          {pageTitle && (
+            <Button to="/" plain>
+              {"<"}
+            </Button>
+          )}
+
+          <motion.h3 ref={h3Ref} style={{ opacity: h3FadeInAnim }} layout>
+            {pageTitle || "Trainer"}
+          </motion.h3>
+
+          <div className={styles.button}>
+            {isLoggedIn && !pageTitle && (
+              <>
+                <button onClick={setMenuIsOpenTo(true)}>
+                  <img src="/menu.png" alt="menu" />
+                </button>
+
+                <ContextMenu
+                  show={menuIsOpen}
+                  onClose={setMenuIsOpenTo(false)}
+                  links={links}
+                  direction={"left"}
+                />
+              </>
+            )}
+          </div>
+        </motion.div>
       </header>
       <main>
         <Outlet />
