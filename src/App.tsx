@@ -9,6 +9,7 @@ import BaseTemplate from "./components/templates/BaseTemplate/BaseTemplate";
 import FullScreenTemplate from "./components/templates/FullScreenTemplate/FullScreenTemplate";
 import LoadingSpinner from "./components/UI-elements/LoadingSpinner/LoadingSpinner";
 import ErrorModal from "./components/UI-elements/Modal/ErrorModal";
+import { useAppSelector } from "./hooks/redux-hooks";
 import ScheduleCacheProvider from "./hooks/ScheduleService/schedule-cache-context";
 import { useAuth } from "./hooks/useAuth";
 import { useGetInitialData } from "./hooks/useGetInitialData";
@@ -20,6 +21,9 @@ function App() {
 
   // Get programs data from the backend on first app load
   const { isLoading, error, clearError } = useGetInitialData();
+
+  const cache = useAppSelector((state) => state.scheduleCahce);
+  console.log(cache);
 
   return (
     <>

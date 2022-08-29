@@ -35,7 +35,7 @@ const scheduleCacheSlice = createSlice({
 
   reducers: {
     addToCache: (state, action: PayloadAction<Payload>) => {
-      state = { ...state, [action.payload.program]: action.payload.dates };
+      state[action.payload.program] = action.payload.dates;
     },
     removeProgram: (state, action: PayloadAction<ProgramId>) => {
       delete state[action.payload];
