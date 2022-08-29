@@ -9,35 +9,41 @@ import BaseTemplate from "./components/templates/BaseTemplate/BaseTemplate";
 import FullScreenTemplate from "./components/templates/FullScreenTemplate/FullScreenTemplate";
 import ScheduleCacheProvider from "./hooks/ScheduleService/schedule-cache-context";
 import { useAuth } from "./hooks/useAuth";
+import { useGetInitialData } from "./hooks/useGetInitialData";
 
 function App() {
   // Get authorization data from localStorage
-  // const token = useAuth().token;
-  const token = true;
+  const token = useAuth().token;
+  // const token = true;
+
+  // Get programs data from the backend on first app load
+  useGetInitialData();
 
   return (
-    <ScheduleCacheProvider>
-      <Routes>
-        <Route path="/" element={<BaseTemplate />}>
-          {!token && <Route index element={<HomePage />} />}
-          {!!token && (
-            <>
-              <Route index element={<TrainingHub />} />
-              <Route path="/manage-programs" element={<ManagePrograms />} />
-            </>
-          )}
-        </Route>
-
-        {!!token && (
-          <Route path="/active" element={<FullScreenTemplate />}>
-            <Route path=":programId" element={<ActiveSession />} />
+    <>
+      <ScheduleCacheProvider>
+        <Routes>
+          <Route path="/" element={<BaseTemplate />}>
+            {!token && <Route index element={<HomePage />} />}
+            {!!token && (
+              <>
+                <Route index element={<TrainingHub />} />
+                <Route path="/manage-programs" element={<ManagePrograms />} />
+              </>
+            )}
           </Route>
-        )}
 
-        {!!token && <Route path="/logout" element={<Logout />} />}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </ScheduleCacheProvider>
+          {!!token && (
+            <Route path="/active" element={<FullScreenTemplate />}>
+              <Route path=":programId" element={<ActiveSession />} />
+            </Route>
+          )}
+
+          {!!token && <Route path="/logout" element={<Logout />} />}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </ScheduleCacheProvider>
+    </>
   );
 }
 

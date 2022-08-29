@@ -16,6 +16,9 @@ import {
   programsActions,
   ProgramState,
 } from "../../../../redux-store/programsSlice";
+import { useHttpClient } from "../../../../hooks/useHttpClient";
+import LoadingSpinner from "../../../UI-elements/LoadingSpinner/LoadingSpinner";
+import ErrorModal from "../../../UI-elements/Modal/ErrorModal";
 
 interface Props {
   show: boolean;
@@ -25,6 +28,7 @@ interface Props {
 
 const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
   const dispatch = useAppDispatch();
+  const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
   const getter = id ? populateProgram(id) : voidGetter;
   const workout = useAppSelector<TrainingProgram | void>(getter);
@@ -32,16 +36,29 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
   // Get state for InitComponent
   const [initState, setInitState] = useState<any>({});
 
-  const addProgramHandler = () => {
+  const addProgramHandler = async () => {
     if (workout) {
       // Get init data
       const initData = workout.getInitData(initState);
 
+      // Send request
+      let response: ProgramState[] = [];
+      try {
+        const res = await sendRequest("/", {
+          body: { id: workout.id, state: initData },
+        });
+
+        response = [{ id: res.id, active: true, state: res.state }];
+      } catch (err) {
+        console.log(err);
+      }
+
       // Update Redux
       dispatch(
-        programsActions.updateProgramsState([
-          { id: workout.id, active: true, state: initData } as ProgramState,
-        ])
+        programsActions.updateProgramsState(
+          // [{ id: workout.id, active: true, state: initData } as ProgramState,]
+          response
+        )
       );
     }
 
@@ -66,9 +83,19 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
   };
 
   return (
-    <Modal title={"Add " + name} show={show} buttons={btns} onClose={onCancel}>
-      <InitComponent value={initState} onChange={setInitState} />
-    </Modal>
+    <>
+      {isLoading && <LoadingSpinner asOverlay />}
+      <ErrorModal show={!!error} error={error} onClose={clearError} />
+
+      <Modal
+        title={"Add " + name}
+        show={show}
+        buttons={btns}
+        onClose={onCancel}
+      >
+        <InitComponent value={initState} onChange={setInitState} />
+      </Modal>
+    </>
   );
 };
 

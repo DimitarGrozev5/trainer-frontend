@@ -51,7 +51,7 @@ export const enduroGrip: TrainingProgram = {
     // Update value when settings change
     useEffect(() => {
       if (!isEqual(value.startDate, startDate) || value.schedule !== schedule) {
-        onChange({ startDate, schedule: schedule });
+        onChange({ startDate: startDate.getTime(), schedule: schedule });
       }
     }, [startDate, schedule, value.startDate, value.schedule, onChange]);
 
@@ -104,7 +104,7 @@ export const enduroGrip: TrainingProgram = {
     schedule: number[];
   }) => {
     return {
-      sessionDate: startDate,
+      sessionDate: startDate.getTime(),
       sessionIndex: 0,
       lastHeavySessionAchieved: 9,
       schedule,
@@ -121,12 +121,14 @@ export const enduroGrip: TrainingProgram = {
     }
   ) => {
     const {
-      sessionDate,
+      sessionDate: sessionDateUtc,
       sessionIndex,
       lastHeavySessionAchieved,
       schedule,
       currentScheduleIndex,
     } = prevState;
+
+    const sessionDate = new Date(sessionDateUtc);
 
     const trainingPlan = new CircularArray(trainingRotation, sessionIndex);
 
@@ -164,7 +166,7 @@ export const enduroGrip: TrainingProgram = {
     }
 
     return {
-      sessionDate: nextSessionDate,
+      sessionDate: nextSessionDate.getTime(),
       sessionIndex: nextSessionIndex,
       lastHeavySessionAchieved: heavySessionAchieved,
       schedule,
