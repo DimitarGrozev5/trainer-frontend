@@ -7,6 +7,8 @@ import ManagePrograms from "./components/route-endpoints/ManagePrograms/ManagePr
 import TrainingHub from "./components/route-endpoints/TrainingHub/TrainingHub";
 import BaseTemplate from "./components/templates/BaseTemplate/BaseTemplate";
 import FullScreenTemplate from "./components/templates/FullScreenTemplate/FullScreenTemplate";
+import LoadingSpinner from "./components/UI-elements/LoadingSpinner/LoadingSpinner";
+import ErrorModal from "./components/UI-elements/Modal/ErrorModal";
 import ScheduleCacheProvider from "./hooks/ScheduleService/schedule-cache-context";
 import { useAuth } from "./hooks/useAuth";
 import { useGetInitialData } from "./hooks/useGetInitialData";
@@ -17,10 +19,13 @@ function App() {
   // const token = true;
 
   // Get programs data from the backend on first app load
-  useGetInitialData();
+  const { isLoading, error, clearError } = useGetInitialData();
 
   return (
     <>
+      {isLoading && <LoadingSpinner asOverlay />}
+      <ErrorModal show={!!error} error={error} onClose={clearError} />
+
       <ScheduleCacheProvider>
         <Routes>
           <Route path="/" element={<BaseTemplate />}>
