@@ -16,7 +16,15 @@ interface CommonProps {
 
 type CombinationProps =
   | {
-      type: "text" | "email";
+      type: "text";
+      value: string;
+      onChange: (val: string) => void;
+      onBlur?: (val: string) => void;
+      options?: never;
+      addClearBtn?: boolean;
+    }
+  | {
+      type: "email";
       value: string;
       onChange: (val: string) => void;
       onBlur?: (val: string) => void;
@@ -100,7 +108,7 @@ const Input: React.FC<Props> = ({
   let inputElement = <></>;
   switch (type) {
     case "text":
-    case "password":
+    case "email":
       inputElement = (
         <input
           className={classNames.join(" ")}
