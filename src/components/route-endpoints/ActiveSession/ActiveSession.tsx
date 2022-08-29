@@ -16,7 +16,6 @@ import Card from "../../UI-elements/Card/Card";
 import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
 import ConfirmModal from "../../UI-elements/Modal/ConfirmModal";
 import ErrorModal from "../../UI-elements/Modal/ErrorModal";
-import Modal from "../../UI-elements/Modal/Modal";
 
 const ActiveSession = () => {
   const navigate = useNavigate();

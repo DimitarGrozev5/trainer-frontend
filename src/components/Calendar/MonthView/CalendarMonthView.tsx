@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { ScheduleService } from "../../../hooks/ScheduleService/training-schedule-types";
 import { getMonthArr, sameDate, sameMonth } from "../../../util/date";
 import CalendarDay from "../CalendarDay/CalendarDay";
 import styles from "./MonthView.module.css";

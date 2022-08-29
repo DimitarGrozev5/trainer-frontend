@@ -92,7 +92,7 @@ const BaseTemplate = () => {
       unsub();
       // clearTimeout(cancelableTimeout.current);
     };
-  }, [touching]);
+  }, [touching, scrollYProgress]);
 
   // Snap to H1 or H3 when the user scrolls
   // TODO: there are some bugs here

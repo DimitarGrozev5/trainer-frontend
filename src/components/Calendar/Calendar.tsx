@@ -1,6 +1,5 @@
 import { add } from "date-fns";
 import React, { useState } from "react";
-import { ScheduleService } from "../../hooks/ScheduleService/training-schedule-types";
 import { getMonthName } from "../../util/date";
 import styles from "./Calendar.module.css";
 import CalendarHeader from "./CalendarHeader/CalendarHeader";
