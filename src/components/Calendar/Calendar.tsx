@@ -11,16 +11,11 @@ import CalendarYearView from "./YearView/CalendarYearView";
 interface Props {
   selectedDate: Date;
   onChangeDate: (num: Date) => void;
-  scheduleService?: ScheduleService;
 }
 
 type CalendarView = "month" | "year" | "dacade";
 
-const Calendar: React.FC<Props> = ({
-  selectedDate,
-  onChangeDate,
-  scheduleService,
-}) => {
+const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
   // Calendar view mode
   const [viewMode, setViewMode] = useState<CalendarView>("month");
 
@@ -52,7 +47,6 @@ const Calendar: React.FC<Props> = ({
           targetDate={targetDate}
           selectedDate={selectedDate}
           setSelectedDate={onChangeDate}
-          scheduleService={scheduleService}
         />
       );
       break;
