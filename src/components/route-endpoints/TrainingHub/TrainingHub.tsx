@@ -5,7 +5,6 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../hooks/redux-hooks";
-import { useScheduleService } from "../../../hooks/ScheduleService/useScheduleService";
 import { useHttpClient } from "../../../hooks/useHttpClient";
 import { programsActions } from "../../../redux-store/programsSlice";
 import { ProgramId } from "../../../training-programs/data-types";
@@ -18,7 +17,6 @@ import ErrorModal from "../../UI-elements/Modal/ErrorModal";
 import styles from "./TrainingHub.module.css";
 
 const TrainingHub = () => {
-  // const scheduleService = useScheduleService();
   const dispatch = useAppDispatch();
   const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
@@ -30,6 +28,18 @@ const TrainingHub = () => {
 
   // Get workouts for selected date
   // const today = scheduleService(selectedDate);
+  const today = useAppSelector((state) =>
+    Object.entries(state.scheduleCache).flatMap(([, schedule]) => {
+      if (
+        selectedDate.getTime() in schedule &&
+        schedule[selectedDate.getTime()]
+      ) {
+        const sc = schedule[selectedDate.getTime()];
+        return sc ? sc : [];
+      }
+      return [];
+    })
+  );
 
   const skipSessionHandler = (id: ProgramId) => async () => {
     const program = populateProgramFromState(id, workouts);
@@ -65,13 +75,12 @@ const TrainingHub = () => {
         <Calendar
           selectedDate={selectedDate}
           onChangeDate={setSelectedDate}
-          // scheduleService={scheduleService}
         />
       </Card>
       <Card className={styles.today}>
         <h1>Today:</h1>
         <ul>
-          {/* {today.map((s) => (
+          {today.map((s) => (
             <li key={s.name} className={styles.scheduled}>
               <h2>{s.name}</h2>
               <div className={styles["scheduled__desc"]}>{s.sessionDesc}</div>
@@ -89,7 +98,7 @@ const TrainingHub = () => {
                 </div>
               )}
             </li>
-          ))} */}
+          ))}
         </ul>
       </Card>
     </>
