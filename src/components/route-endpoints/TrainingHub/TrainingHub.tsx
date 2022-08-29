@@ -32,17 +32,17 @@ const TrainingHub = () => {
   const today = scheduleService(selectedDate);
 
   const skipSessionHandler = (id: ProgramId) => async () => {
-    const workout = populateProgramFromState(id, workouts);
+    const program = populateProgramFromState(id, workouts);
 
-    const nextState = workout.getNextState(
-      workout.state,
+    const nextState = program.getNextState(
+      program.state,
       {},
       { forceProgress: false, fromToday: false }
     );
 
     try {
-      const response = await sendRequest(`/${workout.id}`, {
-        body: { id: workout.id, state: nextState },
+      const response = await sendRequest(`/${program.id}`, {
+        body: { id: program.id, state: nextState },
         method: "PATCH",
       });
 
