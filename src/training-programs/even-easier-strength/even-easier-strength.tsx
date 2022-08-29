@@ -48,7 +48,7 @@ export const ees: TrainingProgram = {
   getInitData: () => {
     const now = roundDate(new Date());
     return {
-      sessionDate: now,
+      sessionDate: now.getTime(),
       setsDone: {
         push: 0,
         pull: 0,
@@ -69,15 +69,17 @@ export const ees: TrainingProgram = {
   ) => {
     // Destructure session data
     const {
-      sessionDate,
+      sessionDate: UTCDate,
       setsDone: { push, pull, squat, ab, accessory },
     } = state;
+
+    const sessionDate = new Date(UTCDate);
 
     const cDate = fromToday ? now() : sessionDate;
     const nextSessionDate = add(cDate, { days: 1 });
 
     return {
-      sessionDate: nextSessionDate,
+      sessionDate: nextSessionDate.getTime(),
       setsDone: {
         push: 0,
         pull: 0,
@@ -90,7 +92,6 @@ export const ees: TrainingProgram = {
   getDescFromState: (state: any): string => {
     // Destructure session data
     const {
-      sessionDate,
       setsDone: { push, pull, squat, ab, accessory },
     } = state;
 
