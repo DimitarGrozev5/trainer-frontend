@@ -6,17 +6,21 @@ import {
   useAppSelector,
 } from "../../../hooks/redux-hooks";
 import { useScheduleService } from "../../../hooks/ScheduleService/useScheduleService";
+import { useHttpClient } from "../../../hooks/useHttpClient";
 import { programsActions } from "../../../redux-store/programsSlice";
 import { ProgramId } from "../../../training-programs/data-types";
 import { roundDate } from "../../../util/date";
 import Calendar from "../../Calendar/Calendar";
 import Button from "../../UI-elements/Button/Button";
 import Card from "../../UI-elements/Card/Card";
+import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
+import ErrorModal from "../../UI-elements/Modal/ErrorModal";
 import styles from "./TrainingHub.module.css";
 
 const TrainingHub = () => {
   const scheduleService = useScheduleService();
   const dispatch = useAppDispatch();
+  const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
   // Get workouts
   const workouts = useAppSelector((state) => state.programs);
@@ -27,7 +31,7 @@ const TrainingHub = () => {
   // Get workouts for selected date
   const today = scheduleService(selectedDate);
 
-  const skipSessionHandler = (id: ProgramId) => () => {
+  const skipSessionHandler = (id: ProgramId) => async () => {
     const workout = populateProgramFromState(id, workouts);
 
     const nextState = workout.getNextState(
@@ -36,15 +40,27 @@ const TrainingHub = () => {
       { forceProgress: false, fromToday: false }
     );
 
-    dispatch(
-      programsActions.updateProgramsState([
-        { id: workout.id, active: workout.active, state: nextState },
-      ])
-    );
+    try {
+      const response = await sendRequest(`/${workout.id}`, {
+        body: { id: workout.id, state: nextState },
+        method: "PATCH",
+      });
+
+      dispatch(
+        programsActions.updateProgramsState([
+          { id: response.id, active: true, state: response.nextState },
+        ])
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <>
+      {isLoading && <LoadingSpinner asOverlay />}
+      <ErrorModal show={!!error} error={error} onClose={clearError} />
+
       <Card className={styles.calendar}>
         <Calendar
           selectedDate={selectedDate}
