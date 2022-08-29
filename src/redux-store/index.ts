@@ -10,7 +10,7 @@ const store = configureStore({
   reducer: {
     user: userReducer,
     programs: programsReducer,
-    scheduleCahce: scheduleCacheReducer,
+    scheduleCache: scheduleCacheReducer,
   },
   middleware: [userMiddleware, scheduleCacheMiddleware],
 });
