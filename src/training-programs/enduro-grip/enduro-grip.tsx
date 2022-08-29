@@ -104,7 +104,7 @@ export const enduroGrip: TrainingProgram = {
     schedule: number[];
   }) => {
     return {
-      sessionDate: startDate.getTime(),
+      sessionDate: startDate,
       sessionIndex: 0,
       lastHeavySessionAchieved: 9,
       schedule,
