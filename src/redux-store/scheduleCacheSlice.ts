@@ -60,7 +60,7 @@ export const scheduleCacheMiddleware: Middleware =
     action.payload.forEach((p: ProgramState) => {
       // If the program is changed to inactive, remove it from the cache
       if (!p.active) {
-        dispatch(scheduleCacheActions.removeProgram(p.id));
+        return dispatch(scheduleCacheActions.removeProgram(p.id));
       }
 
       // Get full program data
