@@ -18,9 +18,6 @@ import { useSState } from "../../../hooks/useSState";
 import AddWorkoutModal from "./AddWorkoutModal/AddWorkoutModal";
 import ConfirmModal from "../../UI-elements/Modal/ConfirmModal";
 import { programsActions } from "../../../redux-store/programsSlice";
-import { useHttpClient } from "../../../hooks/useHttpClient";
-import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
-import ErrorModal from "../../UI-elements/Modal/ErrorModal";
 
 const match = (query: string) => (program: TrainingProgram) => {
   return (
@@ -32,7 +29,6 @@ const match = (query: string) => (program: TrainingProgram) => {
 
 const ManagePrograms = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
   // Get all programs and divide them in active and inactive
   const allPrograms = useAppSelector(populateProgramsArr());
@@ -80,9 +76,6 @@ const ManagePrograms = () => {
 
   return (
     <>
-      {isLoading && <LoadingSpinner asOverlay />}
-      <ErrorModal show={!!error} error={error} onClose={clearError} />
-
       <ViewWorkoutDescModal
         show={!!descModal}
         data={descModal}

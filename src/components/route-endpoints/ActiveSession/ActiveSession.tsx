@@ -5,7 +5,6 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../hooks/redux-hooks";
-import { useHttpClient } from "../../../hooks/useHttpClient";
 import { programsActions } from "../../../redux-store/programsSlice";
 import {
   ProgramId,
@@ -13,14 +12,11 @@ import {
 } from "../../../training-programs/data-types";
 import Button from "../../UI-elements/Button/Button";
 import Card from "../../UI-elements/Card/Card";
-import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
 import ConfirmModal from "../../UI-elements/Modal/ConfirmModal";
-import ErrorModal from "../../UI-elements/Modal/ErrorModal";
 
 const ActiveSession = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
   const programId = useParams().programId as ProgramId;
 
@@ -58,9 +54,6 @@ const ActiveSession = () => {
 
   return (
     <>
-      {isLoading && <LoadingSpinner asOverlay />}
-      <ErrorModal show={!!error} error={error} onClose={clearError} />
-
       <ConfirmModal
         show={showConfirmExit}
         message={"The session is not over. Are you sure you want to exit?"}
