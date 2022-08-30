@@ -49,20 +49,7 @@ const ActiveSession = () => {
     if (achieved) {
       // If the goal is achieved, get next state and exit
       const nextState = program.getNextState(program.state, achieved);
-      try {
-        const response = await sendRequest(`/${program.id}`, {
-          body: { id: program.id, state: nextState },
-          method: "PATCH",
-        });
-
-        dispatch(
-          programsActions.updateProgramsState([
-            { id: response.id, active: true, state: response.state },
-          ])
-        );
-      } catch (err) {
-        console.log(err);
-      }
+      dispatch(programsActions.update({ id: program.id, state: nextState }));
       // setShowInfoModal(true);
     }
 
