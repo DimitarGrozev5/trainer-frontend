@@ -1,10 +1,10 @@
 .name {
-  font-size: 1rem;
+  font-size: 0.7rem;
 }
 
 .small-cal td,
 .small-cal th {
-  font-size: 0.7rem;
+  font-size: 0.45rem;
 }
 
 .today {

@@ -8,9 +8,10 @@
 
 .day > header {
   text-align: left;
+  font-size: 0.6rem;
 }
 
 .day > section {
-  font-size: 0.6rem;
+  font-size: 0.5rem;
   overflow: hidden;
 }
