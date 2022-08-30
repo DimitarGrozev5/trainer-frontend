@@ -4,8 +4,6 @@ import useSound from "use-sound";
 import tickSound from "../../../static/tick.mp3";
 import Button from "../../../components/UI-elements/Button/Button";
 
-import styles from "./Metronome.module.css";
-
 type miliseconds = number;
 
 interface Props {
@@ -44,7 +42,7 @@ const Metronome: React.FC<Props> = ({ timing }) => {
     }
 
     return () => clearInterval(timer);
-  }, [ticking, nextTick, timing]);
+  }, [ticking, nextTick, timing, playSound]);
 
   return (
     <Button stretch onClick={toggleTicking}>

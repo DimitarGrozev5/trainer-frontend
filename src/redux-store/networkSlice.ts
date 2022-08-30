@@ -9,10 +9,10 @@ export interface NetworkState {
 const networkSlice = createSlice({
   name: "user",
 
-  initialState: <NetworkState>{
+  initialState: {
     isLoading: false,
     error: null,
-  },
+  } as NetworkState,
 
   reducers: {
     setIsLoading: (state, action: PayloadAction<boolean>) => {

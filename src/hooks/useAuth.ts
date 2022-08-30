@@ -77,7 +77,7 @@ export const useAuth = () => {
 
       dispatch(userActions.setUserData(newState));
     })();
-  }, [dispatch]);
+  }, [dispatch, sendRequest]);
 
   return userData;
 };
