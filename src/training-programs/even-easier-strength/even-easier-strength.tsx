@@ -1,11 +1,8 @@
 import { add } from "date-fns";
 import { useEffect } from "react";
 import Card from "../../components/UI-elements/Card/Card";
-import LoadingSpinner from "../../components/UI-elements/LoadingSpinner/LoadingSpinner";
-import ErrorModal from "../../components/UI-elements/Modal/ErrorModal";
 import { useAppDispatch } from "../../hooks/redux-hooks";
-import { useHttpClient } from "../../hooks/useHttpClient";
-import { programsActions, ProgramState } from "../../redux-store/programsSlice";
+import { programsActions } from "../../redux-store/programsSlice";
 import { now, roundDate } from "../../util/date";
 import CircularButton from "../common-components/CircularButton/CircularButton";
 import { H1, H2 } from "../common-components/Headings/H";
@@ -107,8 +104,6 @@ export const ees: TrainingProgram = {
   SessionComponent: ({ program, onAchievedChanged }) => {
     const dispatch = useAppDispatch();
 
-    const { isLoading, error, clearError, sendRequest } = useHttpClient();
-
     const { setsDone } = program.state;
     const { push, pull, squat, ab, accessory } = setsDone;
 
@@ -122,30 +117,16 @@ export const ees: TrainingProgram = {
           accessory,
           [target]: sets,
         };
-        try {
-          const response = await sendRequest(`/${program.id}`, {
-            body: {
-              id: program.id,
-              state: {
-                sessionDate: program.state.sessionDate,
-                setsDone: newSetsDone,
-              },
-            },
-            method: "PATCH",
-          });
 
-          dispatch(
-            programsActions.updateProgramsState([
-              {
-                id: response.id,
-                active: true,
-                state: response.state,
-              } as ProgramState,
-            ])
-          );
-        } catch (err) {
-          console.log(err);
-        }
+        dispatch(
+          programsActions.update({
+            id: program.id,
+            state: {
+              sessionDate: program.state.sessionDate,
+              setsDone: newSetsDone,
+            },
+          })
+        );
       }
     };
 
@@ -160,9 +141,6 @@ export const ees: TrainingProgram = {
 
     return (
       <>
-        {isLoading && <LoadingSpinner centerPage />}
-        <ErrorModal show={!!error} error={error} onClose={clearError} />
-
         <Card>
           <H1>Even Easier Strenght</H1>
           <Info>
