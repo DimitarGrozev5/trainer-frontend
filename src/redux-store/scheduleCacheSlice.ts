@@ -108,36 +108,6 @@ export const scheduleCacheMiddleware: Middleware =
         currentDate = add(currentDate, { days: 1 });
       }
 
-      // for (let i = startDate; i < endDate; i += 24 * 60 * 60 * 1000) {
-      //   let today: ScheduledDate = {
-      //     [i]: null,
-      //   };
-
-      //   console.log(i);
-      //   console.log(nextState.sessionDate);
-      //   console.log(i === nextState.sessionDate);
-
-      //   if (i === nextState.sessionDate) {
-      //     today = {
-      //       [startDate]: new ScheduledSession(
-      //         program.id,
-      //         program.name,
-      //         program.shortDesc,
-      //         program.getDescFromState(program.state),
-      //         program.state
-      //       ),
-      //     };
-
-      //     nextState = program.getNextState(
-      //       nextState,
-      //       {},
-      //       { forceProgress: true, fromToday: false }
-      //     );
-      //   }
-
-      //   cache = { ...cache, ...today };
-      // }
-
       dispatch(
         scheduleCacheActions.addToCache({ program: p.id, dates: cache })
       );
