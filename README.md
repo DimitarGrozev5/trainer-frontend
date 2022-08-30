@@ -36,6 +36,10 @@ A _user middleware_ is added to the Redux Store. The middleware handles storing 
 
 The **Programs Slice** contains data about all of the supported programs. Each program has an _id_, an _active_ status and a _data_ property. The `ProgramId` data type contains all valid ids of training programs. If a training program is active, it must have a _data_ property, that is an Object.
 
+### Schedule Cache Slice
+
+Programs are usually scheduled at irregular intervals and is not simple to calculate the progression for reps and set schemes. For this reason the **Schedule Cache Slice** stores the scheduled training sessions for the next three months. There is also a **Middleware**, that listens dispatches that change the **proramsSlice** and recalculates the schedule cache.
+
 ## Routing
 
 Routing is achieved through **React Router v6**.
@@ -52,17 +56,21 @@ The App uses a **BaseTemplate** Component, that provides an html structure for r
 
 ### BaseTemplate Component
 
-The **BaseTemplate** Component provides an experience, similar to a native Android app. The _header_ takes up 1/3 of the screen, to allow the user to reach with his thumb the top of the _main_ content. When the page is scrolled the _header_ shrinks to a small text at the top of the page. This transition is achieved through a library - _framer-motion_.
+The **BaseTemplate** Component aims to provide an experience, similar to a native Android app. The _header_ takes up 1/3 of the screen, to allow the user to reach with his thumb the top of the _main_ content. When the page is scrolled the _header_ shrinks to a small text at the top of the page. This transition is achieved through a library - _framer-motion_.
 
 The Component uses the **framer-motion** hook `useScroll`, to keep track of the vertical scrolling position. The hook is configured to return the scrolling position, not relative to the **body**, but relative to the _header_ **h1** element, that contains the page title. The hook returns `0` when the page is scrolled to the top and `1` when the _h1_ element is about to go out of view.
 
 The `useTransform` hook is used to animate a change in opacity of the page title, and to link the animation to the scroll position.
 
-When the **h1** title element drops out of view, the **h3** title changes it's `position` to `fixed`, in order to stay on the top of the viewport. This happens through the `onChange` handler that the `useScroll` hook returns.
+When the **h1** title element drops out of view, an **h3** title with _fixed_ position, changes it's `opacity` to `1`, in order to stay on the top of the viewport. This happens through the `onChange` handler that the `useScroll` hook returns.
 
-The **BaseTemplate** header is designed to display either the **h1** title, or the **h3** title. The transition between them is made to look nice, but when the user stops scrolling, the page has to snap to one of the two positions. This is achieved using the _header_ element's `scrollTop` property. An event handler is added to the `touchEnd` Event, so when the user stops scrolling the page will autoscroll to one of the two positions.
+The **BaseTemplate** header is designed to display either the **h1** title, or the **h3** title. The transition between them is made to look nice, but when the user stops scrolling, the page has to snap to one of the two positions. Scrolling is achieved using the _header_ element's `scrollTop` property. An event handler is added to the `touchEnd` Event and on the `useScroll` hook `onChange` event, so when the user stops scrolling the page will autoscroll to one of the two positions. Because mobile devices have autoscroll, all changes to `scrollTop` happend after a small timeout.
 
-The Template looks at the current _url path_ and changes the _h1_ and _h3_ title text to corespond to the _path_. Ther is a map that maps the current _path_ to a _title text_.
+The Template also looks at the current _url path_ and changes the _h1_ and _h3_ title text to corespond to the _path_. There is a map that maps the current _path_ to a _title text_.
+
+### FullScreenTemplate Component
+
+The **FullScreenTemplate** Comonent is used for displaying an active training session. It pushes a fake path to the window history, in order to make it harder to exit an active session and lose it's progress.
 
 ### HomePage Component
 
@@ -74,6 +82,15 @@ The **Calendar** Component renders a _calendar_. The calendar displays by defaul
 
 The Calendar itself is structured with a _header_ and a _body_. The header has the label of the current month/year/decade and buttons to navigate forwards or backwards in time. The calendar body depends on the current view. There are three Components that render a different calendar body, depending on the current view.
 
+### TrainingHub Component
+
+The **TrainingHub** Component displays a Calendar and also the training schedule for the selected calendar day.
+
+### ManagePrograms Component
+
+The **ManagePrograms** Component alows the user to add or remove training programs. It displays active and inactive training programs and features a search field, for filtering training programs.  
+When adding or removing a program, a confirmation modal is displayed. When adding a program, the modal displays the `InitComponent` property of the selected training program object. It then uses the `getInitState` method of the same object, to initialize the program state.
+
 ## UI Components
 
 ### Button Component
@@ -83,7 +100,7 @@ The Component has a couple of key properties:
 
 - `type` - if no type is provided, the Button defaults to `button`
 - `accent`, `plain`, `disabled` - props that modify the Button style. The `disabled` prop disables buttons, but doesn't disable Links
-- `to` - if the `to` prop is porvided, the Button Component renders a React Router `Link` element
+- `to` - if the `to` prop is porvided, the Button Component renders as a React Router `Link` element
 
 ### Input Component
 
@@ -128,7 +145,7 @@ The **Modal** utilizes a library `react-transition-group`, used for animating it
 
 ### ContextMenu Component
 
-The **ContextMenu** Component renders a floating modal, that is attached to it's parent component, by using `position: absolute`. The Component also renders a transperant Overlay, that has an onClick event handler, trigering the closing of the Context Menu.
+The **ContextMenu** Component renders a floating modal, that is attached to it's parent component, by using `position: absolute`. The Component also renders a transperant Overlay, that has an onClick event handler, trigering the closing of the Context Menu. The Overlay guranties that the user won't be able to scrool the page and if he taps away from the menu it will close.
 
 The Component expects to receive a list of links, that will be rendered as Link components.
 
@@ -165,6 +182,7 @@ The function expects the following parameters
 - `url` - an API endpoint, relative to the API root URL. e.g.: `url = /users/login` if you want to make a request to `https://backend.com/api/users/login`
 - `config object` - a configuration object that can have the following props:
 
+- `addUserRoute` - most of the requests in this App start with `/users/:userId/`, so the function adds it by default. When this flag is set to false, the function doesn't add it.
 - `body` - a _JS object_, to be send with the request. It will be authomatically passed through `JSON.stringify`
 - `method` - an _HTTP method_ to override the default **sendRequest** function behaviour. the Function sets the _method_ to **GET** by default. If a `body` is provided, it sets the _method_ to **POST**
 - `headers` - an _HTTP headers_ object for specifying headers. The Function sends `"Content-Type": "application/json"` by default, when a `body` is provided.
@@ -182,4 +200,8 @@ The training programs are a special _data type_ - `TrainingProgram`. Every progr
 
 - `id`, `active` - properties needed for the Redux store
 - `name`, `shortDesc`, `longDesc` - properties that describe the training program
-- `InitComponent` - component used to gather data for initializing the training program
+- `InitComponent` - React Component used to gather data for initializing the training program
+- `getInitData` - method that takes _init data_ and returns the initial program state, that will be send to the backend and the Redux store
+- `getNextState` - method that recieves the current program state and the current training session achivement, and outputs the next state. It can also receive options to force progress and to wheter to schedule the next session, relative to today or relative to the previous state date. The options are for instance used when calculating a session schedule in the `scheduleCache` Middleware.
+- `getDescFromState` - method, that returns a text description for a training session, when givven a state
+- `SessionComponent` - React Component, that guides the user through the selected training session, by providing useful widgets, like set trackers, timers, etc.
