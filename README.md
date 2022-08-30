@@ -40,6 +40,12 @@ The **Programs Slice** contains data about all of the supported programs. Each p
 
 Programs are usually scheduled at irregular intervals and is not simple to calculate the progression for reps and set schemes. For this reason the **Schedule Cache Slice** stores the scheduled training sessions for the next three months. There is also a **Middleware**, that listens dispatches that change the **proramsSlice** and recalculates the schedule cache.
 
+### Network Slice and Network Middleware
+
+The **Network Middleware** handles all POST, PATCH and DELETE request, that are related to the training programs. When a component dispatches an `add`, `update` or `remove` action to the **programsSlice** reducer, the **Network Middleware** catches it, performs the appropriate fetch request and then forwards the dispatched action. The Middleware does that, using a helper function - `httpClient`, that is equivelent in functionality to the `useHttpClient` hook, used in Components to send specific network requests.
+
+The **Network Slice** contains the current status of the fetch requests - `isLoading` and `error`. The **App** Component subscribes to this slice and renders conditionaly a Loading Spinner or an Error Modal.
+
 ## Routing
 
 Routing is achieved through **React Router v6**.
