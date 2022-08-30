@@ -10,10 +10,11 @@ export const networkMiddleware: Middleware =
     // Get http client
     const sendRequest = httpClient({ getState, dispatch });
 
+    // Add
+    let response: ProgramState;
     switch (action.type) {
       case "programs/add":
         const add: { id: ProgramId; state: any } = action.payload;
-        let response: ProgramState;
         try {
           const res = await sendRequest("/", {
             body: { id: add.id, state: add.state },
@@ -26,8 +27,21 @@ export const networkMiddleware: Middleware =
         }
         return dispatch(programsActions.updateProgramsState([response]));
 
+      // Remove
       case "programs/remove":
-        break;
+        const removeId: ProgramId = action.payload;
+        try {
+          const res = await sendRequest(`/${removeId}`, {
+            method: "DELETE",
+          });
+
+          response = { id: res.id, active: false, state: null };
+        } catch (err) {
+          console.log(err);
+          return;
+        }
+        return dispatch(programsActions.updateProgramsState([response]));
+
       case "programs/update":
         break;
       default:

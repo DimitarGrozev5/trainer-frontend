@@ -71,16 +71,7 @@ const ManagePrograms = () => {
       if (confirmed) {
         setShowConfirmModal(false);
         if (showConfirmModal) {
-          try {
-            await sendRequest(`/${showConfirmModal}`, { method: "DELETE" });
-            dispatch(
-              programsActions.updateProgramsState([
-                { id: showConfirmModal, active: false, state: null },
-              ])
-            );
-          } catch (err) {
-            console.log(err);
-          }
+          dispatch(programsActions.remove(showConfirmModal));
         }
       } else {
         id && setShowConfirmModal(id);
