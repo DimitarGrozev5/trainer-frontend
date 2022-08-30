@@ -1,6 +1,6 @@
 import { Middleware } from "@reduxjs/toolkit";
 import { ProgramId } from "../../training-programs/data-types";
-import { programsActions, ProgramState } from "../programsSlice";
+import { programsActions } from "../programsSlice";
 import { httpClient } from "./httpClient";
 
 export const networkMiddleware: Middleware =
@@ -11,7 +11,7 @@ export const networkMiddleware: Middleware =
     const sendRequest = httpClient({ getState, dispatch });
 
     // Add
-    let response: ProgramState;
+    let response: any;
     switch (action.type) {
       case "programs/add":
         const add: { id: ProgramId; state: any } = action.payload;
@@ -20,12 +20,12 @@ export const networkMiddleware: Middleware =
             body: { id: add.id, state: add.state },
           });
 
-          response = { id: res.id, active: true, state: res.state };
+          response = { id: res.id, state: res.state };
         } catch (err) {
           console.log(err);
           return;
         }
-        return dispatch(programsActions.updateProgramsState([response]));
+        return next(programsActions.add(response));
 
       // Remove
       case "programs/remove":
@@ -35,12 +35,12 @@ export const networkMiddleware: Middleware =
             method: "DELETE",
           });
 
-          response = { id: res.id, active: false, state: null };
+          response = res.id;
         } catch (err) {
           console.log(err);
           return;
         }
-        return dispatch(programsActions.updateProgramsState([response]));
+        return next(programsActions.remove(response));
 
       // Update
       case "programs/update":
@@ -51,12 +51,12 @@ export const networkMiddleware: Middleware =
             method: "PATCH",
           });
 
-          response = { id: res.id, active: true, state: res.state };
+          response = { id: res.id, state: res.state };
         } catch (err) {
           console.log(err);
           return;
         }
-        return dispatch(programsActions.updateProgramsState([response]));
+        return next(programsActions.update(response));
 
       default:
         break;
