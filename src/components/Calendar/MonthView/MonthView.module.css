@@ -18,6 +18,7 @@ table.calendar {
 .calendar th {
   padding: 0.2rem;
   text-align: left;
+  font-size: 0.6rem;
 }
 
 td.other-month {

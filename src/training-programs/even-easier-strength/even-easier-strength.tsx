@@ -1,7 +1,10 @@
 import { add } from "date-fns";
 import { useEffect } from "react";
 import Card from "../../components/UI-elements/Card/Card";
+import LoadingSpinner from "../../components/UI-elements/LoadingSpinner/LoadingSpinner";
+import ErrorModal from "../../components/UI-elements/Modal/ErrorModal";
 import { useAppDispatch } from "../../hooks/redux-hooks";
+import { useHttpClient } from "../../hooks/useHttpClient";
 import { programsActions, ProgramState } from "../../redux-store/programsSlice";
 import { now, roundDate } from "../../util/date";
 import CircularButton from "../common-components/CircularButton/CircularButton";
@@ -68,10 +71,7 @@ export const ees: TrainingProgram = {
     }
   ) => {
     // Destructure session data
-    const {
-      sessionDate: UTCDate,
-      setsDone: { push, pull, squat, ab, accessory },
-    } = state;
+    const { sessionDate: UTCDate } = state;
 
     const sessionDate = new Date(UTCDate);
 
@@ -107,10 +107,12 @@ export const ees: TrainingProgram = {
   SessionComponent: ({ program, onAchievedChanged }) => {
     const dispatch = useAppDispatch();
 
+    const { isLoading, error, clearError, sendRequest } = useHttpClient();
+
     const { setsDone } = program.state;
     const { push, pull, squat, ab, accessory } = setsDone;
 
-    const updateSetsDone = (target: string, sets: number) => () => {
+    const updateSetsDone = (target: string, sets: number) => async () => {
       if (setsDone[target] + 1 === sets) {
         const newSetsDone = {
           push,
@@ -120,18 +122,30 @@ export const ees: TrainingProgram = {
           accessory,
           [target]: sets,
         };
-        dispatch(
-          programsActions.updateProgramsState([
-            {
+        try {
+          const response = await sendRequest(`/${program.id}`, {
+            body: {
               id: program.id,
-              active: program.active,
               state: {
                 sessionDate: program.state.sessionDate,
                 setsDone: newSetsDone,
               },
-            } as ProgramState,
-          ])
-        );
+            },
+            method: "PATCH",
+          });
+
+          dispatch(
+            programsActions.updateProgramsState([
+              {
+                id: response.id,
+                active: true,
+                state: response.state,
+              } as ProgramState,
+            ])
+          );
+        } catch (err) {
+          console.log(err);
+        }
       }
     };
 
@@ -146,6 +160,9 @@ export const ees: TrainingProgram = {
 
     return (
       <>
+        {isLoading && <LoadingSpinner centerPage />}
+        <ErrorModal show={!!error} error={error} onClose={clearError} />
+
         <Card>
           <H1>Even Easier Strenght</H1>
           <Info>

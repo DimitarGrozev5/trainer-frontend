@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { nanoid } from "nanoid";
 
 import styles from "./Input.module.css";

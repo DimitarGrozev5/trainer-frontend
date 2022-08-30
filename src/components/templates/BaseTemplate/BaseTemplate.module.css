@@ -15,7 +15,8 @@
 }
 
 .container > header {
-  height: calc(var(--vh, 1vh) * 40);
+  /* height: calc(var(--vh, 1vh) * 40); */
+  height: 40vh;
 
   display: flex;
   flex-direction: column;
@@ -35,7 +36,7 @@
   left: 0px;
   right: 0px;
   top: 0px;
-  z-index: 2;
+  z-index: 100;
 
   align-self: stretch;
 
@@ -79,7 +80,7 @@
 .container > main {
   flex-grow: 1;
   /* min-height: calc(100vh - 2rem); */
-  height: 300vh;
+  height: calc(100vh - 2.6rem);
 
   display: flex;
   flex-direction: column;

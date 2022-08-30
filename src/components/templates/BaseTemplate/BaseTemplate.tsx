@@ -92,11 +92,9 @@ const BaseTemplate = () => {
       unsub();
       // clearTimeout(cancelableTimeout.current);
     };
-  }, [touching]);
+  }, [touching, scrollYProgress]);
 
   // Snap to H1 or H3 when the user scrolls
-  // TODO: there are some bugs here
-  // When the user fliks to fast scroll, the page doesn't snap to the H1 or H3
   const touchEndHandler = () => {
     setTouching(false);
 

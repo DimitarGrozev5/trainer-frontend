@@ -9,7 +9,6 @@ import BaseTemplate from "./components/templates/BaseTemplate/BaseTemplate";
 import FullScreenTemplate from "./components/templates/FullScreenTemplate/FullScreenTemplate";
 import LoadingSpinner from "./components/UI-elements/LoadingSpinner/LoadingSpinner";
 import ErrorModal from "./components/UI-elements/Modal/ErrorModal";
-import ScheduleCacheProvider from "./hooks/ScheduleService/schedule-cache-context";
 import { useAuth } from "./hooks/useAuth";
 import { useGetInitialData } from "./hooks/useGetInitialData";
 
@@ -26,28 +25,26 @@ function App() {
       {isLoading && <LoadingSpinner asOverlay />}
       <ErrorModal show={!!error} error={error} onClose={clearError} />
 
-      <ScheduleCacheProvider>
-        <Routes>
-          <Route path="/" element={<BaseTemplate />}>
-            {!token && <Route index element={<HomePage />} />}
-            {!!token && (
-              <>
-                <Route index element={<TrainingHub />} />
-                <Route path="/manage-programs" element={<ManagePrograms />} />
-              </>
-            )}
-          </Route>
-
+      <Routes>
+        <Route path="/" element={<BaseTemplate />}>
+          {!token && <Route index element={<HomePage />} />}
           {!!token && (
-            <Route path="/active" element={<FullScreenTemplate />}>
-              <Route path=":programId" element={<ActiveSession />} />
-            </Route>
+            <>
+              <Route index element={<TrainingHub />} />
+              <Route path="/manage-programs" element={<ManagePrograms />} />
+            </>
           )}
+        </Route>
 
-          {!!token && <Route path="/logout" element={<Logout />} />}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </ScheduleCacheProvider>
+        {!!token && (
+          <Route path="/active" element={<FullScreenTemplate />}>
+            <Route path=":programId" element={<ActiveSession />} />
+          </Route>
+        )}
+
+        {!!token && <Route path="/logout" element={<Logout />} />}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </>
   );
 }

@@ -1,13 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { programsReducer } from "./programsSlice";
+import {
+  scheduleCacheMiddleware,
+  scheduleCacheReducer,
+} from "./scheduleCacheSlice";
 import { userMiddleware, userReducer } from "./userSlice";
 
 const store = configureStore({
   reducer: {
     user: userReducer,
     programs: programsReducer,
+    scheduleCache: scheduleCacheReducer,
   },
-  middleware: [userMiddleware],
+  middleware: [userMiddleware, scheduleCacheMiddleware],
 });
 
 export default store;

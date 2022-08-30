@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { ScheduleService } from "../../../hooks/ScheduleService/training-schedule-types";
 import { getMonthArr, sameDate, sameMonth } from "../../../util/date";
 import CalendarDay from "../CalendarDay/CalendarDay";
 import styles from "./MonthView.module.css";
@@ -8,7 +7,6 @@ interface Props {
   targetDate: Date;
   selectedDate: Date;
   setSelectedDate: (d: Date) => void;
-  scheduleService?: ScheduleService;
 }
 
 // Function to set the style of a Calendar day
@@ -32,7 +30,6 @@ const CalendarMonthView: React.FC<Props> = ({
   targetDate,
   selectedDate,
   setSelectedDate,
-  scheduleService,
 }) => {
   // Get the days of the month
   const month: Date[][] = useMemo(() => getMonthArr(targetDate), [targetDate]);
@@ -61,7 +58,7 @@ const CalendarMonthView: React.FC<Props> = ({
                 className={setStyles(day, targetDate, new Date(), selectedDate)}
                 onClick={setSelectedDate.bind(null, day)}
               >
-                <CalendarDay date={day} schedule={scheduleService} />
+                <CalendarDay date={day} />
               </td>
             ))}
           </tr>

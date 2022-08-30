@@ -29,7 +29,7 @@ export const useGetInitialData = () => {
 
       dispatch(programsActions.updateProgramsState(res));
     })();
-  }, [isLoggedIn]);
+  }, [isLoggedIn, dispatch, sendRequest]);
 
   return { isLoading, error, clearError };
 };

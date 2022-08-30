@@ -85,7 +85,7 @@ export const useHttpClient = () => {
       try {
         const userRoute = addUserRoute ? `/users/${userData.userId}` : "";
         const fullUrl = process.env.REACT_APP_BACKEND_API + userRoute + url;
-        
+
         // Fetch data
         const response = await fetch(fullUrl, config);
 
@@ -122,7 +122,7 @@ export const useHttpClient = () => {
         throw err;
       }
     },
-    [userData.token, dispatch]
+    [userData.token, userData.userId, dispatch]
   );
 
   useEffect(

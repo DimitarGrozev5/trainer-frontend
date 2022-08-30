@@ -5,18 +5,20 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../hooks/redux-hooks";
-import { useScheduleService } from "../../../hooks/ScheduleService/useScheduleService";
+import { useHttpClient } from "../../../hooks/useHttpClient";
 import { programsActions } from "../../../redux-store/programsSlice";
 import { ProgramId } from "../../../training-programs/data-types";
 import { roundDate } from "../../../util/date";
 import Calendar from "../../Calendar/Calendar";
 import Button from "../../UI-elements/Button/Button";
 import Card from "../../UI-elements/Card/Card";
+import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
+import ErrorModal from "../../UI-elements/Modal/ErrorModal";
 import styles from "./TrainingHub.module.css";
 
 const TrainingHub = () => {
-  const scheduleService = useScheduleService();
   const dispatch = useAppDispatch();
+  const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
   // Get workouts
   const workouts = useAppSelector((state) => state.programs);
@@ -25,31 +27,54 @@ const TrainingHub = () => {
   const [selectedDate, setSelectedDate] = useState(roundDate(new Date()));
 
   // Get workouts for selected date
-  const today = scheduleService(selectedDate);
+  // const today = scheduleService(selectedDate);
+  const today = useAppSelector((state) =>
+    Object.entries(state.scheduleCache).flatMap(([, schedule]) => {
+      if (
+        selectedDate.getTime() in schedule &&
+        schedule[selectedDate.getTime()]
+      ) {
+        const sc = schedule[selectedDate.getTime()];
+        return sc ? sc : [];
+      }
+      return [];
+    })
+  );
 
-  const skipSessionHandler = (id: ProgramId) => () => {
-    const workout = populateProgramFromState(id, workouts);
+  const skipSessionHandler = (id: ProgramId) => async () => {
+    const program = populateProgramFromState(id, workouts);
 
-    const nextState = workout.getNextState(
-      workout.state,
+    const nextState = program.getNextState(
+      program.state,
       {},
       { forceProgress: false, fromToday: false }
     );
 
-    dispatch(
-      programsActions.updateProgramsState([
-        { id: workout.id, active: workout.active, state: nextState },
-      ])
-    );
+    try {
+      const response = await sendRequest(`/${program.id}`, {
+        body: { id: program.id, state: nextState },
+        method: "PATCH",
+      });
+
+      dispatch(
+        programsActions.updateProgramsState([
+          { id: response.id, active: true, state: response.state },
+        ])
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <>
+      {isLoading && <LoadingSpinner asOverlay />}
+      <ErrorModal show={!!error} error={error} onClose={clearError} />
+
       <Card className={styles.calendar}>
         <Calendar
           selectedDate={selectedDate}
           onChangeDate={setSelectedDate}
-          scheduleService={scheduleService}
         />
       </Card>
       <Card className={styles.today}>
