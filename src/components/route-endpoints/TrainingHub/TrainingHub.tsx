@@ -5,20 +5,16 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../hooks/redux-hooks";
-import { useHttpClient } from "../../../hooks/useHttpClient";
 import { programsActions } from "../../../redux-store/programsSlice";
 import { ProgramId } from "../../../training-programs/data-types";
 import { roundDate } from "../../../util/date";
 import Calendar from "../../Calendar/Calendar";
 import Button from "../../UI-elements/Button/Button";
 import Card from "../../UI-elements/Card/Card";
-import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
-import ErrorModal from "../../UI-elements/Modal/ErrorModal";
 import styles from "./TrainingHub.module.css";
 
 const TrainingHub = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
   // Get workouts
   const workouts = useAppSelector((state) => state.programs);
@@ -50,32 +46,13 @@ const TrainingHub = () => {
       { forceProgress: false, fromToday: false }
     );
 
-    try {
-      const response = await sendRequest(`/${program.id}`, {
-        body: { id: program.id, state: nextState },
-        method: "PATCH",
-      });
-
-      dispatch(
-        programsActions.updateProgramsState([
-          { id: response.id, active: true, state: response.state },
-        ])
-      );
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(programsActions.update({ id: program.id, state: nextState }));
   };
 
   return (
     <>
-      {isLoading && <LoadingSpinner asOverlay />}
-      <ErrorModal show={!!error} error={error} onClose={clearError} />
-
       <Card className={styles.calendar}>
-        <Calendar
-          selectedDate={selectedDate}
-          onChangeDate={setSelectedDate}
-        />
+        <Calendar selectedDate={selectedDate} onChangeDate={setSelectedDate} />
       </Card>
       <Card className={styles.today}>
         <h1>Today:</h1>
