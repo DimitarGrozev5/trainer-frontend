@@ -54,13 +54,33 @@ export const scheduleCacheMiddleware: Middleware =
   ({ getState, dispatch }) =>
   (next) =>
   (action) => {
-    if (action.type !== "programs/updateProgramsState") {
+    if (!action.type.startsWith("programs/")) {
       return next(action);
     }
 
-    action.payload.forEach((p: ProgramState) => {
+    let payload: ProgramState[];
+    switch (action.type) {
+      case "programs/updateProgramsState":
+        payload = action.payload;
+        break;
+      case "programs/add":
+        payload = [action.payload];
+        break;
+      case "programs/remove":
+        dispatch(scheduleCacheActions.removeProgram(action.payload));
+        return next(action);
+      case "programs/update":
+        payload = [action.payload];
+        break;
+
+      default:
+        payload = [];
+        break;
+    }
+
+    payload.forEach((p: ProgramState) => {
       // If the program is changed to inactive, remove it from the cache
-      if (!p.active) {
+      if ("active" in p && !p.active) {
         return dispatch(scheduleCacheActions.removeProgram(p.id));
       }
 
