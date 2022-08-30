@@ -44,11 +44,9 @@ const programsSlice = createSlice({
       });
     },
 
-    add: (state, action: PayloadAction<{ id: ProgramId; state: any }[]>) => {
-      action.payload.forEach((program) => {
-        const id = program.id;
-        state.byId[id] = { id, active: true, state: program.state };
-      });
+    add: (state, action: PayloadAction<{ id: ProgramId; state: any }>) => {
+      const id = action.payload.id;
+      state.byId[id] = { id, active: true, state: action.payload.state };
     },
     remove: (state, action: PayloadAction<ProgramId[]>) => {
       action.payload.forEach((programId) => {

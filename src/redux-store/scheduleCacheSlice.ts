@@ -30,7 +30,7 @@ type Payload = {
 };
 
 const scheduleCacheSlice = createSlice({
-  name: "programs",
+  name: "scheduleCache",
 
   initialState: {} as ScheduleCacheState,
 

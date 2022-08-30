@@ -12,13 +12,7 @@ import {
 } from "../../../../training-programs/data-types";
 import Button from "../../../UI-elements/Button/Button";
 import Modal from "../../../UI-elements/Modal/Modal";
-import {
-  programsActions,
-  ProgramState,
-} from "../../../../redux-store/programsSlice";
-import { useHttpClient } from "../../../../hooks/useHttpClient";
-import LoadingSpinner from "../../../UI-elements/LoadingSpinner/LoadingSpinner";
-import ErrorModal from "../../../UI-elements/Modal/ErrorModal";
+import { programsActions } from "../../../../redux-store/programsSlice";
 
 interface Props {
   show: boolean;
@@ -28,38 +22,19 @@ interface Props {
 
 const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
   const dispatch = useAppDispatch();
-  const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
   const getter = id ? populateProgram(id) : voidGetter;
-  const workout = useAppSelector<TrainingProgram | void>(getter);
+  const program = useAppSelector<TrainingProgram | void>(getter);
 
   // Get state for InitComponent
   const [initState, setInitState] = useState<any>({});
 
   const addProgramHandler = async () => {
-    if (workout) {
+    if (program) {
       // Get init data
-      const initData = workout.getInitData(initState);
+      const initData = program.getInitData(initState);
 
-      // Send request
-      let response: ProgramState[] = [];
-      try {
-        const res = await sendRequest("/", {
-          body: { id: workout.id, state: initData },
-        });
-
-        response = [{ id: res.id, active: true, state: res.state }];
-      } catch (err) {
-        console.log(err);
-      }
-
-      // Update Redux
-      dispatch(
-        programsActions.updateProgramsState(
-          // [{ id: workout.id, active: true, state: initData } as ProgramState,]
-          response
-        )
-      );
+      dispatch(programsActions.add({ id: program.id, state: initData }));
     }
 
     onCancel();
@@ -77,16 +52,13 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
   );
 
   // Set the output to dummy modal, so an exiting animation will play
-  const { name, InitComponent } = workout || {
+  const { name, InitComponent } = program || {
     name: "",
     InitComponent: ({ value, onChange }) => <></>,
   };
 
   return (
     <>
-      {isLoading && <LoadingSpinner asOverlay />}
-      <ErrorModal show={!!error} error={error} onClose={clearError} />
-
       <Modal
         title={"Add " + name}
         show={show}

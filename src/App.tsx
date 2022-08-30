@@ -9,21 +9,30 @@ import BaseTemplate from "./components/templates/BaseTemplate/BaseTemplate";
 import FullScreenTemplate from "./components/templates/FullScreenTemplate/FullScreenTemplate";
 import LoadingSpinner from "./components/UI-elements/LoadingSpinner/LoadingSpinner";
 import ErrorModal from "./components/UI-elements/Modal/ErrorModal";
+import { useAppDispatch, useAppSelector } from "./hooks/redux-hooks";
 import { useAuth } from "./hooks/useAuth";
 import { useGetInitialData } from "./hooks/useGetInitialData";
+import { networkActions } from "./redux-store/networkSlice";
 
 function App() {
+  const dispatch = useAppDispatch();
+
   // Get authorization data from localStorage
   const token = useAuth().token;
   // const token = true;
 
   // Get programs data from the backend on first app load
-  const { isLoading, error, clearError } = useGetInitialData();
+  // const { isLoading, error, clearError } =
+  useGetInitialData();
+
+  const isLoading = useAppSelector((state) => state.network.isLoading);
+  const error = useAppSelector((state) => state.network.error);
+  const clearError = () => dispatch(networkActions.clearError());
 
   return (
     <>
       {isLoading && <LoadingSpinner asOverlay />}
-      <ErrorModal show={!!error} error={error} onClose={clearError} />
+      <ErrorModal show={!!error} error={error || ""} onClose={clearError} />
 
       <Routes>
         <Route path="/" element={<BaseTemplate />}>
