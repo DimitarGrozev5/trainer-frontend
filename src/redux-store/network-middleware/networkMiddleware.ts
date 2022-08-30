@@ -1,7 +1,7 @@
 import { Middleware } from "@reduxjs/toolkit";
 import { httpClient } from "./httpClient";
 
-export const userMiddleware: Middleware =
+export const networkMiddleware: Middleware =
   ({ getState, dispatch }) =>
   (next) =>
   async (action) => {
