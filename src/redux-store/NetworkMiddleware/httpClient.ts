@@ -1,5 +1,4 @@
 import { MiddlewareAPI } from "@reduxjs/toolkit";
-import { Dispatch } from "react";
 import { networkActions } from "../networkSlice";
 import { userActions } from "../userSlice";
 
