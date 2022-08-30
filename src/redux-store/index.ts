@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { networkReducer } from "./networkSlice";
 import { programsReducer } from "./programsSlice";
 import {
   scheduleCacheMiddleware,
@@ -11,6 +12,7 @@ const store = configureStore({
     user: userReducer,
     programs: programsReducer,
     scheduleCache: scheduleCacheReducer,
+    network: networkReducer,
   },
   middleware: [userMiddleware, scheduleCacheMiddleware],
 });
