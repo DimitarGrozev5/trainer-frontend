@@ -1,5 +1,6 @@
 import jwtDecode from "jwt-decode";
 import { useEffect } from "react";
+import { networkActions } from "../redux-store/networkSlice";
 import { userActions, UserState } from "../redux-store/userSlice";
 import { useAppDispatch, useAppSelector } from "./redux-hooks";
 import { useHttpClient } from "./useHttpClient";
@@ -32,7 +33,6 @@ export const useAuth = () => {
       try {
         userData = JSON.parse(storageData);
       } catch (error) {
-        // TODO: Global error handling
         clearUserData();
         console.log(error);
         return;
@@ -43,7 +43,7 @@ export const useAuth = () => {
       try {
         decodedToken = jwtDecode(userData.token);
       } catch (error) {
-        // TODO: Global error handling
+        dispatch(networkActions.setError("Invalid user session! Please log in again!"))
         clearUserData();
         console.log(error);
         return;
@@ -52,6 +52,7 @@ export const useAuth = () => {
       // Validate token expiration date
       const now = +new Date();
       if (now >= decodedToken.exp * 1000) {
+        dispatch(networkActions.setError("Your session has expired! Please log in again!"))
         clearUserData();
         return;
       }
