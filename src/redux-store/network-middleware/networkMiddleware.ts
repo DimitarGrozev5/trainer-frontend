@@ -64,19 +64,24 @@ export const networkMiddleware: Middleware =
 
       // Update
       case 'programs/update':
-        const update: { id: ProgramId; state: any; version: string } =
-          action.payload;
+        const update: {
+          id: ProgramId;
+          state: any;
+          achieved: any;
+          version: string;
+        } = action.payload;
         try {
           const res = await sendRequest(`/${update.id}`, {
             body: {
               id: update.id,
               state: update.state,
+              achieved: update.achieved,
               version: update.version,
             },
             method: 'PATCH',
           });
 
-          response = { id: res.id, state: res.state, version: res.version };
+          response = { id: update.id, state: update.state, version: res.version };
         } catch (err) {
           console.log(err);
           return;

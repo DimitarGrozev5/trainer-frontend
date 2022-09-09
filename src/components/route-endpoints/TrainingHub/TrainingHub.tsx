@@ -50,6 +50,7 @@ const TrainingHub = () => {
       programsActions.update({
         id: program.id,
         state: nextState,
+        achieved: { force: true },
         version: program.version,
       })
     );

@@ -82,7 +82,12 @@ const programsSlice = createSlice({
     },
     update: (
       state,
-      action: PayloadAction<{ id: ProgramId; state: any; version: string }>
+      action: PayloadAction<{
+        id: ProgramId;
+        state: any;
+        achieved: any;
+        version: string;
+      }>
     ) => {
       const program = action.payload;
       state.byId[program.id] = {

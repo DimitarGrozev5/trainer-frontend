@@ -49,6 +49,7 @@ const ActiveSession = () => {
         programsActions.update({
           id: program.id,
           state: nextState,
+          achieved,
           version: program.version,
         })
       );

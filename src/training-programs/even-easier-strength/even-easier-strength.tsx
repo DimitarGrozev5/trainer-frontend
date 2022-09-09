@@ -128,6 +128,7 @@ export const ees: TrainingProgram<'ees'> = {
               sessionDate: program.state.sessionDate,
               setsDone: newSetsDone,
             },
+            achieved: {},
             version: program.version,
           })
         );
