@@ -1,36 +1,42 @@
-import { useEffect, useRef, useState } from "react";
-import produce from "immer";
-import { add, isEqual } from "date-fns";
+import { useEffect, useRef, useState } from 'react';
+import produce from 'immer';
+import { add, isEqual } from 'date-fns';
 
-import styles from "./EnduroGrip.module.css";
-import { useSState } from "../../hooks/useSState";
-import { TrainingProgram } from "../data-types";
-import Input from "../../components/UI-elements/Input/Input";
-import ScheduleVisual from "../common-components/ScheduleVisual/ScheduleVisual";
-import { CircularArray } from "../../util/array";
-import { roundDate } from "../../util/date";
-import Card from "../../components/UI-elements/Card/Card";
-import CircularButton from "../common-components/CircularButton/CircularButton";
-import CountdownTimer from "../common-components/CountdownTimer/CountdownTimer";
-import Metronome from "../common-components/Metronome/Metronome";
-import Info from "../common-components/Info/Info";
+import styles from './EnduroGrip.module.css';
+import { useSState } from '../../hooks/useSState';
+import { InitProps, SessionProps, TrainingProgram } from '../data-types';
+import Input from '../../components/UI-elements/Input/Input';
+import ScheduleVisual from '../common-components/ScheduleVisual/ScheduleVisual';
+import { CircularArray } from '../../util/array';
+import { roundDate } from '../../util/date';
+import Card from '../../components/UI-elements/Card/Card';
+import CircularButton from '../common-components/CircularButton/CircularButton';
+import CountdownTimer from '../common-components/CountdownTimer/CountdownTimer';
+import Metronome from '../common-components/Metronome/Metronome';
+import Info from '../common-components/Info/Info';
+import {
+  EnduroGripAchieved,
+  EnduroGripInit,
+  EnduroGripState,
+} from './enduro-grip-types';
 
 const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
-export const enduroGrip: TrainingProgram = {
+export const enduroGrip: TrainingProgram<'EnduroGrip'> = {
   // Basic data
-  id: "EnduroGrip",
+  id: 'EnduroGrip',
   active: false,
-  state: {},
+  state: {} as EnduroGripState,
+  version: '',
 
   // Metadata
-  name: "EnduroGrip",
-  shortDesc: "Slow twitch endurance protocol for the grip",
+  name: 'EnduroGrip',
+  shortDesc: 'Slow twitch endurance protocol for the grip',
   longDesc:
-    "This training protocol uses hangs between 30s and 60s, always to failure. You will be in pain. You will be able to hang for longer in the end.",
+    'This training protocol uses hangs between 30s and 60s, always to failure. You will be in pain. You will be able to hang for longer in the end.',
 
   // Initializing training program
-  InitComponent: ({ value, onChange }) => {
+  InitComponent: ({ value, onChange }: InitProps<'EnduroGrip'>) => {
     const [startToday, setStartToday] = useState(true);
     const [startDate, setStartDate] = useState(roundDate(new Date()));
     const [schedule, , { setStateTo: setScheduleTo }] = useSState<number[]>([
@@ -51,7 +57,7 @@ export const enduroGrip: TrainingProgram = {
     // Update value when settings change
     useEffect(() => {
       if (!isEqual(value.startDate, startDate) || value.schedule !== schedule) {
-        onChange({ startDate: startDate.getTime(), schedule: schedule });
+        onChange({ startDate: startDate, schedule: schedule });
       }
     }, [startDate, schedule, value.startDate, value.schedule, onChange]);
 
@@ -81,11 +87,11 @@ export const enduroGrip: TrainingProgram = {
           type="radio"
           options={[
             {
-              label: "Two times a week",
+              label: 'Two times a week',
               value: [4, 3],
             },
             {
-              label: "Every four days",
+              label: 'Every four days',
               value: [4],
             },
           ]}
@@ -96,15 +102,9 @@ export const enduroGrip: TrainingProgram = {
       </>
     );
   },
-  getInitData: ({
-    startDate,
-    schedule,
-  }: {
-    startDate: Date;
-    schedule: number[];
-  }) => {
+  getInitData: ({ startDate, schedule }: EnduroGripInit): EnduroGripState => {
     return {
-      sessionDate: startDate,
+      sessionDate: startDate.getTime(),
       sessionIndex: 0,
       lastHeavySessionAchieved: 9,
       schedule,
@@ -113,13 +113,13 @@ export const enduroGrip: TrainingProgram = {
   },
 
   getNextState: (
-    prevState: any,
-    achieved: any,
+    prevState: EnduroGripState,
+    achieved: EnduroGripAchieved,
     { forceProgress = false, fromToday = true } = {
       forceProgress: false,
       fromToday: true,
     }
-  ) => {
+  ): EnduroGripState => {
     const {
       sessionDate: sessionDateUtc,
       sessionIndex,
@@ -173,10 +173,13 @@ export const enduroGrip: TrainingProgram = {
       currentScheduleIndex: nextScheduleIndex,
     };
   },
-  getDescFromState: (state: any) =>
+  getDescFromState: (state: EnduroGripState) =>
     `Do x${trainingRotation[state.sessionIndex]} sets to failure`,
 
-  SessionComponent: ({ program, onAchievedChanged }) => {
+  SessionComponent: ({
+    program,
+    onAchievedChanged,
+  }: SessionProps<'EnduroGrip'>) => {
     // this will be inferred as `CountdownHandle`
     type CountdownHandle = React.ElementRef<typeof CountdownTimer>;
     const timerRef = useRef<CountdownHandle>(null);
@@ -189,9 +192,10 @@ export const enduroGrip: TrainingProgram = {
       const goalAchieved =
         sets.reduce((sum, set) => sum + Number(set), 0) === sets.length;
 
-      const achieved = !!goalAchieved && { sets: sets.length };
-
-      onAchievedChanged(achieved);
+      if (goalAchieved) {
+        const achieved = { sets: sets.length };
+        onAchievedChanged(achieved);
+      }
     }, [sets, onAchievedChanged]);
 
     const nextSet = (i: number) => () => {
