@@ -4,6 +4,7 @@ import {
   EnduroGripInit,
   EnduroGripState,
 } from './enduro-grip/enduro-grip-types';
+import { eesAchieved, eesInit, eesState } from './even-easier-strength/ees-types';
 
 // All valid programIds will be stored here
 export type ProgramId = 'EnduroGrip' | 'ees';
@@ -11,15 +12,15 @@ export type ProgramId = 'EnduroGrip' | 'ees';
 // All valid program states wll be stored here
 type ProgramStateMap = {
   EnduroGrip: EnduroGripState;
-  ees: any;
+  ees: eesState;
 };
 type ProgramInitMap = {
   EnduroGrip: EnduroGripInit;
-  ees: any;
+  ees: eesInit;
 };
 type ProgramAchievedMap = {
   EnduroGrip: EnduroGripAchieved;
-  ees: any;
+  ees: eesAchieved;
 };
 
 export interface InitProps<id extends ProgramId> {
