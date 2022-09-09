@@ -22,7 +22,7 @@ const ActiveSession = () => {
 
   const program = useAppSelector(populateProgram(programId));
 
-  let Component: SessionComponent = () => <></>;
+  let Component: SessionComponent<ProgramId> = () => <></>;
   if (program && program.SessionComponent) {
     Component = program.SessionComponent;
   }

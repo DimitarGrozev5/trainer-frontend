@@ -24,7 +24,7 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
   const dispatch = useAppDispatch();
 
   const getter = id ? populateProgram(id) : voidGetter;
-  const program = useAppSelector<TrainingProgram | void>(getter);
+  const program = useAppSelector<TrainingProgram<ProgramId> | void>(getter);
 
   // Get state for InitComponent
   const [initState, setInitState] = useState<any>({});

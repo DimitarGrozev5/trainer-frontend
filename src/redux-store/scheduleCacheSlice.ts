@@ -89,7 +89,7 @@ export const scheduleCacheMiddleware: Middleware =
       if (!fullPr) {
         return;
       }
-      const program: TrainingProgram = { ...fullPr, ...p };
+      const program: TrainingProgram<ProgramId> = { ...fullPr, ...p };
 
       // Init cahce for program
       let cache = {} as ScheduledDate;

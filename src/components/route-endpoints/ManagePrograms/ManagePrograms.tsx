@@ -19,7 +19,7 @@ import AddWorkoutModal from "./AddWorkoutModal/AddWorkoutModal";
 import ConfirmModal from "../../UI-elements/Modal/ConfirmModal";
 import { programsActions } from "../../../redux-store/programsSlice";
 
-const match = (query: string) => (program: TrainingProgram) => {
+const match = (query: string) => (program: TrainingProgram<ProgramId>) => {
   return (
     program.name.toLowerCase().includes(query.toLowerCase()) ||
     program.shortDesc.toLowerCase().includes(query.toLowerCase()) ||
