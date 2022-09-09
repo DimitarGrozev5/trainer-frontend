@@ -1,10 +1,10 @@
-import { createSlice, Middleware } from "@reduxjs/toolkit";
-import { PayloadAction } from "@reduxjs/toolkit";
-import { add, compareAsc } from "date-fns";
-import { programs } from "../training-programs";
+import { createSlice, Middleware } from '@reduxjs/toolkit';
+import { PayloadAction } from '@reduxjs/toolkit';
+import { add, compareAsc } from 'date-fns';
+import { programs } from '../training-programs';
 
-import { ProgramId, TrainingProgram } from "../training-programs/data-types";
-import { ProgramState } from "./programsSlice";
+import { ProgramId, TrainingProgram } from '../training-programs/data-types';
+import { ProgramState } from './programsSlice';
 
 export class ScheduledSession {
   constructor(
@@ -30,7 +30,7 @@ type Payload = {
 };
 
 const scheduleCacheSlice = createSlice({
-  name: "scheduleCache",
+  name: 'scheduleCache',
 
   initialState: {} as ScheduleCacheState,
 
@@ -54,22 +54,22 @@ export const scheduleCacheMiddleware: Middleware =
   ({ getState, dispatch }) =>
   (next) =>
   (action) => {
-    if (!action.type.startsWith("programs/")) {
+    if (!action.type.startsWith('programs/')) {
       return next(action);
     }
 
     let payload: ProgramState[];
     switch (action.type) {
-      case "programs/updateProgramsState":
+      case 'programs/updateProgramsState':
         payload = action.payload;
         break;
-      case "programs/add":
+      case 'programs/add':
         payload = [action.payload];
         break;
-      case "programs/remove":
+      case 'programs/remove':
         dispatch(scheduleCacheActions.removeProgram(action.payload));
         return next(action);
-      case "programs/update":
+      case 'programs/update':
         payload = [action.payload];
         break;
 
@@ -80,7 +80,7 @@ export const scheduleCacheMiddleware: Middleware =
 
     payload.forEach((p: ProgramState) => {
       // If the program is changed to inactive, remove it from the cache
-      if ("active" in p && !p.active) {
+      if ('active' in p && !p.active) {
         return dispatch(scheduleCacheActions.removeProgram(p.id));
       }
 

@@ -53,7 +53,12 @@ const programsSlice = createSlice({
 
     add: (
       state,
-      action: PayloadAction<{ id: ProgramId; state: any; version: string }>
+      action: PayloadAction<{
+        id: ProgramId;
+        initData: any;
+        state: any;
+        version: string;
+      }>
     ) => {
       const id = action.payload.id;
       state.byId[id] = {

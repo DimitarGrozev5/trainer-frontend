@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { programsActions, ProgramState } from "../redux-store/programsSlice";
-import { useAppDispatch, useAppSelector } from "./redux-hooks";
-import { useHttpClient } from "./useHttpClient";
+import { useEffect } from 'react';
+import { programsActions, ProgramState } from '../redux-store/programsSlice';
+import { useAppDispatch, useAppSelector } from './redux-hooks';
+import { useHttpClient } from './useHttpClient';
 
 export const useGetInitialData = () => {
   const { isLoading, error, clearError, sendRequest } = useHttpClient();
@@ -22,6 +22,7 @@ export const useGetInitialData = () => {
           id: r.id,
           active: true,
           state: r.state,
+          version: r.version,
         }));
       } catch (err) {
         console.log(err);

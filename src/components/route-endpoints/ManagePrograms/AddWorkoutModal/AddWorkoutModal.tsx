@@ -27,15 +27,20 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
   const program = useAppSelector<TrainingProgram<ProgramId> | void>(getter);
 
   // Get state for InitComponent
-  const [initState, setInitState] = useState<any>({});
+  const [initData, setInitData] = useState<any>({});
 
   const addProgramHandler = async () => {
     if (program) {
-      // Get init data
-      const initData = program.getInitData(initState);
+      // Get init state
+      const initState = program.getInitData(initData);
 
       dispatch(
-        programsActions.add({ id: program.id, state: initData, version: '' })
+        programsActions.add({
+          id: program.id,
+          initData: initData,
+          state: initState,
+          version: '',
+        })
       );
     }
 
@@ -67,7 +72,7 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
         buttons={btns}
         onClose={onCancel}
       >
-        <InitComponent value={initState} onChange={setInitState} />
+        <InitComponent value={initData} onChange={setInitData} />
       </Modal>
     </>
   );

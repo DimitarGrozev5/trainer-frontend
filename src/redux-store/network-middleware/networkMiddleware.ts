@@ -14,14 +14,28 @@ export const networkMiddleware: Middleware =
     let response: any;
     switch (action.type) {
       case 'programs/add':
-        const add: { id: ProgramId; state: any; version: string } =
-          action.payload;
+        const add: {
+          id: ProgramId;
+          state: any;
+          initData: any;
+          version: string;
+        } = action.payload;
+
         try {
           const res = await sendRequest('/', {
-            body: { id: add.id, state: add.state },
+            body: {
+              id: add.id,
+              initData: add.initData,
+              initState: add.state,
+            },
           });
 
-          response = { id: res.id, state: res.state, version: res.version };
+          response = {
+            id: add.id,
+            initData: add.initData,
+            state: add.state,
+            version: res.nextVersion,
+          };
         } catch (err) {
           console.log(err);
           return;
