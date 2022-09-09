@@ -1,17 +1,17 @@
-import { compareAsc } from "date-fns";
-import { useState } from "react";
+import { compareAsc } from 'date-fns';
+import { useState } from 'react';
 import {
   populateProgramFromState,
   useAppDispatch,
   useAppSelector,
-} from "../../../hooks/redux-hooks";
-import { programsActions } from "../../../redux-store/programsSlice";
-import { ProgramId } from "../../../training-programs/data-types";
-import { roundDate } from "../../../util/date";
-import Calendar from "../../Calendar/Calendar";
-import Button from "../../UI-elements/Button/Button";
-import Card from "../../UI-elements/Card/Card";
-import styles from "./TrainingHub.module.css";
+} from '../../../hooks/redux-hooks';
+import { programsActions } from '../../../redux-store/programsSlice';
+import { ProgramId } from '../../../training-programs/data-types';
+import { roundDate } from '../../../util/date';
+import Calendar from '../../Calendar/Calendar';
+import Button from '../../UI-elements/Button/Button';
+import Card from '../../UI-elements/Card/Card';
+import styles from './TrainingHub.module.css';
 
 const TrainingHub = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +46,13 @@ const TrainingHub = () => {
       { forceProgress: false, fromToday: false }
     );
 
-    dispatch(programsActions.update({ id: program.id, state: nextState }));
+    dispatch(
+      programsActions.update({
+        id: program.id,
+        state: nextState,
+        version: program.version,
+      })
+    );
   };
 
   return (
@@ -60,12 +66,12 @@ const TrainingHub = () => {
           {today.map((s) => (
             <li key={s.name} className={styles.scheduled}>
               <h2>{s.name}</h2>
-              <div className={styles["scheduled__desc"]}>{s.sessionDesc}</div>
+              <div className={styles['scheduled__desc']}>{s.sessionDesc}</div>
               {compareAsc(
                 workouts.byId[s.id].state.sessionDate,
                 selectedDate
               ) === 0 && (
-                <div className={styles["scheduled__ctrl"]}>
+                <div className={styles['scheduled__ctrl']}>
                   <Button onClick={skipSessionHandler(s.id)} plain>
                     Skip
                   </Button>

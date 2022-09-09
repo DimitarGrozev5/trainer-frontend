@@ -1,23 +1,23 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   populateProgramsArr,
   useAppDispatch,
   useAppSelector,
-} from "../../../hooks/redux-hooks";
+} from '../../../hooks/redux-hooks';
 
-import styles from "./ManagePrograms.module.css";
-import Card from "../../UI-elements/Card/Card";
-import Input from "../../UI-elements/Input/Input";
+import styles from './ManagePrograms.module.css';
+import Card from '../../UI-elements/Card/Card';
+import Input from '../../UI-elements/Input/Input';
 import {
   ProgramId,
   TrainingProgram,
-} from "../../../training-programs/data-types";
-import Button from "../../UI-elements/Button/Button";
-import ViewWorkoutDescModal from "./ViewWorkoutDescModal/ViewWorkoutDescModal";
-import { useSState } from "../../../hooks/useSState";
-import AddWorkoutModal from "./AddWorkoutModal/AddWorkoutModal";
-import ConfirmModal from "../../UI-elements/Modal/ConfirmModal";
-import { programsActions } from "../../../redux-store/programsSlice";
+} from '../../../training-programs/data-types';
+import Button from '../../UI-elements/Button/Button';
+import ViewWorkoutDescModal from './ViewWorkoutDescModal/ViewWorkoutDescModal';
+import { useSState } from '../../../hooks/useSState';
+import AddWorkoutModal from './AddWorkoutModal/AddWorkoutModal';
+import ConfirmModal from '../../UI-elements/Modal/ConfirmModal';
+import { programsActions } from '../../../redux-store/programsSlice';
 
 const match = (query: string) => (program: TrainingProgram<ProgramId>) => {
   return (
@@ -36,7 +36,7 @@ const ManagePrograms = () => {
   const inactivePrograms = allPrograms.filter((pr) => !pr.active);
 
   // Handle a search query
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
 
   // Handle modals visibility
   const [descModal, setDescModal, { setStateTo: setDescModalTo }] = useSState<{
@@ -67,7 +67,17 @@ const ManagePrograms = () => {
       if (confirmed) {
         setShowConfirmModal(false);
         if (showConfirmModal) {
-          dispatch(programsActions.remove(showConfirmModal));
+          const program = activePrograms.find(
+            (ap) => ap.id === showConfirmModal
+          );
+          if (program) {
+            dispatch(
+              programsActions.remove({
+                id: program.id,
+                version: program.version,
+              })
+            );
+          }
         }
       } else {
         id && setShowConfirmModal(id);
@@ -98,12 +108,12 @@ const ManagePrograms = () => {
         <h1 className={styles.h1}>Your Programs:</h1>
         <ul>
           {activePrograms.map((p) => (
-            <li key={p.id} className={styles["new-program"]}>
-              <div className={styles["new_program__desc"]}>
+            <li key={p.id} className={styles['new-program']}>
+              <div className={styles['new_program__desc']}>
                 <h2>{p.name}</h2>
                 <p>{p.shortDesc}</p>
               </div>
-              <div className={styles["new_program__actions"]}>
+              <div className={styles['new_program__actions']}>
                 <Button
                   onClick={setDescModalTo({
                     id: p.id,
@@ -123,7 +133,7 @@ const ManagePrograms = () => {
           ))}
         </ul>
       </Card>
-      <Card className={styles["new-programs"]}>
+      <Card className={styles['new-programs']}>
         <h1 className={styles.h1}>Add a new program:</h1>
         <Input
           label="Quick find:"
@@ -132,14 +142,14 @@ const ManagePrograms = () => {
           onChange={setQuery}
           addClearBtn
         />
-        <ul className={styles["inactive-programs"]}>
+        <ul className={styles['inactive-programs']}>
           {inactivePrograms.filter(match(query)).map((p) => (
-            <li key={p.id} className={styles["new-program"]}>
-              <div className={styles["new_program__desc"]}>
+            <li key={p.id} className={styles['new-program']}>
+              <div className={styles['new_program__desc']}>
                 <h2>{p.name}</h2>
                 <p>{p.shortDesc}</p>
               </div>
-              <div className={styles["new_program__actions"]}>
+              <div className={styles['new_program__actions']}>
                 <Button
                   onClick={setDescModalTo({
                     id: p.id,

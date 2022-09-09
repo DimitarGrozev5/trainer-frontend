@@ -1,7 +1,7 @@
-import { Middleware } from "@reduxjs/toolkit";
-import { ProgramId } from "../../training-programs/data-types";
-import { programsActions } from "../programsSlice";
-import { httpClient } from "./httpClient";
+import { Middleware } from '@reduxjs/toolkit';
+import { ProgramId } from '../../training-programs/data-types';
+import { programsActions } from '../programsSlice';
+import { httpClient } from './httpClient';
 
 export const networkMiddleware: Middleware =
   ({ getState, dispatch }) =>
@@ -13,14 +13,15 @@ export const networkMiddleware: Middleware =
     // Add
     let response: any;
     switch (action.type) {
-      case "programs/add":
-        const add: { id: ProgramId; state: any } = action.payload;
+      case 'programs/add':
+        const add: { id: ProgramId; state: any; version: string } =
+          action.payload;
         try {
-          const res = await sendRequest("/", {
+          const res = await sendRequest('/', {
             body: { id: add.id, state: add.state },
           });
 
-          response = { id: res.id, state: res.state };
+          response = { id: res.id, state: res.state, version: res.version };
         } catch (err) {
           console.log(err);
           return;
@@ -28,11 +29,12 @@ export const networkMiddleware: Middleware =
         return next(programsActions.add(response));
 
       // Remove
-      case "programs/remove":
-        const removeId: ProgramId = action.payload;
+      case 'programs/remove':
+        const removeId: { id: ProgramId; version: string } = action.payload;
         try {
           const res = await sendRequest(`/${removeId}`, {
-            method: "DELETE",
+            method: 'DELETE',
+            body: { version: action.payload.version },
           });
 
           response = res.id;
@@ -43,15 +45,20 @@ export const networkMiddleware: Middleware =
         return next(programsActions.remove(response));
 
       // Update
-      case "programs/update":
-        const update: { id: ProgramId; state: any } = action.payload;
+      case 'programs/update':
+        const update: { id: ProgramId; state: any; version: string } =
+          action.payload;
         try {
           const res = await sendRequest(`/${update.id}`, {
-            body: { id: update.id, state: update.state },
-            method: "PATCH",
+            body: {
+              id: update.id,
+              state: update.state,
+              version: update.version,
+            },
+            method: 'PATCH',
           });
 
-          response = { id: res.id, state: res.state };
+          response = { id: res.id, state: res.state, version: res.version };
         } catch (err) {
           console.log(err);
           return;

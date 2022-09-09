@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 import {
   populateProgram,
   useAppDispatch,
   useAppSelector,
   voidGetter,
-} from "../../../../hooks/redux-hooks";
+} from '../../../../hooks/redux-hooks';
 import {
   ProgramId,
   TrainingProgram,
-} from "../../../../training-programs/data-types";
-import Button from "../../../UI-elements/Button/Button";
-import Modal from "../../../UI-elements/Modal/Modal";
-import { programsActions } from "../../../../redux-store/programsSlice";
+} from '../../../../training-programs/data-types';
+import Button from '../../../UI-elements/Button/Button';
+import Modal from '../../../UI-elements/Modal/Modal';
+import { programsActions } from '../../../../redux-store/programsSlice';
 
 interface Props {
   show: boolean;
@@ -34,7 +34,9 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
       // Get init data
       const initData = program.getInitData(initState);
 
-      dispatch(programsActions.add({ id: program.id, state: initData }));
+      dispatch(
+        programsActions.add({ id: program.id, state: initData, version: '' })
+      );
     }
 
     onCancel();
@@ -53,14 +55,14 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
 
   // Set the output to dummy modal, so an exiting animation will play
   const { name, InitComponent } = program || {
-    name: "",
+    name: '',
     InitComponent: ({ value, onChange }) => <></>,
   };
 
   return (
     <>
       <Modal
-        title={"Add " + name}
+        title={'Add ' + name}
         show={show}
         buttons={btns}
         onClose={onCancel}

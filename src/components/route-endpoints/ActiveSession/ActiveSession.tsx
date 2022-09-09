@@ -1,18 +1,18 @@
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   populateProgram,
   useAppDispatch,
   useAppSelector,
-} from "../../../hooks/redux-hooks";
-import { programsActions } from "../../../redux-store/programsSlice";
+} from '../../../hooks/redux-hooks';
+import { programsActions } from '../../../redux-store/programsSlice';
 import {
   ProgramId,
   SessionComponent,
-} from "../../../training-programs/data-types";
-import Button from "../../UI-elements/Button/Button";
-import Card from "../../UI-elements/Card/Card";
-import ConfirmModal from "../../UI-elements/Modal/ConfirmModal";
+} from '../../../training-programs/data-types';
+import Button from '../../UI-elements/Button/Button';
+import Card from '../../UI-elements/Card/Card';
+import ConfirmModal from '../../UI-elements/Modal/ConfirmModal';
 
 const ActiveSession = () => {
   const navigate = useNavigate();
@@ -45,18 +45,24 @@ const ActiveSession = () => {
     if (achieved) {
       // If the goal is achieved, get next state and exit
       const nextState = program.getNextState(program.state, achieved);
-      dispatch(programsActions.update({ id: program.id, state: nextState }));
+      dispatch(
+        programsActions.update({
+          id: program.id,
+          state: nextState,
+          version: program.version,
+        })
+      );
       // setShowInfoModal(true);
     }
 
-    navigate("/");
+    navigate('/');
   };
 
   return (
     <>
       <ConfirmModal
         show={showConfirmExit}
-        message={"The session is not over. Are you sure you want to exit?"}
+        message={'The session is not over. Are you sure you want to exit?'}
         onClose={setShowConfirmExit.bind(null, false)}
         onConfirm={endSession(true)}
       />
