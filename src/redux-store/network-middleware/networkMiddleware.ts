@@ -44,14 +44,18 @@ export const networkMiddleware: Middleware =
 
       // Remove
       case 'programs/remove':
-        const removeId: { id: ProgramId; version: string } = action.payload;
+        const remove: { id: ProgramId; version: string } = action.payload;
+
         try {
-          const res = await sendRequest(`/${removeId}`, {
+          const res = await sendRequest(`/${remove.id}`, {
             method: 'DELETE',
             body: { version: action.payload.version },
           });
 
-          response = res.id;
+          response = {
+            id: remove.id,
+            version: '',
+          };
         } catch (err) {
           console.log(err);
           return;

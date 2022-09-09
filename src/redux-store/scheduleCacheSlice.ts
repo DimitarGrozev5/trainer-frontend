@@ -67,7 +67,7 @@ export const scheduleCacheMiddleware: Middleware =
         payload = [action.payload];
         break;
       case 'programs/remove':
-        dispatch(scheduleCacheActions.removeProgram(action.payload));
+        dispatch(scheduleCacheActions.removeProgram(action.payload.id));
         return next(action);
       case 'programs/update':
         payload = [action.payload];
