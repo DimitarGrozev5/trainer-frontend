@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  populateProgram,
-  useAppDispatch,
-  useAppSelector,
-} from '../../../hooks/redux-hooks';
+import { useGetProgram } from '../../../hooks/programs-hooks/useGetProgram';
+import { useAppDispatch } from '../../../hooks/redux-hooks';
 import { programsActions } from '../../../redux-store/programsSlice';
 import {
   ProgramId,
   SessionComponent,
+  TrainingProgram,
 } from '../../../training-programs/data-types';
 import Button from '../../UI-elements/Button/Button';
 import Card from '../../UI-elements/Card/Card';
@@ -20,7 +18,7 @@ const ActiveSession = () => {
 
   const programId = useParams().programId as ProgramId;
 
-  const program = useAppSelector(populateProgram(programId));
+  const program = useGetProgram(programId);
 
   let Component: SessionComponent<ProgramId> = () => <></>;
   if (program && program.SessionComponent) {
@@ -42,7 +40,7 @@ const ActiveSession = () => {
     }
 
     // If the goal is achieved generate next state
-    if (achieved) {
+    if (achieved && program && program.version) {
       // If the goal is achieved, get next state and exit
       const nextState = program.getNextState(program.state, achieved);
       dispatch(
@@ -75,7 +73,11 @@ const ActiveSession = () => {
       >
         Saving data and exiting!
       </Modal> */}
-      <Component program={program} onAchievedChanged={setAchieved} />
+      {/* TODO: a hacky solution that will probably go away after a refactoring */}
+      <Component
+        program={program as TrainingProgram<ProgramId>}
+        onAchievedChanged={setAchieved}
+      />
       <Card>
         <Button onClick={endSession(achieved)} stretch>
           End Session

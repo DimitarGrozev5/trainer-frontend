@@ -8,38 +8,6 @@ import { ProgramsState } from '../redux-store/programsSlice';
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-// export const populateProgramsArr =
-//   (filter: boolean | null = null) =>
-//   (state: RootState) => {
-//     // Filter programs based on option
-//     // True - active
-//     // False - !active
-//     if (typeof filter === 'boolean') {
-//       return state.programs.arr.flatMap((id) => {
-//         return state.programs.byId[id].active === filter
-//           ? ({
-//               ...programs.get(id),
-//               ...state.programs.byId[id],
-//             } as TrainingProgram<ProgramId>)
-//           : [];
-//       });
-//     }
-
-//     return state.programs.arr.map((id) => {
-//       return {
-//         ...programs.get(id),
-//         ...state.programs.byId[id],
-//       } as TrainingProgram<ProgramId>;
-//     });
-//   };
-export const populateProgramsState = (state: ProgramsState) =>
-  state.arr.map((id) => {
-    return {
-      ...programs.get(id),
-      ...state.byId[id],
-    } as TrainingProgram<ProgramId>;
-  });
-
 export const populateProgram = (id: ProgramId) => (state: RootState) => {
   return {
     ...programs.get(id),

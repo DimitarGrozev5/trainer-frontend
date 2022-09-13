@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { programs } from '../../training-programs';
-import { ProgramId, TrainingProgram } from '../../training-programs/data-types';
 import { useAppSelector } from '../redux-hooks';
 
 export const useGetAllPrograms = () => {
