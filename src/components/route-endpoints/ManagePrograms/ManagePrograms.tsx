@@ -1,39 +1,37 @@
 import { useState } from 'react';
-import {
-  populateProgramsArr,
-  useAppDispatch,
-  useAppSelector,
-} from '../../../hooks/redux-hooks';
+import { useAppDispatch } from '../../../hooks/redux-hooks';
 
 import styles from './ManagePrograms.module.css';
 import Card from '../../UI-elements/Card/Card';
 import Input from '../../UI-elements/Input/Input';
-import {
-  ProgramId,
-  TrainingProgram,
-} from '../../../training-programs/data-types';
+import { ProgramId } from '../../../training-programs/data-types';
 import Button from '../../UI-elements/Button/Button';
 import ViewWorkoutDescModal from './ViewWorkoutDescModal/ViewWorkoutDescModal';
 import { useSState } from '../../../hooks/useSState';
 import AddWorkoutModal from './AddWorkoutModal/AddWorkoutModal';
 import ConfirmModal from '../../UI-elements/Modal/ConfirmModal';
 import { programsActions } from '../../../redux-store/programsSlice';
+import { useGetAllPrograms } from '../../../hooks/programs-hooks/useGetAllPrograms';
 
-const match = (query: string) => (program: TrainingProgram<ProgramId>) => {
-  return (
-    program.name.toLowerCase().includes(query.toLowerCase()) ||
-    program.shortDesc.toLowerCase().includes(query.toLowerCase()) ||
-    program.longDesc.toLowerCase().includes(query.toLowerCase())
-  );
-};
+const match = (query: string) =>
+  function <T extends { name: string; shortDesc: string; longDesc: string }>(
+    program: T
+  ) {
+    return (
+      program.name.toLowerCase().includes(query.toLowerCase()) ||
+      program.shortDesc.toLowerCase().includes(query.toLowerCase()) ||
+      program.longDesc.toLowerCase().includes(query.toLowerCase())
+    );
+  };
 
 const ManagePrograms = () => {
   const dispatch = useAppDispatch();
 
   // Get all programs and divide them in active and inactive
-  const allPrograms = useAppSelector(populateProgramsArr());
-  const activePrograms = allPrograms.filter((pr) => pr.active);
-  const inactivePrograms = allPrograms.filter((pr) => !pr.active);
+  // const allPrograms = useAppSelector(populateProgramsArr());
+  // const activePrograms = allPrograms.filter((pr) => pr.active);
+  // const inactivePrograms = allPrograms.filter((pr) => !pr.active);
+  const { activePrograms, inactivePrograms } = useGetAllPrograms();
 
   // Handle a search query
   const [query, setQuery] = useState('');
@@ -74,6 +72,8 @@ const ManagePrograms = () => {
             dispatch(
               programsActions.remove({
                 id: program.id,
+                // TODO: This will get refactored so, it's fine to ignore the ts error for the moment
+                // @ts-expect-error
                 version: program.version,
               })
             );
