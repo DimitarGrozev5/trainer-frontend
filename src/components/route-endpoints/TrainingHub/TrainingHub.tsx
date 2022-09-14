@@ -7,7 +7,7 @@ import {
   useAppSelector,
 } from '../../../hooks/redux-hooks';
 import { programsActions } from '../../../redux-store/programsSlice';
-import { ProgramId } from '../../../training-programs/data-types';
+import { ProgramId, TPActive } from '../../../training-programs/data-types';
 import { roundDate } from '../../../util/date';
 import Calendar from '../../Calendar/Calendar';
 import Button from '../../UI-elements/Button/Button';
@@ -19,7 +19,7 @@ const TrainingHub = () => {
 
   // Get programs
   const workouts = useAppSelector((state) => state.programs);
-  // const { allPrograms: programs } = useGetAllPrograms();
+  const { allPrograms: programs, getProgram } = useGetAllPrograms();
 
   // State for controlling the selected day
   const [selectedDate, setSelectedDate] = useState(roundDate(new Date()));
@@ -40,7 +40,12 @@ const TrainingHub = () => {
   );
 
   const skipSessionHandler = (id: ProgramId) => async () => {
-    const program = populateProgramFromState(id, workouts);
+    // const program = populateProgramFromState(id, workouts);
+    const programOrNull = getProgram(id);
+    if (!programOrNull || !programOrNull.active) {
+      return;
+    }
+    const program = programOrNull as TPActive;
 
     const nextState = program.getNextState(
       program.state,
