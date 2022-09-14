@@ -69,3 +69,41 @@ export interface TrainingProgram<id extends ProgramId> {
 
   SessionComponent: SessionComponent<id>;
 }
+
+// Next gen types
+export interface TPState<id extends ProgramId, A extends boolean> {
+  id: id;
+  active: boolean;
+  state: A extends true ? ProgramStateMap[id] : null;
+  version: A extends true ? string : null;
+}
+
+export interface TP<id extends ProgramId, A extends boolean>
+  extends TPState<id, A> {
+  id: id;
+  active: boolean;
+  state: A extends true ? ProgramStateMap[id] : null;
+  version: A extends true ? string : null;
+
+  name: string;
+  shortDesc: string;
+  longDesc: string;
+
+  InitComponent: InitComponent<id>;
+  getInitData: (val: ProgramInitMap[id]) => ProgramStateMap[id];
+
+  getDescFromState: (state: ProgramStateMap[id]) => string;
+  getNextState: (
+    state: ProgramStateMap[id],
+    achieved: ProgramAchievedMap[id],
+    options?: {
+      forceProgress?: boolean;
+      fromToday?: boolean;
+    }
+  ) => ProgramStateMap[id];
+
+  SessionComponent: SessionComponent<id>;
+}
+
+export type TPActive = TP<ProgramId, true>;
+export type TPInactive = TP<ProgramId, false>;
