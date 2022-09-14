@@ -3,28 +3,6 @@ import { PayloadAction } from '@reduxjs/toolkit';
 
 import { ProgramId, TPState } from '../training-programs/data-types';
 
-// Type of individual program
-export type ProgramState =
-  | {
-      id: ProgramId;
-      active: true;
-      state: any;
-      version: string;
-    }
-  | {
-      id: ProgramId;
-      active: false;
-      state: null;
-      version: null;
-    };
-
-// Redux type
-// export type ProgramsState = {
-//   byId: {
-//     [programId in ProgramId]: ProgramState;
-//   };
-//   arr: ProgramId[];
-// };
 export type ProgramsState = {
   byId: {
     [programId in ProgramId]: TPState<ProgramId, boolean>;
@@ -60,6 +38,7 @@ const programsSlice = createSlice({
       });
     },
 
+    // TODO: Fix typing in the reducers
     add: (
       state,
       action: PayloadAction<{
