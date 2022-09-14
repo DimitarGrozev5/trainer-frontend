@@ -5,7 +5,7 @@ import { programs } from '../training-programs';
 
 import { ProgramId, TPActive, TPState } from '../training-programs/data-types';
 
-export class ScheduledSession {
+class ScheduledSession {
   constructor(
     public id: ProgramId,
     public name: string,
@@ -16,10 +16,10 @@ export class ScheduledSession {
 }
 
 // Redux type
-export type ScheduledDate = {
+type ScheduledDate = {
   [date: number]: ScheduledSession | null;
 };
-export type ScheduleCacheState = {
+type ScheduleCacheState = {
   [programId in ProgramId]: ScheduledDate;
 };
 

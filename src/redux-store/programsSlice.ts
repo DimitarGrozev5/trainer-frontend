@@ -3,7 +3,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 
 import { ProgramId, TPState } from '../training-programs/data-types';
 
-export type ProgramsState = {
+type ProgramsState = {
   byId: {
     [programId in ProgramId]: TPState<ProgramId, boolean>;
   };
