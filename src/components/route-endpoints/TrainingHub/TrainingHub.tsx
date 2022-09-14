@@ -2,7 +2,6 @@ import { compareAsc } from 'date-fns';
 import { useState } from 'react';
 import { useGetAllPrograms } from '../../../hooks/programs-hooks/useGetAllPrograms';
 import {
-  populateProgramFromState,
   useAppDispatch,
   useAppSelector,
 } from '../../../hooks/redux-hooks';
@@ -40,7 +39,6 @@ const TrainingHub = () => {
   );
 
   const skipSessionHandler = (id: ProgramId) => async () => {
-    // const program = populateProgramFromState(id, workouts);
     const programOrNull = getProgram(id);
     if (!programOrNull || !programOrNull.active) {
       return;
@@ -76,7 +74,7 @@ const TrainingHub = () => {
               <h2>{s.name}</h2>
               <div className={styles['scheduled__desc']}>{s.sessionDesc}</div>
               {compareAsc(
-                workouts.byId[s.id].state.sessionDate,
+                workouts.byId[s.id].state!.sessionDate,
                 selectedDate
               ) === 0 && (
                 <div className={styles['scheduled__ctrl']}>

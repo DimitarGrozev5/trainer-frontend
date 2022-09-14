@@ -43,34 +43,7 @@ export interface SessionProps<id extends ProgramId> {
 }
 export type SessionComponent<id extends ProgramId> = React.FC<SessionProps<id>>;
 
-// Training Program data type
-export interface TrainingProgram<id extends ProgramId> {
-  id: id;
-  active: boolean;
-  state: ProgramStateMap[id];
-  version: string;
-
-  name: string;
-  shortDesc: string;
-  longDesc: string;
-
-  InitComponent: InitComponent<id>;
-  getInitData: (val: ProgramInitMap[id]) => ProgramStateMap[id];
-
-  getNextState: (
-    state: ProgramStateMap[id],
-    achieved: ProgramAchievedMap[id],
-    options?: {
-      forceProgress?: boolean;
-      fromToday?: boolean;
-    }
-  ) => ProgramStateMap[id];
-  getDescFromState: (state: ProgramStateMap[id]) => string;
-
-  SessionComponent: SessionComponent<id>;
-}
-
-// Next gen types
+// Training Program data types
 export interface TPState<id extends ProgramId, A extends boolean> {
   id: id;
   active: boolean;
