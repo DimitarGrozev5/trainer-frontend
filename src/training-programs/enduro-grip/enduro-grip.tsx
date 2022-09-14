@@ -114,7 +114,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
 
   getNextState: (
     prevState: EnduroGripState,
-    achieved: EnduroGripAchieved,
+    achieved: EnduroGripAchieved | null,
     { forceProgress = false, fromToday = true } = {
       forceProgress: false,
       fromToday: true,
@@ -145,12 +145,12 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
     const nextScheduleIndex = schedulePlan.getIndex(+1);
 
     let nextSessionIndex = sessionIndex;
-    let heavySessionAchieved = achieved.sets;
+    let heavySessionAchieved = achieved?.sets || 0;
 
     // If the session was heavy always move to the next session and record the achieved result
     if (sessionIndex % 2 === 0) {
       nextSessionIndex = trainingPlan.getIndex(+1);
-      heavySessionAchieved = achieved.sets;
+      heavySessionAchieved = achieved?.sets || 0;
     }
 
     // If the session was light decide wheter to move to the next session or the previous and don't record the achieved result

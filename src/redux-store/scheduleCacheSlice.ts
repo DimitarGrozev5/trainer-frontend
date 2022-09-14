@@ -3,7 +3,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { add, compareAsc } from 'date-fns';
 import { programs } from '../training-programs';
 
-import { ProgramAchievedMap, ProgramId, TPActive, TPState } from '../training-programs/data-types';
+import { ProgramId, TPActive, TPState } from '../training-programs/data-types';
 
 class ScheduledSession {
   constructor(
@@ -79,7 +79,7 @@ export const scheduleCacheMiddleware: Middleware =
 
     payload.forEach((programData: TPState<ProgramId, boolean>) => {
       // If the program is changed to inactive, remove it from the cache and exit
-      if ("active" in programData && !programData.active) {
+      if ('active' in programData && !programData.active) {
         return dispatch(scheduleCacheActions.removeProgram(programData.id));
       }
 
@@ -117,11 +117,10 @@ export const scheduleCacheMiddleware: Middleware =
             ),
           };
 
-          nextState = program.getNextState(
-            nextState,
-            {},
-            { forceProgress: true, fromToday: false }
-          );
+          nextState = program.getNextState(nextState, null, {
+            forceProgress: true,
+            fromToday: false,
+          });
         }
 
         cache = { ...cache, ...today };

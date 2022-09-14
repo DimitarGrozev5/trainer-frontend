@@ -63,19 +63,46 @@ export const ees: TP<'ees', true> = {
 
   getNextState: (
     state: eesState,
-    achieved: eesAchieved,
+    achieved: eesAchieved | null,
     { forceProgress = false, fromToday = true } = {
       forceProgress: false,
       fromToday: true,
     }
   ): eesState => {
+    // If achieved is null, set it to no sets
+    let achievedSets = {
+      push: 0,
+      pull: 0,
+      squat: 0,
+      ab: 0,
+      accessory: 0,
+    };
+
+    // If achieved is not null, set it to achived
+    if (achieved) {
+      achievedSets = { ...achieved };
+    }
+
+    // If force progress set sets to 2
+    if (forceProgress) {
+      achievedSets = {
+        push: 2,
+        pull: 2,
+        squat: 2,
+        ab: 2,
+        accessory: 2,
+      };
+    }
+
     // Destructure session data
     const { sessionDate: UTCDate } = state;
 
-    const allSets = Object.values(achieved).reduce(
-      (sum: number, sets: number) => sum + sets,
-      0
-    );
+    const allSets = forceProgress
+      ? 10
+      : Object.values(achievedSets).reduce(
+          (sum: number, sets: number) => sum + sets,
+          0
+        );
 
     const sessionDate = new Date(UTCDate);
 
@@ -85,11 +112,11 @@ export const ees: TP<'ees', true> = {
 
     const setsDone = !forceProgress
       ? {
-          push: achieved.push % 2,
-          pull: achieved.pull % 2,
-          squat: achieved.squat % 2,
-          ab: achieved.ab % 2,
-          accessory: achieved.accessory % 2,
+          push: achievedSets.push % 2,
+          pull: achievedSets.pull % 2,
+          squat: achievedSets.squat % 2,
+          ab: achievedSets.ab % 2,
+          accessory: achievedSets.accessory % 2,
         }
       : {
           push: 0,

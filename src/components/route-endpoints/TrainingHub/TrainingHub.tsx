@@ -42,7 +42,7 @@ const TrainingHub = () => {
 
     const nextState = program.getNextState(
       program.state,
-      {},
+      null,
       { forceProgress: false, fromToday: false }
     );
 

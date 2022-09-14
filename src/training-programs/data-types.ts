@@ -68,7 +68,7 @@ export interface TP<id extends ProgramId, A extends boolean>
   getDescFromState: (state: ProgramStateMap[id]) => string;
   getNextState: (
     state: ProgramStateMap[id],
-    achieved: ProgramAchievedMap[id],
+    achieved: ProgramAchievedMap[id] | null,
     options?: {
       forceProgress?: boolean;
       fromToday?: boolean;
