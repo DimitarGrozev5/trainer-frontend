@@ -7,13 +7,13 @@ import { now, roundDate } from '../../util/date';
 import CircularButton from '../common-components/CircularButton/CircularButton';
 import { H1, H2 } from '../common-components/Headings/H';
 import Info from '../common-components/Info/Info';
-import { SessionProps, TrainingProgram } from '../data-types';
+import { SessionProps, TP } from '../data-types';
 import { eesAchieved, eesState, SetName } from './ees-types';
 import styles from './Styles.module.css';
 
-export const ees: TrainingProgram<'ees'> = {
+export const ees: TP<'ees', true> = {
   id: 'ees',
-  active: false,
+  active: true,
   state: {} as eesState,
   version: '',
 
