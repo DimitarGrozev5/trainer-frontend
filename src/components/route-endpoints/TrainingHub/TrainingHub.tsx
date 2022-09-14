@@ -40,11 +40,7 @@ const TrainingHub = () => {
     }
     const program = programOrNull as TPActive;
 
-    const nextState = program.getNextState(
-      program.state,
-      null,
-      { forceProgress: false, fromToday: false }
-    );
+    const nextState = program.getNextState(program.state, 'skip');
 
     dispatch(
       programsActions.update({
