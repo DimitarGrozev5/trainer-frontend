@@ -13,6 +13,7 @@ import {
 import Button from '../../../UI-elements/Button/Button';
 import Modal from '../../../UI-elements/Modal/Modal';
 import { programsActions } from '../../../../redux-store/programsSlice';
+import { useGetProgram } from '../../../../hooks/programs-hooks/useGetProgram';
 
 interface Props {
   show: boolean;
@@ -23,8 +24,9 @@ interface Props {
 const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
   const dispatch = useAppDispatch();
 
-  const getter = id ? populateProgram(id) : voidGetter;
-  const program = useAppSelector<TrainingProgram<ProgramId> | void>(getter);
+  // const getter = id ? populateProgram(id) : voidGetter;
+  // const program = useAppSelector<TrainingProgram<ProgramId> | void>(getter);
+  const program = useGetProgram(id);
 
   // Get state for InitComponent
   const [initData, setInitData] = useState<any>({});
