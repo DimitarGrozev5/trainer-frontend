@@ -3,13 +3,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { add, compareAsc } from 'date-fns';
 import { programs } from '../training-programs';
 
-import {
-  ProgramId,
-  TPActive,
-  TPState,
-  TrainingProgram,
-} from '../training-programs/data-types';
-import { ProgramState } from './programsSlice';
+import { ProgramId, TPActive, TPState } from '../training-programs/data-types';
 
 export class ScheduledSession {
   constructor(
@@ -136,7 +130,10 @@ export const scheduleCacheMiddleware: Middleware =
       }
 
       dispatch(
-        scheduleCacheActions.addToCache({ program: programData.id, dates: cache })
+        scheduleCacheActions.addToCache({
+          program: programData.id,
+          dates: cache,
+        })
       );
     });
 
