@@ -68,7 +68,7 @@ export interface TP<id extends ProgramId, A extends boolean>
   getDescFromState: (state: ProgramStateMap[id]) => string;
   getNextState: (
     state: ProgramStateMap[id],
-    achieved: ProgramAchievedMap[id] | null
+    achieved: ProgramAchievedMap[id] | 'skip'
   ) => ProgramStateMap[id];
   getNextScheduleState: (state: ProgramStateMap[id]) => ProgramStateMap[id];
 
