@@ -117,10 +117,7 @@ export const scheduleCacheMiddleware: Middleware =
             ),
           };
 
-          nextState = program.getNextState(nextState, null, {
-            forceProgress: true,
-            fromToday: false,
-          });
+          nextState = program.getNextScheduleState(nextState);
         }
 
         cache = { ...cache, ...today };
