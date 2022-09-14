@@ -79,7 +79,6 @@ export const sameMonth = (date1: Date, date2: Date): boolean => {
 
 // Generate an array of the days of a month, based on a Date from that month
 type DateUTC = number;
-type DateOption = Date | -1;
 
 const nextDaysMonth = (arr: Date[][]): number => {
   const last = arr.length;
