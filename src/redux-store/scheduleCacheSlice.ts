@@ -3,7 +3,12 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { add, compareAsc } from 'date-fns';
 import { programs } from '../training-programs';
 
-import { ProgramId, TrainingProgram } from '../training-programs/data-types';
+import {
+  ProgramId,
+  TPActive,
+  TPState,
+  TrainingProgram,
+} from '../training-programs/data-types';
 import { ProgramState } from './programsSlice';
 
 export class ScheduledSession {
@@ -58,7 +63,7 @@ export const scheduleCacheMiddleware: Middleware =
       return next(action);
     }
 
-    let payload: ProgramState[];
+    let payload: TPState<ProgramId, boolean>[];
     switch (action.type) {
       case 'programs/updateProgramsState':
         payload = action.payload;
@@ -78,18 +83,20 @@ export const scheduleCacheMiddleware: Middleware =
         break;
     }
 
-    payload.forEach((p: ProgramState) => {
-      // If the program is changed to inactive, remove it from the cache
-      if ('active' in p && !p.active) {
-        return dispatch(scheduleCacheActions.removeProgram(p.id));
+    payload.forEach((programData: TPState<ProgramId, boolean>) => {
+      // If the program is changed to inactive, remove it from the cache and exit
+      if (!programData.active) {
+        return dispatch(scheduleCacheActions.removeProgram(programData.id));
       }
 
       // Get full program data
-      const fullPr = programs.get(p.id);
-      if (!fullPr) {
+      const programMethods = programs.get(programData.id);
+      if (!programMethods) {
         return;
       }
-      const program: TrainingProgram<ProgramId> = { ...fullPr, ...p };
+
+      // If the function got to here, then the program is active and it's safe to coerce it
+      const program = { ...programMethods, ...programData } as TPActive;
 
       // Init cahce for program
       let cache = {} as ScheduledDate;
@@ -129,7 +136,7 @@ export const scheduleCacheMiddleware: Middleware =
       }
 
       dispatch(
-        scheduleCacheActions.addToCache({ program: p.id, dates: cache })
+        scheduleCacheActions.addToCache({ program: programData.id, dates: cache })
       );
     });
 
