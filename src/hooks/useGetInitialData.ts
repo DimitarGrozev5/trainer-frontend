@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { programsActions, ProgramState } from '../redux-store/programsSlice';
+import { programsActions } from '../redux-store/programsSlice';
+import { ProgramId, TPState } from '../training-programs/data-types';
 import { useAppDispatch, useAppSelector } from './redux-hooks';
 import { useHttpClient } from './useHttpClient';
 
@@ -15,7 +16,7 @@ export const useGetInitialData = () => {
     }
 
     (async () => {
-      let res: ProgramState[] = [];
+      let res: TPState<ProgramId, boolean>[] = [];
       try {
         const response = await sendRequest(`/`);
         res = response.map((r: any) => ({

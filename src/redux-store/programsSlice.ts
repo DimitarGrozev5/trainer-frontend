@@ -50,7 +50,10 @@ const programsSlice = createSlice({
   } as ProgramsState,
 
   reducers: {
-    updateProgramsState: (state, action: PayloadAction<ProgramState[]>) => {
+    updateProgramsState: (
+      state,
+      action: PayloadAction<TPState<ProgramId, boolean>[]>
+    ) => {
       action.payload.forEach((program) => {
         const id = program.id;
         state.byId[id] = { ...state.byId[id], ...program };
