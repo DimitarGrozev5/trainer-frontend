@@ -1,10 +1,7 @@
 import { compareAsc } from 'date-fns';
 import { useState } from 'react';
 import { useGetAllPrograms } from '../../../hooks/programs-hooks/useGetAllPrograms';
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '../../../hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux-hooks';
 import { programsActions } from '../../../redux-store/programsSlice';
 import { ProgramId, TPActive } from '../../../training-programs/data-types';
 import { roundDate } from '../../../util/date';
@@ -24,7 +21,6 @@ const TrainingHub = () => {
   const [selectedDate, setSelectedDate] = useState(roundDate(new Date()));
 
   // Get programs for selected date
-  // const today = scheduleService(selectedDate);
   const today = useAppSelector((state) =>
     Object.entries(state.scheduleCache).flatMap(([, schedule]) => {
       if (
@@ -37,7 +33,6 @@ const TrainingHub = () => {
       return [];
     })
   );
-  
 
   const skipSessionHandler = (id: ProgramId) => async () => {
     const programOrNull = getProgram(id);
@@ -70,25 +65,29 @@ const TrainingHub = () => {
       <Card className={styles.today}>
         <h1>Today:</h1>
         <ul>
-          {today.map((s) => (
-            <li key={s.name} className={styles.scheduled}>
-              <h2>{s.name}</h2>
-              <div className={styles['scheduled__desc']}>{s.sessionDesc}</div>
-              {compareAsc(
-                workouts.byId[s.id].state!.sessionDate,
-                selectedDate
-              ) === 0 && (
-                <div className={styles['scheduled__ctrl']}>
-                  <Button onClick={skipSessionHandler(s.id)} plain>
-                    Skip
-                  </Button>
-                  <Button to={`/active/${s.id}`} stretch>
-                    Start
-                  </Button>
-                </div>
-              )}
-            </li>
-          ))}
+          {today.map((s) => {
+            const sessionDate = getProgram(s.id)?.state?.sessionDate;
+            const sessionDateUTC = sessionDate || 0;
+            return (
+              <li key={s.name} className={styles.scheduled}>
+                <h2>{s.name}</h2>
+                <div className={styles['scheduled__desc']}>{s.sessionDesc}</div>
+                {compareAsc(
+                  sessionDateUTC,
+                  selectedDate
+                ) === 0 && (
+                  <div className={styles['scheduled__ctrl']}>
+                    <Button onClick={skipSessionHandler(s.id)} plain>
+                      Skip
+                    </Button>
+                    <Button to={`/active/${s.id}`} stretch>
+                      Start
+                    </Button>
+                  </div>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </Card>
     </>
