@@ -4,10 +4,9 @@ import { useGetProgram } from '../../../hooks/programs-hooks/useGetProgram';
 import { useAppDispatch } from '../../../hooks/redux-hooks';
 import { programsActions } from '../../../redux-store/programsSlice';
 import {
+  ProgramAchievedMap,
   ProgramId,
-  SessionComponent,
   TPActive,
-  TrainingProgram,
 } from '../../../training-programs/data-types';
 import Button from '../../UI-elements/Button/Button';
 import Card from '../../UI-elements/Card/Card';
@@ -27,8 +26,9 @@ const ActiveSession = () => {
   const [showConfirmExit, setShowConfirmExit] = useState(false);
 
   // Handle session achived
-  // TODO: add achieved type
-  const [achieved, setAchieved] = useState<any>(false);
+  const [achieved, setAchieved] = useState<
+    ProgramAchievedMap[ProgramId] | false
+  >(false);
 
   // Handle invalid id
   if (programOrNull === null) {
@@ -103,12 +103,9 @@ const ActiveSession = () => {
       >
         Saving data and exiting!
       </Modal> */}
-      <Component
-        program={program}
-        onAchievedChanged={setAchieved}
-      />
+      <Component program={program} onAchievedChanged={setAchieved} />
       <Card>
-        <Button onClick={endSession(achieved)} stretch>
+        <Button onClick={endSession(!!achieved)} stretch>
           End Session
         </Button>
       </Card>

@@ -14,15 +14,15 @@ import {
 export type ProgramId = 'EnduroGrip' | 'ees';
 
 // Type maps for the different programs
-type ProgramStateMap = {
+export type ProgramStateMap = {
   EnduroGrip: EnduroGripState;
   ees: eesState;
 };
-type ProgramInitMap = {
+export type ProgramInitMap = {
   EnduroGrip: EnduroGripInit;
   ees: eesInit;
 };
-type ProgramAchievedMap = {
+export type ProgramAchievedMap = {
   EnduroGrip: EnduroGripAchieved;
   ees: eesAchieved;
 };
