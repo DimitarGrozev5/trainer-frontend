@@ -16,8 +16,6 @@ interface Props {
 const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
   const dispatch = useAppDispatch();
 
-  // const getter = id ? populateProgram(id) : voidGetter;
-  // const program = useAppSelector<TrainingProgram<ProgramId> | void>(getter);
   const program = useGetProgram(id);
 
   // Get state for InitComponent

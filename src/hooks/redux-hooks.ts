@@ -8,12 +8,6 @@ import { ProgramsState } from '../redux-store/programsSlice';
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export const populateProgram = (id: ProgramId) => (state: RootState) => {
-  return {
-    ...programs.get(id),
-    ...state.programs.byId[id],
-  } as TrainingProgram<ProgramId>;
-};
 export const populateProgramFromState = (id: ProgramId, state: ProgramsState) =>
   ({ ...programs.get(id), ...state.byId[id] } as TrainingProgram<ProgramId>);
 

@@ -15,12 +15,8 @@ export const useGetProgram = (
   // Get program data or null
   const programData = useAppSelector(selector);
 
-  if (id === null) {
-    return null;
-  }
-
   const program: TP<ProgramId, boolean> | null = useMemo(() => {
-    if (!programs.has(id) || !programData) {
+    if (!id || !programs.has(id) || !programData) {
       return null;
     }
 

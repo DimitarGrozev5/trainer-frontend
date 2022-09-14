@@ -1,5 +1,6 @@
 import { compareAsc } from 'date-fns';
 import { useState } from 'react';
+import { useGetAllPrograms } from '../../../hooks/programs-hooks/useGetAllPrograms';
 import {
   populateProgramFromState,
   useAppDispatch,
@@ -16,13 +17,14 @@ import styles from './TrainingHub.module.css';
 const TrainingHub = () => {
   const dispatch = useAppDispatch();
 
-  // Get workouts
+  // Get programs
   const workouts = useAppSelector((state) => state.programs);
+  // const { allPrograms: programs } = useGetAllPrograms();
 
   // State for controlling the selected day
   const [selectedDate, setSelectedDate] = useState(roundDate(new Date()));
 
-  // Get workouts for selected date
+  // Get programs for selected date
   // const today = scheduleService(selectedDate);
   const today = useAppSelector((state) =>
     Object.entries(state.scheduleCache).flatMap(([, schedule]) => {
