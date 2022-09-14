@@ -3,7 +3,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { add, compareAsc } from 'date-fns';
 import { programs } from '../training-programs';
 
-import { ProgramId, TPActive, TPState } from '../training-programs/data-types';
+import { ProgramAchievedMap, ProgramId, TPActive, TPState } from '../training-programs/data-types';
 
 class ScheduledSession {
   constructor(

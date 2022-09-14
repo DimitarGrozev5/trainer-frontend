@@ -72,20 +72,36 @@ export const ees: TP<'ees', true> = {
     // Destructure session data
     const { sessionDate: UTCDate } = state;
 
+    const allSets = Object.values(achieved).reduce(
+      (sum: number, sets: number) => sum + sets,
+      0
+    );
+
     const sessionDate = new Date(UTCDate);
 
     const cDate = fromToday ? now() : sessionDate;
-    const nextSessionDate = add(cDate, { days: 1 });
+    const nextSessionDate =
+      allSets === 10 ? add(cDate, { days: 1 }) : sessionDate;
+
+    const setsDone = !forceProgress
+      ? {
+          push: achieved.push % 2,
+          pull: achieved.pull % 2,
+          squat: achieved.squat % 2,
+          ab: achieved.ab % 2,
+          accessory: achieved.accessory % 2,
+        }
+      : {
+          push: 0,
+          pull: 0,
+          squat: 0,
+          ab: 0,
+          accessory: 0,
+        };
 
     return {
       sessionDate: nextSessionDate.getTime(),
-      setsDone: {
-        push: 0,
-        pull: 0,
-        squat: 0,
-        ab: 0,
-        accessory: 0,
-      },
+      setsDone,
     };
   },
   getDescFromState: (state: eesState): string => {
@@ -141,7 +157,7 @@ export const ees: TP<'ees', true> = {
 
       const achieved = !!done && { push, pull, squat, ab, accessory };
 
-      onAchievedChanged(achieved);
+      achieved && onAchievedChanged(achieved);
     }, [push, pull, squat, ab, accessory, onAchievedChanged]);
 
     return (

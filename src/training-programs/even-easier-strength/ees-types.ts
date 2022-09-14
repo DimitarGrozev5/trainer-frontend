@@ -5,7 +5,7 @@ export interface eesState {
 
 export type SetName = 'push' | 'pull' | 'squat' | 'ab' | 'accessory';
 
-interface SetsDone {
+export interface SetsDone {
   push: number;
   pull: number;
   squat: number;
@@ -15,4 +15,4 @@ interface SetsDone {
 
 export interface eesInit {}
 
-export interface eesAchieved {}
+export interface eesAchieved extends SetsDone {}
