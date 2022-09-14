@@ -1,10 +1,23 @@
 import { useMemo } from 'react';
+import { RootState } from '../../redux-store';
 import { programs } from '../../training-programs';
 import { ProgramId, TP } from '../../training-programs/data-types';
 import { useAppSelector } from '../redux-hooks';
 
-export const useGetProgram = (id: ProgramId): TP<ProgramId, boolean> | null => {
-  const programData = useAppSelector((state) => state.programs.byId[id]);
+export const useGetProgram = (
+  id: ProgramId | null
+): TP<ProgramId, boolean> | null => {
+  // Make a conditional selector
+  const selector = !!id
+    ? (state: RootState) => state.programs.byId[id]
+    : () => null;
+
+  // Get program data or null
+  const programData = useAppSelector(selector);
+
+  if (id === null) {
+    return null;
+  }
 
   const program: TP<ProgramId, boolean> | null = useMemo(() => {
     if (!programs.has(id) || !programData) {
