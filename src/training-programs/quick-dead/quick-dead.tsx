@@ -1,6 +1,5 @@
-import { TrainingProgram } from "../data-types";
-
-// export const quickDead: TrainingProgram = {
+import { TP } from '../data-types';
+// export const quickDead: TP<'quickDead', boolean> = {
 //   id: "Q&D",
 //   active: false,
 //   state: {},

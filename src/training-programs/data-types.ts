@@ -37,7 +37,7 @@ export type InitComponent<id extends ProgramId> = React.FC<InitProps<id>>;
 
 // Session Props and Session Component data types
 export interface SessionProps<id extends ProgramId> {
-  program: TrainingProgram<id>;
+  program: TP<id, true>;
 
   onAchievedChanged: (val: ProgramAchievedMap[id]) => void;
 }
