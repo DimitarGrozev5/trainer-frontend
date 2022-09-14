@@ -37,6 +37,7 @@ const TrainingHub = () => {
       return [];
     })
   );
+  
 
   const skipSessionHandler = (id: ProgramId) => async () => {
     const programOrNull = getProgram(id);

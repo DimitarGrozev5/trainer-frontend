@@ -79,7 +79,7 @@ export const scheduleCacheMiddleware: Middleware =
 
     payload.forEach((programData: TPState<ProgramId, boolean>) => {
       // If the program is changed to inactive, remove it from the cache and exit
-      if (!programData.active) {
+      if ("active" in programData && !programData.active) {
         return dispatch(scheduleCacheActions.removeProgram(programData.id));
       }
 
