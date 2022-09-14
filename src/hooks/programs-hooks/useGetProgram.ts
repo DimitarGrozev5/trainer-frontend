@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { programs } from '../../training-programs';
-import { ProgramId, TrainingProgram } from '../../training-programs/data-types';
+import { ProgramId, TP } from '../../training-programs/data-types';
 import { useAppSelector } from '../redux-hooks';
 
-export const useGetProgram = (id: ProgramId) => {
+export const useGetProgram = (id: ProgramId): TP<ProgramId, boolean> | null => {
   const programData = useAppSelector((state) => state.programs.byId[id]);
 
-  const program = useMemo(() => {
+  const program: TP<ProgramId, boolean> | null = useMemo(() => {
     if (!programs.has(id) || !programData) {
       return null;
     }
@@ -14,7 +14,7 @@ export const useGetProgram = (id: ProgramId) => {
     const programMethods = programs.get(id)!;
 
     return { ...programMethods, ...programData };
-  }, [programData]);
+  }, [programData, id]);
 
   return program;
 };
