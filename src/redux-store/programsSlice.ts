@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import { ProgramId } from '../training-programs/data-types';
+import { ProgramId, TPState } from '../training-programs/data-types';
 
 // Type of individual program
 export type ProgramState =
@@ -19,9 +19,15 @@ export type ProgramState =
     };
 
 // Redux type
+// export type ProgramsState = {
+//   byId: {
+//     [programId in ProgramId]: ProgramState;
+//   };
+//   arr: ProgramId[];
+// };
 export type ProgramsState = {
   byId: {
-    [programId in ProgramId]: ProgramState;
+    [programId in ProgramId]: TPState<ProgramId, boolean>;
   };
   arr: ProgramId[];
 };
