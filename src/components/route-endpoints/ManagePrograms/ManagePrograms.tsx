@@ -28,9 +28,6 @@ const ManagePrograms = () => {
   const dispatch = useAppDispatch();
 
   // Get all programs and divide them in active and inactive
-  // const allPrograms = useAppSelector(populateProgramsArr());
-  // const activePrograms = allPrograms.filter((pr) => pr.active);
-  // const inactivePrograms = allPrograms.filter((pr) => !pr.active);
   const { activePrograms, inactivePrograms } = useGetAllPrograms();
 
   // Handle a search query
@@ -72,8 +69,6 @@ const ManagePrograms = () => {
             dispatch(
               programsActions.remove({
                 id: program.id,
-                // TODO: This will get refactored so, it's fine to ignore the ts error for the moment
-                // @ts-expect-error
                 version: program.version,
               })
             );

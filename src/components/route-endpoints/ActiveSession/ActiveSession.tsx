@@ -4,9 +4,9 @@ import { useGetProgram } from '../../../hooks/programs-hooks/useGetProgram';
 import { useAppDispatch } from '../../../hooks/redux-hooks';
 import { programsActions } from '../../../redux-store/programsSlice';
 import {
+  ProgramAchievedMap,
   ProgramId,
-  SessionComponent,
-  TrainingProgram,
+  TPActive,
 } from '../../../training-programs/data-types';
 import Button from '../../UI-elements/Button/Button';
 import Card from '../../UI-elements/Card/Card';
@@ -16,22 +16,52 @@ const ActiveSession = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  // Get program id from url params
   const programId = useParams().programId as ProgramId;
 
-  const program = useGetProgram(programId);
-
-  let Component: SessionComponent<ProgramId> = () => <></>;
-  if (program && program.SessionComponent) {
-    Component = program.SessionComponent;
-  }
+  // Get program data and methods
+  const programOrNull = useGetProgram(programId);
 
   // Handle Session exit
   const [showConfirmExit, setShowConfirmExit] = useState(false);
 
-  // const [showInfoModal, setShowInfoModal] = useState(false);
+  // Handle session achived
+  const [achieved, setAchieved] = useState<
+    ProgramAchievedMap[ProgramId] | false
+  >(false);
 
-  const [achieved, setAchieved] = useState<any>(false);
+  // Handle invalid id
+  if (programOrNull === null) {
+    return (
+      <>
+        <Card>Invalid program! Go back and select a proper program!</Card>
+        <Card>
+          <Button to="/">Home</Button>
+        </Card>
+      </>
+    );
+  }
+  if (!programOrNull.active) {
+    return (
+      <>
+        <Card>
+          The program isn't active! Go to the Programs Manager to start doing
+          it!
+        </Card>
+        <Card>
+          <Button to="/manage-programs">Manage Programs</Button>
+        </Card>
+      </>
+    );
+  }
 
+  // If the previous checks have passed, then the program is not null and is active, so it's safe to coerce
+  const program = programOrNull as TPActive;
+
+  // Get program component
+  const Component = program.SessionComponent;
+
+  // Handler for ending the session
   const endSession = (confirmed: boolean) => async () => {
     // If the exit is not confirmed, show modal
     if (!confirmed) {
@@ -40,7 +70,7 @@ const ActiveSession = () => {
     }
 
     // If the goal is achieved generate next state
-    if (achieved && program && program.version) {
+    if (achieved) {
       // If the goal is achieved, get next state and exit
       const nextState = program.getNextState(program.state, achieved);
       dispatch(
@@ -73,13 +103,9 @@ const ActiveSession = () => {
       >
         Saving data and exiting!
       </Modal> */}
-      {/* TODO: a hacky solution that will probably go away after a refactoring */}
-      <Component
-        program={program as TrainingProgram<ProgramId>}
-        onAchievedChanged={setAchieved}
-      />
+      <Component program={program} onAchievedChanged={setAchieved} />
       <Card>
-        <Button onClick={endSession(achieved)} stretch>
+        <Button onClick={endSession(!!achieved)} stretch>
           End Session
         </Button>
       </Card>

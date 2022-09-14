@@ -4,7 +4,7 @@ import { add, isEqual } from 'date-fns';
 
 import styles from './EnduroGrip.module.css';
 import { useSState } from '../../hooks/useSState';
-import { InitProps, SessionProps, TrainingProgram } from '../data-types';
+import { InitProps, SessionProps, TP } from '../data-types';
 import Input from '../../components/UI-elements/Input/Input';
 import ScheduleVisual from '../common-components/ScheduleVisual/ScheduleVisual';
 import { CircularArray } from '../../util/array';
@@ -22,10 +22,10 @@ import {
 
 const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
-export const enduroGrip: TrainingProgram<'EnduroGrip'> = {
+export const enduroGrip: TP<'EnduroGrip', true> = {
   // Basic data
   id: 'EnduroGrip',
-  active: false,
+  active: true,
   state: {} as EnduroGripState,
   version: '',
 

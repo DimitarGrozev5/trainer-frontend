@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
-export interface NetworkState {
+interface NetworkState {
   isLoading: boolean;
   error: string | null;
 }

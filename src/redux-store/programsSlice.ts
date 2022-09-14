@@ -1,27 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import { ProgramId } from '../training-programs/data-types';
+import { ProgramId, TPState } from '../training-programs/data-types';
 
-// Type of individual program
-export type ProgramState =
-  | {
-      id: ProgramId;
-      active: true;
-      state: any;
-      version: string;
-    }
-  | {
-      id: ProgramId;
-      active: false;
-      state: null;
-      version: null;
-    };
-
-// Redux type
-export type ProgramsState = {
+type ProgramsState = {
   byId: {
-    [programId in ProgramId]: ProgramState;
+    [programId in ProgramId]: TPState<ProgramId, boolean>;
   };
   arr: ProgramId[];
 };
@@ -44,13 +28,17 @@ const programsSlice = createSlice({
   } as ProgramsState,
 
   reducers: {
-    updateProgramsState: (state, action: PayloadAction<ProgramState[]>) => {
+    updateProgramsState: (
+      state,
+      action: PayloadAction<TPState<ProgramId, boolean>[]>
+    ) => {
       action.payload.forEach((program) => {
         const id = program.id;
         state.byId[id] = { ...state.byId[id], ...program };
       });
     },
 
+    // TODO: Fix typing in the reducers
     add: (
       state,
       action: PayloadAction<{

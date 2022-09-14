@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+
 import "./App.css";
 import ActiveSession from "./components/route-endpoints/ActiveSession/ActiveSession";
 import HomePage from "./components/route-endpoints/HomePage/HomePage";

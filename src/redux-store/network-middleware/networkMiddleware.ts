@@ -47,7 +47,7 @@ export const networkMiddleware: Middleware =
         const remove: { id: ProgramId; version: string } = action.payload;
 
         try {
-          const res = await sendRequest(`/${remove.id}`, {
+          await sendRequest(`/${remove.id}`, {
             method: 'DELETE',
             body: { version: action.payload.version },
           });
