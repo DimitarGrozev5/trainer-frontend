@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 
-import {
-  populateProgram,
-  useAppDispatch,
-  useAppSelector,
-  voidGetter,
-} from '../../../../hooks/redux-hooks';
-import {
-  ProgramId,
-  TrainingProgram,
-} from '../../../../training-programs/data-types';
+import { useAppDispatch } from '../../../../hooks/redux-hooks';
+import { ProgramId } from '../../../../training-programs/data-types';
 import Button from '../../../UI-elements/Button/Button';
 import Modal from '../../../UI-elements/Modal/Modal';
 import { programsActions } from '../../../../redux-store/programsSlice';
