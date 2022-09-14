@@ -48,7 +48,7 @@ export const useGetAllPrograms = () => {
     const programData = programsObj[id];
 
     return { ...programMethods, ...programData };
-  }, []);
+  }, [programsObj]);
 
   return { allPrograms, activePrograms, inactivePrograms, getProgram };
 };

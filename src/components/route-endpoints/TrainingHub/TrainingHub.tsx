@@ -14,8 +14,7 @@ const TrainingHub = () => {
   const dispatch = useAppDispatch();
 
   // Get programs
-  const workouts = useAppSelector((state) => state.programs);
-  const { allPrograms: programs, getProgram } = useGetAllPrograms();
+  const { getProgram } = useGetAllPrograms();
 
   // State for controlling the selected day
   const [selectedDate, setSelectedDate] = useState(roundDate(new Date()));
@@ -72,10 +71,7 @@ const TrainingHub = () => {
               <li key={s.name} className={styles.scheduled}>
                 <h2>{s.name}</h2>
                 <div className={styles['scheduled__desc']}>{s.sessionDesc}</div>
-                {compareAsc(
-                  sessionDateUTC,
-                  selectedDate
-                ) === 0 && (
+                {compareAsc(sessionDateUTC, selectedDate) === 0 && (
                   <div className={styles['scheduled__ctrl']}>
                     <Button onClick={skipSessionHandler(s.id)} plain>
                       Skip
