@@ -42,14 +42,21 @@ const TrainingHub = () => {
 
     const nextState = program.getNextState(program.state, 'skip');
 
-    dispatch(
-      programsActions.update({
-        id: program.id,
-        state: nextState,
-        achieved: { force: true },
-        version: program.version,
-      })
-    );
+    // dispatch(
+    //   programsActions.update({
+    //     id: program.id,
+    //     state: nextState,
+    //     achieved: { force: true },
+    //     version: program.version,
+    //   })
+    // );
+
+    dispatch(programsActions.updateThunk({
+      id: program.id,
+      state: nextState,
+      version:program.version,
+      'skip',
+    }));
   };
 
   return (
