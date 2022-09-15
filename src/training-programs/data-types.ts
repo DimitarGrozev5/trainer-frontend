@@ -58,7 +58,6 @@ export interface Addable<id extends ProgramId> {
 export interface ThunkAddable<id extends ProgramId> {
   id: id;
   state: ProgramStateMap[id];
-  version: string;
   initData: ProgramInitMap[id];
 }
 export interface Deleteable {
