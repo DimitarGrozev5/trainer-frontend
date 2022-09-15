@@ -51,12 +51,14 @@ const TrainingHub = () => {
     //   })
     // );
 
-    dispatch(programsActions.updateThunk({
-      id: program.id,
-      state: nextState,
-      version:program.version,
-      'skip',
-    }));
+    dispatch(
+      programsActions.updateThunk({
+        id: program.id,
+        state: nextState,
+        version: program.version,
+        achieved: 'skip',
+      })
+    );
   };
 
   return (
