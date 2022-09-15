@@ -93,10 +93,15 @@ const removeThunk =
 
 const updateThunk =
   (
-    data: ThunkUpdatable<ProgramId, boolean>
+    data: ThunkUpdatable<ProgramId>
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   () => {};
 
 // Export Actions and Reducers
-export const programsActions = programsSlice.actions;
+export const programsActions = {
+  ...programsSlice.actions,
+  addThunk,
+  removeThunk,
+  updateThunk,
+};
 export const programsReducer = programsSlice.reducer;
