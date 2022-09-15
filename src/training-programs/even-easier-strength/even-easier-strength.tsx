@@ -177,15 +177,25 @@ export const ees: TP<'ees', true> = {
           [target]: sets,
         };
 
+        const nextState = program.getNextState(program.state, newSetsDone);
+
+        // dispatch(
+        //   programsActions.update({
+        //     id: program.id,
+        //     state: {
+        //       sessionDate: program.state.sessionDate,
+        //       setsDone: newSetsDone,
+        //     },
+        //     achieved: {},
+        //     version: program.version,
+        //   })
+        // );
         dispatch(
-          programsActions.update({
+          programsActions.updateThunk({
             id: program.id,
-            state: {
-              sessionDate: program.state.sessionDate,
-              setsDone: newSetsDone,
-            },
-            achieved: {},
+            state: nextState,
             version: program.version,
+            achieved: newSetsDone,
           })
         );
       }
