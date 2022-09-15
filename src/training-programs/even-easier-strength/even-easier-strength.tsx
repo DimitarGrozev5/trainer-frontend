@@ -61,70 +61,83 @@ export const ees: TP<'ees', true> = {
     };
   },
 
-  getNextState: (
-    state: eesState,
-    achieved: eesAchieved | null,
-    { forceProgress = false, fromToday = true } = {
-      forceProgress: false,
-      fromToday: true,
-    }
-  ): eesState => {
+  getNextState: (state: eesState, achieved: eesAchieved | 'skip'): eesState => {
+    const skip = achieved === 'skip';
+
     // If achieved is null, set it to no sets
-    let achievedSets = {
+    let achievedSets = skip
+      ? {
+          push: 0,
+          pull: 0,
+          squat: 0,
+          ab: 0,
+          accessory: 0,
+        }
+      : { ...achieved };
+
+    const allSets = Object.values(achievedSets).reduce(
+      (sum: number, sets: number) => sum + sets,
+      0
+    );
+
+    // Destructure session data
+    const { sessionDate: UTCDate } = state;
+
+    // Convert sessionDate to Date object
+    const sessionDate = new Date(UTCDate);
+
+    // If *skip* calcualte next date based on last session date
+    const cDate = skip ? sessionDate : now();
+
+    // Set nextSessionDate to current session date
+    let nextSessionDate = sessionDate;
+
+    // If the required sets are achieved or *skip*, move to the next date
+    if (allSets === 10 || skip) {
+      nextSessionDate = add(cDate, { days: 1 });
+    }
+
+    // If *skip* set sets to zero
+    const setsDone = skip
+      ? {
+          push: 0,
+          pull: 0,
+          squat: 0,
+          ab: 0,
+          accessory: 0,
+        }
+      : // If the required sets are achived the next state will be zero, else it will be plus one
+        {
+          push: achievedSets.push % 2,
+          pull: achievedSets.pull % 2,
+          squat: achievedSets.squat % 2,
+          ab: achievedSets.ab % 2,
+          accessory: achievedSets.accessory % 2,
+        };
+
+    return {
+      sessionDate: nextSessionDate.getTime(),
+      setsDone,
+    };
+  },
+  getNextScheduleState: (state: eesState) => {
+    // Destructure session data
+    const { sessionDate: UTCDate } = state;
+
+    // Convert sessionDate to Date object
+    const sessionDate = new Date(UTCDate);
+
+    // Set nextSessionDate to current session date
+    const nextSessionDate = add(sessionDate, { days: 1 });
+
+    // Set sets
+    const setsDone = {
       push: 0,
       pull: 0,
       squat: 0,
       ab: 0,
       accessory: 0,
     };
-
-    // If achieved is not null, set it to achived
-    if (achieved) {
-      achievedSets = { ...achieved };
-    }
-
-    // If force progress set sets to 2
-    if (forceProgress) {
-      achievedSets = {
-        push: 2,
-        pull: 2,
-        squat: 2,
-        ab: 2,
-        accessory: 2,
-      };
-    }
-
-    // Destructure session data
-    const { sessionDate: UTCDate } = state;
-
-    const allSets = forceProgress
-      ? 10
-      : Object.values(achievedSets).reduce(
-          (sum: number, sets: number) => sum + sets,
-          0
-        );
-
-    const sessionDate = new Date(UTCDate);
-
-    const cDate = fromToday ? now() : sessionDate;
-    const nextSessionDate =
-      allSets === 10 ? add(cDate, { days: 1 }) : sessionDate;
-
-    const setsDone = !forceProgress
-      ? {
-          push: achievedSets.push % 2,
-          pull: achievedSets.pull % 2,
-          squat: achievedSets.squat % 2,
-          ab: achievedSets.ab % 2,
-          accessory: achievedSets.accessory % 2,
-        }
-      : {
-          push: 0,
-          pull: 0,
-          squat: 0,
-          ab: 0,
-          accessory: 0,
-        };
 
     return {
       sessionDate: nextSessionDate.getTime(),
