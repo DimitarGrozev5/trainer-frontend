@@ -1,7 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { AnyAction, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '.';
 
-import { ProgramId, TPState } from '../training-programs/data-types';
+import {
+  Addable,
+  Deleteable,
+  ProgramId,
+  ThunkAddable,
+  ThunkDeleteable,
+  ThunkUpdatable,
+  TPState,
+  Updatable,
+} from '../training-programs/data-types';
 
 // Data types
 type ProgramsState = {
@@ -40,16 +50,7 @@ const programsSlice = createSlice({
       });
     },
 
-    // TODO: Fix typing in the reducers
-    add: (
-      state,
-      action: PayloadAction<{
-        id: ProgramId;
-        initData: any;
-        state: any;
-        version: string;
-      }>
-    ) => {
+    add: (state, action: PayloadAction<Addable<ProgramId>>) => {
       const id = action.payload.id;
       state.byId[id] = {
         id,
@@ -58,10 +59,7 @@ const programsSlice = createSlice({
         version: action.payload.version,
       };
     },
-    remove: (
-      state,
-      action: PayloadAction<{ id: ProgramId; version: string }>
-    ) => {
+    remove: (state, action: PayloadAction<Deleteable>) => {
       const programId = action.payload.id;
       state.byId[programId] = {
         id: programId,
@@ -70,15 +68,7 @@ const programsSlice = createSlice({
         version: null,
       };
     },
-    update: (
-      state,
-      action: PayloadAction<{
-        id: ProgramId;
-        state: any;
-        achieved: any;
-        version: string;
-      }>
-    ) => {
+    update: (state, action: PayloadAction<Updatable<ProgramId, boolean>>) => {
       const program = action.payload;
       state.byId[program.id] = {
         id: program.id,
@@ -90,5 +80,23 @@ const programsSlice = createSlice({
   },
 });
 
+// Data fetching thunks
+const addThunk =
+  (
+    data: ThunkAddable<ProgramId>
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  () => {};
+
+const removeThunk =
+  (data: ThunkDeleteable): ThunkAction<void, RootState, unknown, AnyAction> =>
+  () => {};
+
+const updateThunk =
+  (
+    data: ThunkUpdatable<ProgramId, boolean>
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  () => {};
+
+// Export Actions and Reducers
 export const programsActions = programsSlice.actions;
 export const programsReducer = programsSlice.reducer;

@@ -43,14 +43,39 @@ export interface SessionProps<id extends ProgramId> {
 }
 export type SessionComponent<id extends ProgramId> = React.FC<SessionProps<id>>;
 
-// Training Program data types
+// Training Program Redux State
 export interface TPState<id extends ProgramId, A extends boolean> {
   id: id;
   active: boolean;
   state: A extends true ? ProgramStateMap[id] : null;
   version: A extends true ? string : null;
 }
+export interface Addable<id extends ProgramId> {
+  id: id;
+  state: ProgramStateMap[id];
+  version: string;
+}
+export interface ThunkAddable<id extends ProgramId> {
+  id: id;
+  state: ProgramStateMap[id];
+  version: string;
+  achieved: ProgramAchievedMap[id] | 'skip';
+}
+export interface Deleteable {
+  id: ProgramId;
+}
+export interface ThunkDeleteable {
+  id: ProgramId;
+  version: string;
+}
+export interface Updatable<id extends ProgramId, A extends boolean>
+  extends TPState<id, A> {}
+export interface ThunkUpdatable<id extends ProgramId, A extends boolean>
+  extends TPState<id, A> {
+  achieved: ProgramAchievedMap[id] | 'skip';
+}
 
+// Training Program data types
 export interface TP<id extends ProgramId, A extends boolean>
   extends TPState<id, A> {
   id: id;
