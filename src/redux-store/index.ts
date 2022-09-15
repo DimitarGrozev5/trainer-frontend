@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { CurriedGetDefaultMiddleware } from '@reduxjs/toolkit/dist/getDefaultMiddleware';
 import { networkReducer } from './networkSlice';
 import { programsReducer } from './programsSlice';
 import {
