@@ -108,11 +108,11 @@ export const ees: TP<'ees', true> = {
         }
       : // If the required sets are achived the next state will be zero, else it will be plus one
         {
-          push: (achievedSets.push + 1) % 2,
-          pull: (achievedSets.pull + 1) % 2,
-          squat: (achievedSets.squat + 1) % 2,
-          ab: (achievedSets.ab + 1) % 2,
-          accessory: (achievedSets.accessory + 1) % 2,
+          push: achievedSets.push % 2,
+          pull: achievedSets.pull % 2,
+          squat: achievedSets.squat % 2,
+          ab: achievedSets.ab % 2,
+          accessory: achievedSets.accessory % 2,
         };
 
     return {
