@@ -59,7 +59,7 @@ export interface ThunkAddable<id extends ProgramId> {
   id: id;
   state: ProgramStateMap[id];
   version: string;
-  achieved: ProgramAchievedMap[id] | 'skip';
+  initData: ProgramInitMap[id];
 }
 export interface Deleteable {
   id: ProgramId;
