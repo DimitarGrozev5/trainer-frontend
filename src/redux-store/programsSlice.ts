@@ -3,6 +3,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 
 import { ProgramId, TPState } from '../training-programs/data-types';
 
+// Data types
 type ProgramsState = {
   byId: {
     [programId in ProgramId]: TPState<ProgramId, boolean>;
@@ -10,6 +11,7 @@ type ProgramsState = {
   arr: ProgramId[];
 };
 
+// ProgramsSlice
 const programsSlice = createSlice({
   name: 'programs',
 
