@@ -1,20 +1,15 @@
-import { createSlice, Middleware } from "@reduxjs/toolkit";
-import { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, Middleware } from '@reduxjs/toolkit';
+import { PayloadAction } from '@reduxjs/toolkit';
 
-export class UserState {
+export interface UserState {
   // Null if not logged in
   // JWT if logged in
   userId: string | null;
   token: string | null;
-
-  constructor(userId: string | null, token: string | null) {
-    this.userId = userId;
-    this.token = token;
-  }
 }
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
 
   initialState: {
     userId: null,
@@ -22,9 +17,16 @@ const userSlice = createSlice({
   } as UserState,
 
   reducers: {
-    setUserData: (state, action: PayloadAction<UserState>) => {
-      state.userId = action.payload.userId;
-      state.token = action.payload.token;
+    setUserData: {
+      reducer: (state, action: PayloadAction<UserState>) => {
+        state.userId = action.payload.userId;
+        state.token = action.payload.token;
+      },
+      prepare: (userId: string | null, token: string | null) => {
+        return {
+          payload: { userId, token },
+        };
+      },
     },
     clearUserData: (state) => {
       state.userId = null;
@@ -36,16 +38,16 @@ const userSlice = createSlice({
 export const userActions = userSlice.actions;
 export const userReducer = userSlice.reducer;
 
-const authKey = process.env.REACT_APP_LOCALSTORAGE_AUTH_KEY || "userData";
+const authKey = process.env.REACT_APP_LOCALSTORAGE_AUTH_KEY || 'userData';
 
 export const userMiddleware: Middleware = (storeAPI) => (next) => (action) => {
   switch (action.type) {
-    case "user/setUserData":
+    case 'user/setUserData':
       // Save userData to local storage
       localStorage.setItem(authKey, JSON.stringify(action.payload));
       break;
 
-    case "user/clearUserData":
+    case 'user/clearUserData':
       // Remove userData from local storage
       localStorage.removeItem(authKey);
       break;

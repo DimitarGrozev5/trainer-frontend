@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import styles from "./HomePage.module.css";
-import Card from "../../UI-elements/Card/Card";
-import Input from "../../UI-elements/Input/Input";
-import Button from "../../UI-elements/Button/Button";
-import { useForm } from "../../../hooks/useForm/useForm";
-import { V } from "../../../hooks/useForm/useForm-validators";
-import { useHttpClient } from "../../../hooks/useHttpClient";
-import LoadingSpinner from "../../UI-elements/LoadingSpinner/LoadingSpinner";
-import ErrorModal from "../../UI-elements/Modal/ErrorModal";
-import { useAppDispatch } from "../../../hooks/redux-hooks";
-import { userActions, UserState } from "../../../redux-store/userSlice";
+import styles from './HomePage.module.css';
+import Card from '../../UI-elements/Card/Card';
+import Input from '../../UI-elements/Input/Input';
+import Button from '../../UI-elements/Button/Button';
+import { useForm } from '../../../hooks/useForm/useForm';
+import { V } from '../../../hooks/useForm/useForm-validators';
+import { useHttpClient } from '../../../hooks/useHttpClient';
+import LoadingSpinner from '../../UI-elements/LoadingSpinner/LoadingSpinner';
+import ErrorModal from '../../UI-elements/Modal/ErrorModal';
+import { useAppDispatch } from '../../../hooks/redux-hooks';
+import { userActions, UserState } from '../../../redux-store/userSlice';
 
 class AuthData {
   email: string;
@@ -37,38 +37,38 @@ const HomePage = () => {
     touchRegisterForm,
     resetRegisterForm,
   ] = useForm([
-    { name: "email", init: "", err: "Invalid Email!", validator: V.isEmail() },
+    { name: 'email', init: '', err: 'Invalid Email!', validator: V.isEmail() },
     {
-      name: "re-email",
-      init: "",
+      name: 're-email',
+      init: '',
       err: "Emails don't match!",
-      validator: V.isEqualTo("email"),
+      validator: V.isEqualTo('email'),
     },
     {
-      name: "pass",
-      init: "",
-      err: "Invalid Password!",
+      name: 'pass',
+      init: '',
+      err: 'Invalid Password!',
       validator: V.longerThan(5),
     },
     {
-      name: "re-pass",
-      init: "",
+      name: 're-pass',
+      init: '',
       err: "Passwords don't match!",
-      validator: V.isEqualTo("pass"),
+      validator: V.isEqualTo('pass'),
     },
   ]);
 
   // Setup Login state
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPass, setLoginPass] = useState("");
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPass, setLoginPass] = useState('');
 
   // Setup Tabs state for chaning between Login and Register
   const [loginMode, setLoginMode] = useState(true);
   const setLoginModeTo = (val: boolean) => () => {
     // Reset forms when swiching
     resetRegisterForm();
-    setLoginEmail("");
-    setLoginPass("");
+    setLoginEmail('');
+    setLoginPass('');
 
     // Update state
     setLoginMode(val);
@@ -86,7 +86,7 @@ const HomePage = () => {
     }
 
     // Send data to backend
-    const endpoint = loginMode ? "/users/login" : "/users/register";
+    const endpoint = loginMode ? '/users/login' : '/users/register';
     const body: AuthData = loginMode
       ? new AuthData(loginEmail, loginPass)
       : new AuthData(registerData.email.value, registerData.pass.value);
@@ -104,9 +104,7 @@ const HomePage = () => {
     }
 
     // Update state
-    dispatch(
-      userActions.setUserData(new UserState(userData.userId, userData.token))
-    );
+    dispatch(userActions.setUserData(userData.userId, userData.token));
   };
 
   // Components for login form
@@ -137,34 +135,34 @@ const HomePage = () => {
       <Input
         label="Email:"
         type="email"
-        error={registerData["email"].isValid}
-        value={registerData["email"].value}
-        onChange={onChange("email")}
-        onBlur={onBlur("email")}
+        error={registerData['email'].isValid}
+        value={registerData['email'].value}
+        onChange={onChange('email')}
+        onBlur={onBlur('email')}
       />
       <Input
         label="Repeat Email:"
         type="email"
-        error={registerData["re-email"].isValid}
-        value={registerData["re-email"].value}
-        onChange={onChange("re-email")}
-        onBlur={onBlur("re-email")}
+        error={registerData['re-email'].isValid}
+        value={registerData['re-email'].value}
+        onChange={onChange('re-email')}
+        onBlur={onBlur('re-email')}
       />
       <Input
         label="Password:"
         type="password"
-        error={registerData["pass"].isValid}
-        value={registerData["pass"].value}
-        onChange={onChange("pass")}
-        onBlur={onBlur("pass")}
+        error={registerData['pass'].isValid}
+        value={registerData['pass'].value}
+        onChange={onChange('pass')}
+        onBlur={onBlur('pass')}
       />
       <Input
         label="Repeat Password:"
         type="password"
-        error={registerData["re-pass"].isValid}
-        value={registerData["re-pass"].value}
-        onChange={onChange("re-pass")}
-        onBlur={onBlur("re-pass")}
+        error={registerData['re-pass'].isValid}
+        value={registerData['re-pass'].value}
+        onChange={onChange('re-pass')}
+        onBlur={onBlur('re-pass')}
       />
 
       <Button type="submit" disabled={!registerFormIsValid} stretch>
@@ -180,7 +178,7 @@ const HomePage = () => {
 
       <Card>Get ready to train</Card>
       <Card>
-        <div className={styles["tab-switch"]}>
+        <div className={styles['tab-switch']}>
           <Button accent={!!loginMode} onClick={setLoginModeTo(true)}>
             Login
           </Button>
