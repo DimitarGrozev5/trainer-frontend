@@ -68,10 +68,15 @@ export interface ThunkDeleteable {
   id: ProgramId;
   version: string;
 }
-export interface Updatable<id extends ProgramId, A extends boolean>
-  extends TPState<id, A> {}
-export interface ThunkUpdatable<id extends ProgramId, A extends boolean>
-  extends TPState<id, A> {
+export interface Updatable<id extends ProgramId, A extends boolean> {
+  id: id;
+  state: ProgramStateMap[id];
+  version: string;
+}
+export interface ThunkUpdatable<id extends ProgramId> {
+  id: id;
+  state: ProgramStateMap[id];
+  version: string;
   achieved: ProgramAchievedMap[id] | 'skip';
 }
 
