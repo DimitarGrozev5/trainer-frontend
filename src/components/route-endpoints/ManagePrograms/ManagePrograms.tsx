@@ -66,8 +66,14 @@ const ManagePrograms = () => {
             (ap) => ap.id === showConfirmModal
           );
           if (program) {
+            // dispatch(
+            //   programsActions.remove({
+            //     id: program.id,
+            //     version: program.version,
+            //   })
+            // );
             dispatch(
-              programsActions.remove({
+              programsActions.removeThunk({
                 id: program.id,
                 version: program.version,
               })
