@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { networkMiddleware } from "./network-middleware/networkMiddleware";
 import { networkReducer } from "./networkSlice";
 import { programsReducer } from "./programsSlice";
 import {
@@ -15,7 +14,7 @@ const store = configureStore({
     scheduleCache: scheduleCacheReducer,
     network: networkReducer,
   },
-  middleware: [userMiddleware, networkMiddleware, scheduleCacheMiddleware],
+  middleware: [userMiddleware, scheduleCacheMiddleware],
 });
 
 export default store;
