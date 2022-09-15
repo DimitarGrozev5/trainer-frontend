@@ -80,26 +80,50 @@ const programsSlice = createSlice({
   },
 });
 
+const sliceActions = programsSlice.actions;
+
 // Data fetching thunks
 const addThunk =
   (
     data: ThunkAddable<ProgramId>
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
-  () => {};
+  (dispatch) => {
+    dispatch(
+      sliceActions.add({
+        id: data.id,
+        state: data.state,
+        version: '',
+      })
+    );
+  };
 
 const removeThunk =
   (data: ThunkDeleteable): ThunkAction<void, RootState, unknown, AnyAction> =>
-  () => {};
+  (dispatch) => {
+    dispatch(
+      sliceActions.remove({
+        id: data.id,
+      })
+    );
+  };
 
 const updateThunk =
   (
     data: ThunkUpdatable<ProgramId>
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
-  () => {};
+  (dispatch) => {
+    dispatch(
+      sliceActions.update({
+        id: data.id,
+        state: data.state,
+        version: '',
+      })
+    );
+  };
 
 // Export Actions and Reducers
 export const programsActions = {
-  ...programsSlice.actions,
+  ...sliceActions,
   addThunk,
   removeThunk,
   updateThunk,
