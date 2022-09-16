@@ -26,12 +26,19 @@ const AddWorkoutModal: React.FC<Props> = ({ show, id, onCancel }) => {
       // Get init state
       const initState = program.getInitData(initData);
 
+      // dispatch(
+      //   programsActions.add({
+      //     id: program.id,
+      //     initData: initData,
+      //     state: initState,
+      //     version: '',
+      //   })
+      // );
       dispatch(
-        programsActions.add({
+        programsActions.addThunk({
           id: program.id,
-          initData: initData,
           state: initState,
-          version: '',
+          initData,
         })
       );
     }

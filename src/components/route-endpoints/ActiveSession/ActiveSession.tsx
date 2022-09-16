@@ -74,14 +74,13 @@ const ActiveSession = () => {
       // If the goal is achieved, get next state and exit
       const nextState = program.getNextState(program.state, achieved);
       dispatch(
-        programsActions.update({
+        programsActions.updateThunk({
           id: program.id,
           state: nextState,
-          achieved,
           version: program.version,
+          achieved,
         })
       );
-      // setShowInfoModal(true);
     }
 
     navigate('/');

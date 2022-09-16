@@ -5,15 +5,27 @@ import { programs } from '../training-programs';
 
 import { ProgramId, TPActive, TPState } from '../training-programs/data-types';
 
-class ScheduledSession {
-  constructor(
-    public id: ProgramId,
-    public name: string,
-    public shortDesc: string,
-    public sessionDesc: any,
-    public state: any
-  ) {}
+interface ScheduledSession {
+  id: ProgramId;
+  name: string;
+  shortDesc: string;
+  sessionDesc: any;
+  state: any;
 }
+
+const getScheduledSession = (
+  id: ProgramId,
+  name: string,
+  shortDesc: string,
+  sessionDesc: any,
+  state: any
+) => ({
+  id,
+  name,
+  shortDesc,
+  sessionDesc,
+  state,
+});
 
 // Redux type
 type ScheduledDate = {
@@ -108,7 +120,7 @@ export const scheduleCacheMiddleware: Middleware =
 
         if (compareAsc(currentDate, nextState.sessionDate) === 0) {
           today = {
-            [currentDate.getTime()]: new ScheduledSession(
+            [currentDate.getTime()]: getScheduledSession(
               program.id,
               program.name,
               program.shortDesc,

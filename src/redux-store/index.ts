@@ -1,12 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { networkMiddleware } from "./network-middleware/networkMiddleware";
-import { networkReducer } from "./networkSlice";
-import { programsReducer } from "./programsSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import { networkReducer } from './networkSlice';
+import { programsReducer } from './programsSlice';
 import {
   scheduleCacheMiddleware,
   scheduleCacheReducer,
-} from "./scheduleCacheSlice";
-import { userMiddleware, userReducer } from "./userSlice";
+} from './scheduleCacheSlice';
+import { userMiddleware, userReducer } from './userSlice';
 
 const store = configureStore({
   reducer: {
@@ -15,7 +14,8 @@ const store = configureStore({
     scheduleCache: scheduleCacheReducer,
     network: networkReducer,
   },
-  middleware: [userMiddleware, networkMiddleware, scheduleCacheMiddleware],
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat([userMiddleware, scheduleCacheMiddleware]),
 });
 
 export default store;

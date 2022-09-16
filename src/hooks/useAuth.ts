@@ -1,11 +1,11 @@
-import jwtDecode from "jwt-decode";
-import { useEffect } from "react";
-import { networkActions } from "../redux-store/networkSlice";
-import { userActions, UserState } from "../redux-store/userSlice";
-import { useAppDispatch, useAppSelector } from "./redux-hooks";
-import { useHttpClient } from "./useHttpClient";
+import jwtDecode from 'jwt-decode';
+import { useEffect } from 'react';
+import { networkActions } from '../redux-store/networkSlice';
+import { userActions, UserState } from '../redux-store/userSlice';
+import { useAppDispatch, useAppSelector } from './redux-hooks';
+import { useHttpClient } from './useHttpClient';
 
-const authKey = process.env.REACT_APP_LOCALSTORAGE_AUTH_KEY || "userData";
+const authKey = process.env.REACT_APP_LOCALSTORAGE_AUTH_KEY || 'userData';
 
 const clearUserData = () => localStorage.removeItem(authKey);
 
@@ -43,7 +43,9 @@ export const useAuth = () => {
       try {
         decodedToken = jwtDecode(userData.token);
       } catch (error) {
-        dispatch(networkActions.setError("Invalid user session! Please log in again!"))
+        dispatch(
+          networkActions.setError('Invalid user session! Please log in again!')
+        );
         clearUserData();
         console.log(error);
         return;
@@ -52,7 +54,11 @@ export const useAuth = () => {
       // Validate token expiration date
       const now = +new Date();
       if (now >= decodedToken.exp * 1000) {
-        dispatch(networkActions.setError("Your session has expired! Please log in again!"))
+        dispatch(
+          networkActions.setError(
+            'Your session has expired! Please log in again!'
+          )
+        );
         clearUserData();
         return;
       }
@@ -64,7 +70,7 @@ export const useAuth = () => {
         try {
           receivedData = await sendRequest(
             `/users/${userData.userId}/refresh`,
-            { method: "POST", headers: { Authorization: userData.token } }
+            { method: 'POST', headers: { Authorization: userData.token } }
           );
         } catch (error) {
           console.log(error);
@@ -72,11 +78,11 @@ export const useAuth = () => {
       }
 
       // Update state
-      const newState = !!receivedData
-        ? new UserState(receivedData.userId, receivedData.token)
-        : new UserState(userData.userId, userData.token);
+      const [userId, token] = !!receivedData
+        ? [receivedData.userId, receivedData.token]
+        : [userData.userId, userData.token];
 
-      dispatch(userActions.setUserData(newState));
+      dispatch(userActions.setUserData(userId, token));
     })();
   }, [dispatch, sendRequest]);
 
