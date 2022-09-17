@@ -45,7 +45,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
 
     // Run on first try to init the data
     useEffect(() => {
-      onChange({ startDate, schedule: schedule });
+      onChange({ startDate: startDate.getTime(), schedule: schedule });
       // eslint-disable-next-line
     }, []);
 
@@ -57,7 +57,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
     // Update value when settings change
     useEffect(() => {
       if (!isEqual(value.startDate, startDate) || value.schedule !== schedule) {
-        onChange({ startDate: startDate, schedule: schedule });
+        onChange({ startDate: startDate.getTime(), schedule: schedule });
       }
     }, [startDate, schedule, value.startDate, value.schedule, onChange]);
 
@@ -104,7 +104,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
   },
   getInitData: ({ startDate, schedule }: EnduroGripInit): EnduroGripState => {
     return {
-      sessionDate: startDate.getTime(),
+      sessionDate: startDate,
       sessionIndex: 0,
       lastHeavySessionAchieved: 9,
       schedule,

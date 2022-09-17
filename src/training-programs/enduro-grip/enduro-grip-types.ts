@@ -7,7 +7,7 @@ export interface EnduroGripState {
 }
 
 export interface EnduroGripInit {
-  startDate: Date;
+  startDate: number;
   schedule: number[];
 }
 
