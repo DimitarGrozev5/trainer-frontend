@@ -12,6 +12,7 @@ import {
   TPState,
   Updatable,
 } from '../training-programs/data-types';
+import { httpClient } from './network-middleware/httpClient';
 
 // Data types
 type ProgramsState = {
@@ -87,38 +88,85 @@ const addThunk =
   (
     data: ThunkAddable<ProgramId>
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
-  (dispatch) => {
-    dispatch(
-      sliceActions.add({
-        id: data.id,
-        state: data.state,
-        version: '',
-      })
-    );
+  async (dispatch, getState) => {
+    // Get http client
+    const sendRequest = httpClient({ getState, dispatch });
+
+    try {
+      const res = await sendRequest('/', {
+        body: {
+          id: data.id,
+          initData: data.initData,
+          initState: data.state,
+        },
+      });
+
+      dispatch(
+        sliceActions.add({
+          id: data.id,
+          state: data.state,
+          version: res.version,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      return;
+    }
   };
 
 const removeThunk =
   (data: ThunkDeleteable): ThunkAction<void, RootState, unknown, AnyAction> =>
-  (dispatch) => {
-    dispatch(
-      sliceActions.remove({
-        id: data.id,
-      })
-    );
+  async (dispatch, getState) => {
+    // Get http client
+    const sendRequest = httpClient({ getState, dispatch });
+
+    try {
+      await sendRequest(`/${data.id}`, {
+        method: 'DELETE',
+        body: { version: data.version },
+      });
+
+      dispatch(
+        sliceActions.remove({
+          id: data.id,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      return;
+    }
   };
 
 const updateThunk =
   (
     data: ThunkUpdatable<ProgramId>
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
-  (dispatch) => {
-    dispatch(
-      sliceActions.update({
-        id: data.id,
-        state: data.state,
-        version: '',
-      })
-    );
+  async (dispatch, getState) => {
+    // Get http client
+    const sendRequest = httpClient({ getState, dispatch });
+
+    try {
+      const res = await sendRequest(`/${data.id}`, {
+        body: {
+          id: data.id,
+          state: data.state,
+          achieved: data.achieved,
+          version: data.version,
+        },
+        method: 'PATCH',
+      });
+
+      dispatch(
+        sliceActions.update({
+          id: data.id,
+          state: data.state,
+          version: res.version,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      return;
+    }
   };
 
 // Export Actions and Reducers
