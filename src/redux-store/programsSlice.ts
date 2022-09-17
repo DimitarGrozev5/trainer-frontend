@@ -12,7 +12,7 @@ import {
   TPState,
   Updatable,
 } from '../training-programs/data-types';
-import { httpClient } from './network-middleware/httpClient';
+import { httpClient } from './http-client/httpClient';
 
 // Data types
 type ProgramsState = {
