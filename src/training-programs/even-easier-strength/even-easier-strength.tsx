@@ -176,21 +176,31 @@ export const ees: TP<'ees', true> = {
   SessionComponent: ({ program, onAchievedChanged }: SessionProps<'ees'>) => {
     const dispatch = useAppDispatch();
 
-    const [startingDate] = useState(program.state.sessionDate);
+    const [allSetsAreDone, setAllSetsAreDone] = useState(false);
 
-    const { setsDone } = program.state;
-    const { push, pull, squat, ab, accessory } = setsDone;
+    // const { setsDone } = program.state;
+    // const { push, pull, squat, ab, accessory } = setsDone;
+    const [setsDone, setSetsDone] = useState(program.state.setsDone);
 
     const updateSetsDone = (target: SetName, sets: number) => async () => {
       if (setsDone[target] + 1 === sets) {
         const newSetsDone = {
-          push,
-          pull,
-          squat,
-          ab,
-          accessory,
+          ...setsDone,
           [target]: sets,
         };
+
+        const done =
+          newSetsDone.push === 2 &&
+          newSetsDone.pull === 2 &&
+          newSetsDone.squat === 2 &&
+          newSetsDone.ab === 2 &&
+          newSetsDone.accessory === 2;
+
+        setSetsDone(newSetsDone);
+        if (done) {
+          setAllSetsAreDone(true);
+          return;
+        }
 
         const nextState = program.getNextState(program.state, newSetsDone);
 
@@ -207,12 +217,17 @@ export const ees: TP<'ees', true> = {
 
     useEffect(() => {
       const done =
-        push === 2 && pull === 2 && squat === 2 && ab === 2 && accessory === 2;
+        setsDone.push +
+          setsDone.pull +
+          setsDone.squat +
+          setsDone.ab +
+          setsDone.accessory ===
+        10;
 
-      const achieved = !!done && { push, pull, squat, ab, accessory };
+      const achieved = !!done && setsDone;
 
       achieved && onAchievedChanged(achieved);
-    }, [push, pull, squat, ab, accessory, onAchievedChanged]);
+    }, [setsDone, onAchievedChanged]);
 
     return (
       <>
@@ -229,12 +244,12 @@ export const ees: TP<'ees', true> = {
           <div className={styles.buttons}>
             <CircularButton
               text="1"
-              checked={push > 0 || startingDate !== program.state.sessionDate}
+              checked={setsDone.push > 0 || allSetsAreDone}
               onClick={updateSetsDone('push', 1)}
             />
             <CircularButton
               text="2"
-              checked={push > 1 || startingDate !== program.state.sessionDate}
+              checked={setsDone.push > 1 || allSetsAreDone}
               onClick={updateSetsDone('push', 2)}
             />
           </div>
@@ -246,12 +261,12 @@ export const ees: TP<'ees', true> = {
           <div className={styles.buttons}>
             <CircularButton
               text="1"
-              checked={pull > 0 || startingDate !== program.state.sessionDate}
+              checked={setsDone.pull > 0 || allSetsAreDone}
               onClick={updateSetsDone('pull', 1)}
             />
             <CircularButton
               text="2"
-              checked={pull > 1 || startingDate !== program.state.sessionDate}
+              checked={setsDone.pull > 1 || allSetsAreDone}
               onClick={updateSetsDone('pull', 2)}
             />
           </div>
@@ -263,12 +278,12 @@ export const ees: TP<'ees', true> = {
           <div className={styles.buttons}>
             <CircularButton
               text="1"
-              checked={squat > 0 || startingDate !== program.state.sessionDate}
+              checked={setsDone.squat > 0 || allSetsAreDone}
               onClick={updateSetsDone('squat', 1)}
             />
             <CircularButton
               text="2"
-              checked={squat > 1 || startingDate !== program.state.sessionDate}
+              checked={setsDone.squat > 1 || allSetsAreDone}
               onClick={updateSetsDone('squat', 2)}
             />
           </div>
@@ -280,12 +295,12 @@ export const ees: TP<'ees', true> = {
           <div className={styles.buttons}>
             <CircularButton
               text="1"
-              checked={ab > 0 || startingDate !== program.state.sessionDate}
+              checked={setsDone.ab > 0 || allSetsAreDone}
               onClick={updateSetsDone('ab', 1)}
             />
             <CircularButton
               text="2"
-              checked={ab > 1 || startingDate !== program.state.sessionDate}
+              checked={setsDone.ab > 1 || allSetsAreDone}
               onClick={updateSetsDone('ab', 2)}
             />
           </div>
@@ -299,16 +314,12 @@ export const ees: TP<'ees', true> = {
           <div className={styles.buttons}>
             <CircularButton
               text="1"
-              checked={
-                accessory > 0 || startingDate !== program.state.sessionDate
-              }
+              checked={setsDone.accessory > 0 || allSetsAreDone}
               onClick={updateSetsDone('accessory', 1)}
             />
             <CircularButton
               text="2"
-              checked={
-                accessory > 1 || startingDate !== program.state.sessionDate
-              }
+              checked={setsDone.accessory > 1 || allSetsAreDone}
               onClick={updateSetsDone('accessory', 2)}
             />
           </div>
