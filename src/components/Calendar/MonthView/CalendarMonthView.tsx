@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { getMonthArr, sameDate, sameMonth } from "../../../util/date";
-import CalendarDay from "../CalendarDay/CalendarDay";
-import styles from "./MonthView.module.css";
+import React, { useMemo } from 'react';
+import { getMonthArr, sameDate, sameMonth } from '../../../util/date';
+import CalendarDay from '../CalendarDay/CalendarDay';
+import styles from './MonthView.module.css';
 
 interface Props {
   targetDate: Date;
@@ -18,12 +18,12 @@ const setStyles = (
 ): string => {
   const classes: string[] = [];
   if (!sameMonth(current, target)) {
-    classes.push(styles["other-month"]);
+    classes.push(styles['other-month']);
   }
   sameDate(current, today) && classes.push(styles.today);
   sameDate(current, selected) && classes.push(styles.selected);
 
-  return classes.join(" ");
+  return classes.join(' ');
 };
 
 const CalendarMonthView: React.FC<Props> = ({
@@ -34,10 +34,8 @@ const CalendarMonthView: React.FC<Props> = ({
   // Get the days of the month
   const month: Date[][] = useMemo(() => getMonthArr(targetDate), [targetDate]);
 
-  // console.log(scheduleService && scheduleService(roundDate(new Date())));
-
   return (
-    <table className={styles["calendar"]}>
+    <table className={styles['calendar']}>
       <thead>
         <tr>
           <th>Sun</th>
