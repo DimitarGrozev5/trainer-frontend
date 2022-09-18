@@ -89,11 +89,11 @@ export const getMonthArr = (
 
   // Get first day of month
   const firstDay: Date = new Date(date.getTime());
-  firstDay.setMilliseconds(0);
-  firstDay.setSeconds(0);
-  firstDay.setMinutes(0);
-  firstDay.setHours(0);
-  firstDay.setDate(1);
+  firstDay.setUTCMilliseconds(0);
+  firstDay.setUTCSeconds(0);
+  firstDay.setUTCMinutes(0);
+  firstDay.setUTCHours(0);
+  firstDay.setUTCDate(1);
 
   // Get day of week
   const firstDayOfWeek: number = firstDay.getDay();
