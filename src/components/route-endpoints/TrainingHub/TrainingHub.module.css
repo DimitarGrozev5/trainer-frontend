@@ -1,6 +1,7 @@
 .calendar {
   margin-top: 0.5rem;
-  min-height: calc(60vh + 1rem);
+  flex-grow: 1;
+  /* min-height: calc(60vh + 1rem); */
 }
 
 .today {

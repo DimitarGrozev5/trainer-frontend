@@ -8,6 +8,7 @@ import { roundDate } from '../../../util/date';
 import Calendar from '../../Calendar/Calendar';
 import Button from '../../UI-elements/Button/Button';
 import Card from '../../UI-elements/Card/Card';
+import OverlayModal from '../../UI-elements/OverlayModal/OverlayModal';
 import styles from './TrainingHub.module.css';
 
 const TrainingHub = () => {
@@ -52,12 +53,26 @@ const TrainingHub = () => {
     );
   };
 
+  const [showTodayModal, setShowTodayModal] = useState(false);
+
+  const changeDateHandler = (date: Date) => {
+    setSelectedDate(date);
+    setShowTodayModal(true);
+  };
+
   return (
     <>
       <Card className={styles.calendar}>
-        <Calendar selectedDate={selectedDate} onChangeDate={setSelectedDate} />
+        <Calendar
+          selectedDate={selectedDate}
+          onChangeDate={changeDateHandler}
+        />
       </Card>
-      <Card className={styles.today}>
+      {/* <Card className={styles.today}> */}
+      <OverlayModal
+        show={showTodayModal}
+        onClose={setShowTodayModal.bind(null, false)}
+      >
         <h1>Today:</h1>
         <ul>
           {today.map((s) => {
@@ -81,7 +96,8 @@ const TrainingHub = () => {
             );
           })}
         </ul>
-      </Card>
+      </OverlayModal>
+      {/* </Card> */}
     </>
   );
 };
