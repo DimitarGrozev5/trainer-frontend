@@ -1,4 +1,3 @@
-import { add } from 'date-fns';
 import { last } from './array';
 
 // Get month name
