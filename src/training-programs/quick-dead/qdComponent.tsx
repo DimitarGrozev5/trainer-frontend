@@ -27,7 +27,7 @@ const volumeDice = {
   100: [6],
 };
 const repSchemeFromDice: number[] = [0, 5, 5, 15, 15, 10, 10];
-const volumeFromDice: number[] = [0, 40, 60, 60, 80, 80, 100];
+const volumeFromDice: qdVolume[] = [40, 40, 60, 60, 80, 80, 100];
 
 export const QDComponent = ({
   program,
