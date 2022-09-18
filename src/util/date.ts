@@ -36,19 +36,19 @@ export const roundDate = (
   switch (to) {
     // @ts-ignore
     case 'hours': // eslint-disable-line
-      d.setHours(0);
+      d.setUTCHours(0);
 
     // @ts-ignore
     case 'minutes': // eslint-disable-line
-      d.setMinutes(0);
+      d.setUTCMinutes(0);
 
     // @ts-ignore
     case 'seconds': // eslint-disable-line
-      d.setSeconds(0);
+      d.setUTCSeconds(0);
 
     // @ts-ignore
     case 'miliseconds': // eslint-disable-line
-      d.setMilliseconds(0);
+      d.setUTCMilliseconds(0);
 
     default: // eslint-disable-line
       break;
