@@ -1,10 +1,13 @@
-import { add, isEqual } from 'date-fns';
 import { useEffect, useState } from 'react';
+import { add, isEqual } from 'date-fns';
+import _ from 'lodash';
+
 import Input from '../../components/UI-elements/Input/Input';
 import { CircularArray } from '../../util/array';
 import { roundDate } from '../../util/date';
-import { InitProps, SessionProps, TP } from '../data-types';
-import { qdInit, qdState, qdAchieved } from './qd-types';
+import { InitProps, TP } from '../data-types';
+import { QDComponent } from './qdComponent';
+import { qdAchieved, qdInit, qdState } from './qd-types';
 
 const schedule = [2, 2, 3];
 
@@ -143,10 +146,5 @@ export const quickDead: TP<'quick-dead', true> = {
     };
   },
 
-  SessionComponent: ({
-    program,
-    onAchievedChanged,
-  }: SessionProps<'quick-dead'>) => {
-    return <></>;
-  },
+  SessionComponent: QDComponent,
 };
