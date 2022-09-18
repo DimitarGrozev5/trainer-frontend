@@ -57,7 +57,10 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
     // Update value when settings change
     useEffect(() => {
       if (!isEqual(value.startDate, startDate) || value.schedule !== schedule) {
-        onChange({ startDate: startDate.getTime(), schedule: schedule });
+        onChange({
+          startDate: roundDate(startDate).getTime(),
+          schedule: schedule,
+        });
       }
     }, [startDate, schedule, value.startDate, value.schedule, onChange]);
 
