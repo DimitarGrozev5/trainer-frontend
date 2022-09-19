@@ -1,5 +1,5 @@
-import _ from 'lodash';
 import { useState } from 'react';
+import _ from 'lodash';
 
 import Button from '../../components/UI-elements/Button/Button';
 import Card from '../../components/UI-elements/Card/Card';
@@ -7,10 +7,8 @@ import { H1, H2 } from '../common-components/Headings/H';
 import Info from '../common-components/Info/Info';
 import styles from './Styles.module.css';
 import { SessionProps } from '../data-types';
-import { qdAchieved, qdVolume } from './qd-types';
+import { qdVolume } from './qd-types';
 import { QDTimer } from './qdTimer';
-import { EnduroGripAchieved } from '../enduro-grip/enduro-grip-types';
-import { eesAchieved } from '../even-easier-strength/ees-types';
 
 const dice = (exclude: number[]): number => {
   let rnd = _.random(1, 6, false);

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import styles from './Styles.module.css';
 import { qdAchieved, qdVolume } from './qd-types';
 import Card from '../../components/UI-elements/Card/Card';
-import Button from '../../components/UI-elements/Button/Button';
 
 const getArrFromN = (n: number) => Array(n).fill(0);
 
@@ -105,7 +104,7 @@ export const QDTimer: React.FC<Props> = ({
 
   const [timer, setTimer] = useState(startTime);
 
-  const [paused, setPaused] = useState(false);
+  const [paused] = useState(false);
 
   useEffect(() => {
     let ticker: NodeJS.Timeout;
@@ -127,7 +126,7 @@ export const QDTimer: React.FC<Props> = ({
       const achieved = { volume };
       onAchievedChanged(achieved);
     }
-  }, [sets, onAchievedChanged]);
+  }, [sets, onAchievedChanged, volume]);
 
   return (
     <>

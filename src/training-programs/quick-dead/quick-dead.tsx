@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { add, isEqual } from 'date-fns';
-import _ from 'lodash';
 
 import Input from '../../components/UI-elements/Input/Input';
 import { CircularArray } from '../../util/array';
