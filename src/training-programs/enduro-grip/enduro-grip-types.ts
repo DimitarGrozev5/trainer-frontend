@@ -1,5 +1,7 @@
+import { SessionDate } from '../extra-types';
+
 export interface EnduroGripState {
-  sessionDate: number;
+  sessionDate: SessionDate;
   sessionIndex: number;
   lastHeavySessionAchieved: number;
   schedule: number[];
@@ -7,7 +9,7 @@ export interface EnduroGripState {
 }
 
 export interface EnduroGripInit {
-  startDate: number;
+  startDate: SessionDate;
   schedule: number[];
 }
 

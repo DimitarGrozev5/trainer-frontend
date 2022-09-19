@@ -19,6 +19,7 @@ import {
   EnduroGripInit,
   EnduroGripState,
 } from './enduro-grip-types';
+import { SessionDate } from '../extra-types';
 
 const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
@@ -45,7 +46,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
 
     // Run on first try to init the data
     useEffect(() => {
-      onChange({ startDate: startDate.getTime(), schedule: schedule });
+      onChange({ startDate: SessionDate.from(startDate), schedule: schedule });
       // eslint-disable-next-line
     }, []);
 
