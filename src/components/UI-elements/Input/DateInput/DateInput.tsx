@@ -10,11 +10,11 @@ interface Props {
 
 const DateInput: React.FC<Props> = ({ value, onChange }) => {
   // const [date, setDate] = useState(value.getDate());
-  // const [month, setMonth] = useState(value.getUTCMonth());
-  // const [year, setYear] = useState(value.getUTCFullYear());
+  // const [month, setMonth] = useState(value.getMonth());
+  // const [year, setYear] = useState(value.getFullYear());
 
-  const date = `${lz(value.getUTCFullYear(), 4)}-${lz(value.getUTCMonth() + 1)}-${lz(
-    value.getUTCDate()
+  const date = `${lz(value.getFullYear(), 4)}-${lz(value.getMonth() + 1)}-${lz(
+    value.getDate()
   )}`;
 
   // const changeHandler =

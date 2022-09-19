@@ -30,14 +30,14 @@ const MonthViewSub: React.FC<Props> = ({ month, setTargetDate }) => {
         </thead>
         <tbody>
           {month.map((week, iW) => (
-            <tr key={month[1][0].getUTCMonth() + iW * 10}>
+            <tr key={month[1][0].getMonth() + iW * 10}>
               {week.map((day) => (
                 <td
                   key={day.getTime() + iW * 10}
                   className={sameMonth(day, month[1][0]) && sameDate(new Date(day), now) ? styles.today : ""}
                 >
                   {/* {day < 0 ? "" : new Date(day).getDate()} */}
-                  {sameMonth(day, month[1][0]) ? day.getUTCDate() : ""}
+                  {sameMonth(day, month[1][0]) ? day.getDate() : ""}
                 </td>
               ))}
             </tr>

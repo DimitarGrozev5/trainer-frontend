@@ -8,7 +8,7 @@ interface Props {
 }
 
 const CalendarDecadeView: React.FC<Props> = ({ targetDate, setTargetDate }) => {
-  const year = targetDate.getUTCFullYear();
+  const year = targetDate.getFullYear();
 
   const setTargetDateHandler = (y: number) => () => {
     setTargetDate(new Date(y, 0, 1));
