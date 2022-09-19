@@ -7,6 +7,7 @@ import { roundDate } from '../../util/date';
 import { InitProps, TP } from '../data-types';
 import { QDComponent } from './qdComponent';
 import { qdAchieved, qdInit, qdState } from './qd-types';
+import { SessionDate } from '../extra-types';
 
 const schedule = [2, 2, 3];
 
@@ -27,7 +28,7 @@ export const quickDead: TP<'quick-dead', true> = {
 
     // Run on first try to init the data
     useEffect(() => {
-      onChange({ startDate: startDate.getTime() });
+      onChange({ startDate: SessionDate.from(startDate) });
       // eslint-disable-next-line
     }, []);
 
@@ -38,9 +39,9 @@ export const quickDead: TP<'quick-dead', true> = {
 
     // Update value when settings change
     useEffect(() => {
-      if (!isEqual(value.startDate, startDate)) {
+      if (!isEqual(SessionDate.toDate(value.startDate), startDate)) {
         onChange({
-          startDate: roundDate(startDate).getTime(),
+          startDate: SessionDate.from(roundDate(startDate)),
         });
       }
     }, [startDate, value.startDate, onChange]);
@@ -98,7 +99,7 @@ export const quickDead: TP<'quick-dead', true> = {
 
     /// Calculate next session date
     // Convert sessionDate to Date object
-    const sessionDate = new Date(sessionDateUtc);
+    const sessionDate = SessionDate.toDate(sessionDateUtc);
 
     // Convert schedule to CircularArray
     const schedulePlan = new CircularArray<number>(schedule, scheduleIndex);
@@ -115,7 +116,7 @@ export const quickDead: TP<'quick-dead', true> = {
     const nextScheduleIndex = schedulePlan.getIndex(+1);
 
     return {
-      sessionDate: nextSessionDate.getTime(),
+      sessionDate: SessionDate.from(nextSessionDate),
       scheduleIndex: nextScheduleIndex,
       lastVolume: skip ? lastVolume : achieved.volume,
     };
@@ -125,7 +126,7 @@ export const quickDead: TP<'quick-dead', true> = {
 
     /// Calculate next session date
     // Convert sessionDate to Date object
-    const sessionDate = new Date(sessionDateUtc);
+    const sessionDate = SessionDate.toDate(sessionDateUtc);
 
     // Convert schedule to CircularArray
     const schedulePlan = new CircularArray<number>(schedule, scheduleIndex);
@@ -139,7 +140,7 @@ export const quickDead: TP<'quick-dead', true> = {
     const nextScheduleIndex = schedulePlan.getIndex(+1);
 
     return {
-      sessionDate: nextSessionDate.getTime(),
+      sessionDate: SessionDate.from(nextSessionDate),
       scheduleIndex: nextScheduleIndex,
       lastVolume: 40,
     };
