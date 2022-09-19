@@ -24,13 +24,13 @@
 @keyframes running-bar {
   0% {
     transform: translate(-100vw, 0px);
-    height: 0.2rem;
+    height: 0.6rem;
   }
   50% {
-    height: 0.1rem;
+    height: 0.3rem;
   }
   100% {
     transform: translate(100vw, 0px);
-    height: 0.2rem;
+    height: 0.6rem;
   }
 }
