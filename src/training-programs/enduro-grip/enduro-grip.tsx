@@ -57,9 +57,12 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
 
     // Update value when settings change
     useEffect(() => {
-      if (!isEqual(value.startDate, startDate) || value.schedule !== schedule) {
+      if (
+        !isEqual(SessionDate.toDate(value.startDate), startDate) ||
+        value.schedule !== schedule
+      ) {
         onChange({
-          startDate: roundDate(startDate).getTime(),
+          startDate: SessionDate.from(roundDate(startDate)),
           schedule: schedule,
         });
       }
@@ -132,7 +135,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
 
     /// Calculate next session date
     // Convert sessionDate to Date object
-    const sessionDate = new Date(sessionDateUtc);
+    const sessionDate = SessionDate.toDate(sessionDateUtc);
 
     // Convert schedule to CircularArray
     const schedulePlan = new CircularArray<number>(
@@ -181,7 +184,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
     }
 
     return {
-      sessionDate: nextSessionDate.getTime(),
+      sessionDate: SessionDate.from(nextSessionDate),
       sessionIndex: nextSessionIndex,
       lastHeavySessionAchieved: heavySessionAchieved,
       schedule,
@@ -198,7 +201,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
 
     /// Calculate next session date
     // Convert sessionDate to Date object
-    const sessionDate = new Date(sessionDateUtc);
+    const sessionDate = SessionDate.toDate(sessionDateUtc);
 
     // Convert schedule to CircularArray
     const schedulePlan = new CircularArray<number>(
@@ -233,7 +236,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
     }
 
     return {
-      sessionDate: nextSessionDate.getTime(),
+      sessionDate: SessionDate.from(nextSessionDate),
       sessionIndex: nextSessionIndex,
       lastHeavySessionAchieved: heavySessionAchieved,
       schedule,

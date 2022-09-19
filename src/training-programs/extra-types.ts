@@ -13,6 +13,9 @@ export class SessionDate implements SessionDate {
       date: date.getDate(),
     };
   }
+  static toDate(date: SessionDate): Date {
+    return new Date(date.year, date.month, date.date);
+  }
 
   public year: number;
   public month: number;
