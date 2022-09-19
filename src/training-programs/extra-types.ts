@@ -1,19 +1,19 @@
 // Date object
-export interface SessionDate {
+export interface SessionDateType {
   year: number;
   month: number;
   date: number;
 }
 
-export class SessionDate implements SessionDate {
-  static from(date: Date): SessionDate {
+export class SessionDate implements SessionDateType {
+  static from(date: Date): SessionDateType {
     return {
       year: date.getFullYear(),
       month: date.getMonth(),
       date: date.getDate(),
     };
   }
-  static toDate(date: SessionDate): Date {
+  static toDate(date: SessionDateType): Date {
     return new Date(date.year, date.month, date.date);
   }
 
