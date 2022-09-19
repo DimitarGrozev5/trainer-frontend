@@ -97,6 +97,15 @@ const addThunk =
     // Get http client
     const sendRequest = httpClient({ getState, dispatch });
 
+    // Optimistically update the state
+    dispatch(
+      sliceActions.add({
+        id: data.id,
+        state: data.state,
+        version: '',
+      })
+    );
+
     try {
       const res = await sendRequest('/', {
         body: {
@@ -106,8 +115,9 @@ const addThunk =
         },
       });
 
+      // Update version after successful request
       dispatch(
-        sliceActions.add({
+        sliceActions.update({
           id: data.id,
           state: data.state,
           version: res.version,
@@ -115,6 +125,8 @@ const addThunk =
       );
     } catch (err) {
       console.log(err);
+      // Remove program if request failed
+      dispatch(sliceActions.remove({ id: data.id }));
       return;
     }
   };
@@ -125,19 +137,32 @@ const removeThunk =
     // Get http client
     const sendRequest = httpClient({ getState, dispatch });
 
+    // Optimistically remove the program
+    const originalState = getState().programs.byId[data.id];
+    dispatch(
+      sliceActions.remove({
+        id: data.id,
+      })
+    );
+
     try {
       await sendRequest(`/${data.id}`, {
         method: 'DELETE',
         body: { version: data.version },
       });
 
-      dispatch(
-        sliceActions.remove({
-          id: data.id,
-        })
-      );
+      // Do nothing after successful request
     } catch (err) {
       console.log(err);
+
+      // Restore program after a failed request
+      dispatch(
+        sliceActions.add({
+          id: data.id,
+          state: originalState.state!,
+          version: originalState.version!,
+        })
+      );
       return;
     }
   };
@@ -150,6 +175,16 @@ const updateThunk =
     // Get http client
     const sendRequest = httpClient({ getState, dispatch });
 
+    // Optimistically update the program
+    const originalState = getState().programs.byId[data.id];
+    dispatch(
+      sliceActions.update({
+        id: data.id,
+        state: data.state,
+        version: '',
+      })
+    );
+
     try {
       const res = await sendRequest(`/${data.id}`, {
         body: {
@@ -161,6 +196,7 @@ const updateThunk =
         method: 'PATCH',
       });
 
+      // Update version after successful request
       dispatch(
         sliceActions.update({
           id: data.id,
@@ -170,6 +206,15 @@ const updateThunk =
       );
     } catch (err) {
       console.log(err);
+
+      // Remove program if request failed
+      dispatch(
+        sliceActions.update({
+          id: data.id,
+          state: originalState.state!,
+          version: originalState.version!,
+        })
+      );
       return;
     }
   };
