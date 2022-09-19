@@ -21,7 +21,7 @@ const CalendarDay: React.FC<Props> = ({ date }) => {
 
   return (
     <div className={styles.day}>
-      <header>{date.getUTCDate()}</header>
+      <header>{date.getDate()}</header>
       {today.map((t) => (
         <section key={t.name}>{t.name}</section>
       ))}

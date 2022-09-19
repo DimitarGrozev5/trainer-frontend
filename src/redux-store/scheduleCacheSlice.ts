@@ -4,6 +4,7 @@ import { add, compareAsc } from 'date-fns';
 import { programs } from '../training-programs';
 
 import { ProgramId, TPActive, TPState } from '../training-programs/data-types';
+import { SessionDate } from '../training-programs/extra-types';
 
 interface ScheduledSession {
   id: ProgramId;
@@ -108,7 +109,7 @@ export const scheduleCacheMiddleware: Middleware =
       let cache = {} as ScheduledDate;
 
       //// Create a cache for the next three months
-      let currentDate = new Date(program.state.sessionDate);
+      let currentDate = SessionDate.toDate(program.state.sessionDate);
       const endDate = add(currentDate, { months: 3 });
 
       let nextState = program.state;
@@ -118,7 +119,7 @@ export const scheduleCacheMiddleware: Middleware =
           [currentDate.getTime()]: null,
         };
 
-        if (compareAsc(currentDate, nextState.sessionDate) === 0) {
+        if (compareAsc(currentDate, SessionDate.toDate(nextState.sessionDate)) === 0) {
           today = {
             [currentDate.getTime()]: getScheduledSession(
               program.id,

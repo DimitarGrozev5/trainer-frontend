@@ -43,14 +43,14 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
 
   let title = '';
   let headerTarget: CalendarView = 'month';
-  let resetValue: string = new Date().getUTCDate().toString();
+  let resetValue: string = new Date().getDate().toString();
   let changePeriodHandler = changePeriod('');
   let calendar = <></>;
   switch (viewMode) {
     case 'year':
-      title = targetDate.getUTCFullYear().toString();
+      title = targetDate.getFullYear().toString();
       headerTarget = 'dacade';
-      resetValue = new Date().getUTCFullYear().toString().substring(2);
+      resetValue = new Date().getFullYear().toString().substring(2);
       changePeriodHandler = changePeriod('years');
       calendar = (
         <CalendarYearView
@@ -64,11 +64,11 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
       break;
 
     case 'dacade':
-      title = `${targetDate.getUTCFullYear() - 5} - ${
-        targetDate.getUTCFullYear() + 5
+      title = `${targetDate.getFullYear() - 5} - ${
+        targetDate.getFullYear() + 5
       }`;
       headerTarget = 'dacade';
-      resetValue = new Date().getUTCFullYear().toString().substring(2);
+      resetValue = new Date().getFullYear().toString().substring(2);
       changePeriodHandler = changePeriod('dacade');
       calendar = (
         <CalendarDecadeView
@@ -101,8 +101,8 @@ const Calendar: React.FC<Props> = ({ selectedDate, onChangeDate }) => {
       </OverlayModal>
       <div className={styles['calendar-container']}>
         <CalendarHeader
-          title={`${getMonthName(targetDate)} ${targetDate.getUTCFullYear()}`}
-          resetValue={new Date().getUTCDate().toString()}
+          title={`${getMonthName(targetDate)} ${targetDate.getFullYear()}`}
+          resetValue={new Date().getDate().toString()}
           onChnagePeriod={changePeriod('months')}
           onPeriodToToday={setPeriodToToday}
           onChangeViewMode={openModalHandler}

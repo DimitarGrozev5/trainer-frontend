@@ -19,6 +19,7 @@ import {
   EnduroGripInit,
   EnduroGripState,
 } from './enduro-grip-types';
+import { SessionDate } from '../extra-types';
 
 const trainingRotation = [4, 1, 6, 2, 8, 3, 5, 1, 7, 2, 9, 3];
 
@@ -45,7 +46,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
 
     // Run on first try to init the data
     useEffect(() => {
-      onChange({ startDate: startDate.getTime(), schedule: schedule });
+      onChange({ startDate: SessionDate.from(startDate), schedule: schedule });
       // eslint-disable-next-line
     }, []);
 
@@ -56,9 +57,13 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
 
     // Update value when settings change
     useEffect(() => {
-      if (!isEqual(value.startDate, startDate) || value.schedule !== schedule) {
+      if (
+        !value.startDate ||
+        !isEqual(SessionDate.toDate(value.startDate), startDate) ||
+        value.schedule !== schedule
+      ) {
         onChange({
-          startDate: roundDate(startDate).getTime(),
+          startDate: SessionDate.from(roundDate(startDate)),
           schedule: schedule,
         });
       }
@@ -131,7 +136,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
 
     /// Calculate next session date
     // Convert sessionDate to Date object
-    const sessionDate = new Date(sessionDateUtc);
+    const sessionDate = SessionDate.toDate(sessionDateUtc);
 
     // Convert schedule to CircularArray
     const schedulePlan = new CircularArray<number>(
@@ -180,7 +185,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
     }
 
     return {
-      sessionDate: nextSessionDate.getTime(),
+      sessionDate: SessionDate.from(nextSessionDate),
       sessionIndex: nextSessionIndex,
       lastHeavySessionAchieved: heavySessionAchieved,
       schedule,
@@ -197,7 +202,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
 
     /// Calculate next session date
     // Convert sessionDate to Date object
-    const sessionDate = new Date(sessionDateUtc);
+    const sessionDate = SessionDate.toDate(sessionDateUtc);
 
     // Convert schedule to CircularArray
     const schedulePlan = new CircularArray<number>(
@@ -232,7 +237,7 @@ export const enduroGrip: TP<'EnduroGrip', true> = {
     }
 
     return {
-      sessionDate: nextSessionDate.getTime(),
+      sessionDate: SessionDate.from(nextSessionDate),
       sessionIndex: nextSessionIndex,
       lastHeavySessionAchieved: heavySessionAchieved,
       schedule,

@@ -4,6 +4,7 @@ import { useGetAllPrograms } from '../../../hooks/programs-hooks/useGetAllProgra
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux-hooks';
 import { programsActions } from '../../../redux-store/programsSlice';
 import { ProgramId, TPActive } from '../../../training-programs/data-types';
+import { SessionDate } from '../../../training-programs/extra-types';
 import { roundDate } from '../../../util/date';
 import Calendar from '../../Calendar/Calendar';
 import Button from '../../UI-elements/Button/Button';
@@ -77,12 +78,15 @@ const TrainingHub = () => {
         <ul>
           {today.map((s) => {
             const sessionDate = getProgram(s.id)?.state?.sessionDate;
-            const sessionDateUTC = sessionDate || 0;
+            const sessionDateUTC = sessionDate || SessionDate.from(new Date(0));
             return (
               <li key={s.name} className={styles.scheduled}>
                 <h2>{s.name}</h2>
                 <div className={styles['scheduled__desc']}>{s.sessionDesc}</div>
-                {compareAsc(sessionDateUTC, selectedDate) === 0 && (
+                {compareAsc(
+                  SessionDate.toDate(sessionDateUTC),
+                  selectedDate
+                ) === 0 && (
                   <div className={styles['scheduled__ctrl']}>
                     <Button onClick={skipSessionHandler(s.id)} plain>
                       Skip

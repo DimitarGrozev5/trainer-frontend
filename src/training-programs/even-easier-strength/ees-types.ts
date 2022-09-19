@@ -1,5 +1,7 @@
+import { SessionDate } from "../extra-types";
+
 export interface eesState {
-  sessionDate: number;
+  sessionDate: SessionDate;
   setsDone: SetsDone;
 }
 

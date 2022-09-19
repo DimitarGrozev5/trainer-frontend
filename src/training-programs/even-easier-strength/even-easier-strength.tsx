@@ -8,6 +8,7 @@ import CircularButton from '../common-components/CircularButton/CircularButton';
 import { H1, H2 } from '../common-components/Headings/H';
 import Info from '../common-components/Info/Info';
 import { SessionProps, TP } from '../data-types';
+import { SessionDate } from '../extra-types';
 import { eesAchieved, eesState, SetName } from './ees-types';
 import styles from './Styles.module.css';
 
@@ -50,7 +51,7 @@ export const ees: TP<'ees', true> = {
   getInitData: (): eesState => {
     const now = roundDate(new Date());
     return {
-      sessionDate: now.getTime(),
+      sessionDate: SessionDate.from(now),
       setsDone: {
         push: 0,
         pull: 0,
@@ -84,7 +85,7 @@ export const ees: TP<'ees', true> = {
     const { sessionDate: UTCDate } = state;
 
     // Convert sessionDate to Date object
-    const sessionDate = new Date(UTCDate);
+    const sessionDate = SessionDate.toDate(UTCDate);
 
     // If *skip* calcualte next date based on last session date
     const cDate = skip ? sessionDate : now();
@@ -129,7 +130,7 @@ export const ees: TP<'ees', true> = {
     }
 
     return {
-      sessionDate: nextSessionDate.getTime(),
+      sessionDate: SessionDate.from(nextSessionDate),
       setsDone,
     };
   },
@@ -138,7 +139,7 @@ export const ees: TP<'ees', true> = {
     const { sessionDate: UTCDate } = state;
 
     // Convert sessionDate to Date object
-    const sessionDate = new Date(UTCDate);
+    const sessionDate = SessionDate.toDate(UTCDate);
 
     // Set nextSessionDate to current session date
     const nextSessionDate = add(sessionDate, { days: 1 });
@@ -153,7 +154,7 @@ export const ees: TP<'ees', true> = {
     };
 
     return {
-      sessionDate: nextSessionDate.getTime(),
+      sessionDate: SessionDate.from(nextSessionDate),
       setsDone,
     };
   },
