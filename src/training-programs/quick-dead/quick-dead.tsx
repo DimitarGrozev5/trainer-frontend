@@ -39,7 +39,10 @@ export const quickDead: TP<'quick-dead', true> = {
 
     // Update value when settings change
     useEffect(() => {
-      if (!isEqual(SessionDate.toDate(value.startDate), startDate)) {
+      if (
+        !value.startDate ||
+        !isEqual(SessionDate.toDate(value.startDate), startDate)
+      ) {
         onChange({
           startDate: SessionDate.from(roundDate(startDate)),
         });
