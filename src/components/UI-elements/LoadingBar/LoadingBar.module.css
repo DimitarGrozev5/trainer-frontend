@@ -1,0 +1,36 @@
+.bar {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  height: 0.2rem;
+  z-index: 200;
+}
+
+.runner {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  height: 0.2rem;
+  width: 100vw;
+
+  background-color: var(--dark-1);
+
+  /* transform: translate(-100vw, 0px); */
+
+  animation: running-bar 1.5s ease-in-out infinite;
+}
+
+@keyframes running-bar {
+  0% {
+    transform: translate(-100vw, 0px);
+    height: 0.2rem;
+  }
+  50% {
+    height: 0.1rem;
+  }
+  100% {
+    transform: translate(100vw, 0px);
+    height: 0.2rem;
+  }
+}

@@ -26,13 +26,13 @@ function App() {
   // const { isLoading, error, clearError } =
   useGetInitialData();
 
-  const isLoading = useAppSelector((state) => state.network.isLoading);
+  // const isLoading = useAppSelector((state) => state.network.isLoading);
   const error = useAppSelector((state) => state.network.error);
   const clearError = () => dispatch(networkActions.clearError());
 
   return (
     <>
-      {isLoading && <LoadingSpinner asOverlay />}
+      {/* {isLoading && <LoadingSpinner asOverlay />} */}
       <ErrorModal show={!!error} error={error || ""} onClose={clearError} />
 
       <Routes>

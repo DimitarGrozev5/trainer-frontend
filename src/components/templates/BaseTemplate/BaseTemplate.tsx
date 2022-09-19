@@ -1,27 +1,31 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Outlet, useLocation } from "react-router-dom";
-import styles from "./BaseTemplate.module.css";
+import { useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Outlet, useLocation } from 'react-router-dom';
+import styles from './BaseTemplate.module.css';
 import ContextMenu, {
   ContextmenuItem,
-} from "../../UI-elements/ContextMenu/ContextMenu";
-import { useSState } from "../../../hooks/useSState";
-import { useAppSelector } from "../../../hooks/redux-hooks";
-import Button from "../../UI-elements/Button/Button";
+} from '../../UI-elements/ContextMenu/ContextMenu';
+import { useSState } from '../../../hooks/useSState';
+import { useAppSelector } from '../../../hooks/redux-hooks';
+import Button from '../../UI-elements/Button/Button';
+import LoadingBar from '../../UI-elements/LoadingBar/LoadingBar';
 
 const BaseTemplate = () => {
+  // Get loading status
+  const isLoading = useAppSelector((state) => state.network.isLoading);
+
   // Handle menu open
   const isLoggedIn = useAppSelector((state) => !!state.user.token);
   const [menuIsOpen, , { setStateTo: setMenuIsOpenTo }] = useSState(false);
 
   const links: ContextmenuItem[] = [
-    { caption: "Manage programs", path: "/manage-programs" },
-    { caption: "Logout", path: "/logout" },
+    { caption: 'Manage programs', path: '/manage-programs' },
+    { caption: 'Logout', path: '/logout' },
   ];
 
   // Get path context and change page title
   const path = useLocation().pathname;
-  const pageTitle = { "/manage-programs": "Programs" }[path];
+  const pageTitle = { '/manage-programs': 'Programs' }[path];
 
   // Get ref to container div
   const containerRef: React.Ref<HTMLDivElement> = useRef(null);
@@ -33,7 +37,7 @@ const BaseTemplate = () => {
   const { scrollYProgress } = useScroll({
     container: containerRef,
     target: h1Ref,
-    offset: ["start start", "end start"],
+    offset: ['start start', 'end start'],
   });
 
   // Change headers opacity and position based on scroll position
@@ -47,7 +51,7 @@ const BaseTemplate = () => {
   const h1yOutAnim = useTransform(
     scrollYProgress,
     [0, cutoff1, cutoff2, 1],
-    ["0vh", "8vh", "0vh", "0vh"]
+    ['0vh', '8vh', '0vh', '0vh']
   );
   const h3FadeInAnim = useTransform(
     scrollYProgress,
@@ -131,18 +135,20 @@ const BaseTemplate = () => {
           ref={h1Ref}
           style={{ opacity: h1FadeOutAnim, y: h1yOutAnim }}
         >
-          {pageTitle || "Trainer"}
+          {pageTitle || 'Trainer'}
         </motion.h1>
         <div className={styles.menu} ref={menuRef}>
           {pageTitle && (
             <Button to="/" plain>
-              {"<"}
+              {'<'}
             </Button>
           )}
 
           <motion.h3 ref={h3Ref} style={{ opacity: h3FadeInAnim }} layout>
-            {pageTitle || "Trainer"}
+            {pageTitle || 'Trainer'}
           </motion.h3>
+
+          {isLoading && <LoadingBar />}
 
           <div className={styles.button}>
             {isLoggedIn && !pageTitle && (
@@ -155,25 +161,27 @@ const BaseTemplate = () => {
                   show={menuIsOpen}
                   onClose={setMenuIsOpenTo(false)}
                   links={links}
-                  direction={"left"}
+                  direction={'left'}
                 />
               </>
             )}
           </div>
         </div>
         <motion.div
-          className={`${styles.menu} ${styles["menu-fixed"]}`}
+          className={`${styles.menu} ${styles['menu-fixed']}`}
           style={{ opacity: fixedMenuOpacityAnim }}
         >
           {pageTitle && (
             <Button to="/" plain>
-              {"<"}
+              {'<'}
             </Button>
           )}
 
           <motion.h3 ref={h3Ref} style={{ opacity: h3FadeInAnim }} layout>
-            {pageTitle || "Trainer"}
+            {pageTitle || 'Trainer'}
           </motion.h3>
+
+          {isLoading && <LoadingBar />}
 
           <div className={styles.button}>
             {isLoggedIn && !pageTitle && (
@@ -186,7 +194,7 @@ const BaseTemplate = () => {
                   show={menuIsOpen}
                   onClose={setMenuIsOpenTo(false)}
                   links={links}
-                  direction={"left"}
+                  direction={'left'}
                 />
               </>
             )}
