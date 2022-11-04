@@ -10,25 +10,29 @@ import {
   eesState,
 } from './even-easier-strength/ees-types';
 import { qdAchieved, qdInit, qdState } from './quick-dead/qd-types';
+import { rtkAchieved, rtkInit, rtkState } from './rtk/rtk-types';
 
 // All valid programIds will be stored here
-export type ProgramId = 'EnduroGrip' | 'ees' | 'quick-dead';
+export type ProgramId = 'EnduroGrip' | 'ees' | 'quick-dead' | 'rtk';
 
 // Type maps for the different programs
 export type ProgramStateMap = {
   EnduroGrip: EnduroGripState;
   ees: eesState;
   'quick-dead': qdState;
+  rtk: rtkState;
 };
 export type ProgramInitMap = {
   EnduroGrip: EnduroGripInit;
   ees: eesInit;
   'quick-dead': qdInit;
+  rtk: rtkInit;
 };
 export type ProgramAchievedMap = {
   EnduroGrip: EnduroGripAchieved;
   ees: eesAchieved;
   'quick-dead': qdAchieved;
+  rtk: rtkAchieved;
 };
 
 // Init Props and Init Component data types
