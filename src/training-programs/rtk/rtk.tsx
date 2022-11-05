@@ -6,8 +6,15 @@ import { CircularArray } from '../../util/array';
 import { roundDate } from '../../util/date';
 import { InitProps, TP } from '../data-types';
 import { QDComponent } from './rtkComponent';
-import { Ladder, qdAchieved, qdInit, qdState } from './rtk-types';
+import {
+  Ladder,
+  rtkAchieved,
+  rtkInit,
+  rtkState,
+  WeightVariations,
+} from './rtk-types';
 import { SessionDate } from '../extra-types';
+import { H2, H3 } from '../common-components/Headings/H';
 
 const schedule = [2, 2, 3];
 const grindProgression: Ladder[] = [
@@ -59,24 +66,88 @@ const balisticProgression: Ladder[] = [
   ],
 ];
 
-export const RTK: TP<'quick-dead', true> = {
-  id: 'quick-dead',
+export const RTK: TP<'rtk', true> = {
+  id: 'rtk',
   active: false,
-  state: {} as qdState,
+  state: {} as rtkState,
   version: '',
 
-  name: 'Q&D',
-  shortDesc: 'The Quick and The Dead training progam by Pavel',
+  name: 'RTK',
+  shortDesc: 'Return of The Kettlebell',
   longDesc:
-    'This training protocol aims to build your strength endurance and mitochondria in your fast twitch muscle fibers. It consists of two exercices - swing and viking push press, that are performed as explosively as possible, preferably in around a second per rep.',
+    'A hard kettlebell program that is ment to build strength and muscle. It requires a lot of dedication and a lot of hard work and consistency.',
 
-  InitComponent: ({ value, onChange }: InitProps<'quick-dead'>) => {
+  InitComponent: ({ value, onChange }: InitProps<'rtk'>) => {
     const [startToday, setStartToday] = useState(true);
     const [startDate, setStartDate] = useState(roundDate(new Date()));
 
+    const [grindWeights, setGrindWeights] = useState<WeightVariations>({
+      heavy: { left: 0, right: 0 },
+      medium: { left: 0, right: 0 },
+      light: { left: 0, right: 0 },
+    });
+    const [balisticWeights, setBalisticWeights] = useState<WeightVariations>({
+      heavy: { left: 0, right: 0 },
+      medium: { left: 0, right: 0 },
+      light: { left: 0, right: 0 },
+    });
+
+    const changeGrinds =
+      (session: 'heavy' | 'medium' | 'light', side: 'left' | 'right') =>
+      (newVal: string) => {
+        setGrindWeights((w) => ({
+          ...w,
+          [session]: {
+            ...w[session],
+            [side]: +newVal,
+          },
+        }));
+      };
+    const changeBalistics =
+      (session: 'heavy' | 'medium' | 'light', side: 'left' | 'right') =>
+      (newVal: string) => {
+        setBalisticWeights((w) => ({
+          ...w,
+          [session]: {
+            ...w[session],
+            [side]: +newVal,
+          },
+        }));
+      };
+
     // Run on first try to init the data
     useEffect(() => {
-      onChange({ startDate: SessionDate.from(startDate) });
+      onChange({
+        startDate: SessionDate.from(startDate),
+        grindWeights: {
+          heavy: {
+            left: 0,
+            right: 0,
+          },
+          medium: {
+            left: 0,
+            right: 0,
+          },
+          light: {
+            left: 0,
+            right: 0,
+          },
+        },
+        balisticWeights: {
+          heavy: {
+            left: 0,
+            right: 0,
+          },
+          medium: {
+            left: 0,
+            right: 0,
+          },
+          light: {
+            left: 0,
+            right: 0,
+          },
+        },
+      });
       // eslint-disable-next-line
     }, []);
 
@@ -93,21 +164,15 @@ export const RTK: TP<'quick-dead', true> = {
       ) {
         onChange({
           startDate: SessionDate.from(roundDate(startDate)),
+          grindWeights,
+          balisticWeights,
         });
       }
-    }, [startDate, value.startDate, onChange]);
+    }, [startDate, value.startDate, onChange, grindWeights, balisticWeights]);
 
     return (
       <>
-        <div>
-          You will be performing two exercises - the Swing, with one arm or two
-          arms and the Viking Push Press with one arm. <br />
-          Pick a weight that allows you to be explosive. That means that your 10
-          rep sets should last as little as possible, but definitely less than
-          15 seconds. <br />
-          You will be training three times a week. The exact rep and set schemes
-          will be decided on the day.
-        </div>
+        <div>Read the book dude. Return of The Kettlebell</div>
         <Input
           label="Start today"
           type="checkbox"
@@ -122,10 +187,91 @@ export const RTK: TP<'quick-dead', true> = {
             onChange={setStartDate}
           />
         )}
+        <H2>Grind block weights</H2>
+        <H3>Heavy session</H3>
+        <Input
+          label="Left"
+          type="text"
+          value={grindWeights.heavy.left.toString()}
+          onChange={changeGrinds('heavy', 'left')}
+        />
+        <Input
+          label="Right"
+          type="text"
+          value={grindWeights.heavy.right.toString()}
+          onChange={changeGrinds('heavy', 'right')}
+        />
+        <H3>Medium session</H3>
+        <Input
+          label="Left"
+          type="text"
+          value={grindWeights.medium.left.toString()}
+          onChange={changeGrinds('medium', 'left')}
+        />
+        <Input
+          label="Right"
+          type="text"
+          value={grindWeights.medium.right.toString()}
+          onChange={changeGrinds('medium', 'right')}
+        />
+        <H3>Light session</H3>
+        <Input
+          label="Left"
+          type="text"
+          value={grindWeights.light.left.toString()}
+          onChange={changeGrinds('light', 'left')}
+        />
+        <Input
+          label="Right"
+          type="text"
+          value={grindWeights.light.right.toString()}
+          onChange={changeGrinds('light', 'right')}
+        />
+
+        <H2>Balistic block weights</H2>
+        <H3>Heavy session</H3>
+        <Input
+          label="Left"
+          type="text"
+          value={balisticWeights.heavy.left.toString()}
+          onChange={changeBalistics('heavy', 'left')}
+        />
+        <Input
+          label="Right"
+          type="text"
+          value={balisticWeights.heavy.right.toString()}
+          onChange={changeBalistics('heavy', 'right')}
+        />
+        <H3>Medium session</H3>
+        <Input
+          label="Left"
+          type="text"
+          value={balisticWeights.medium.left.toString()}
+          onChange={changeBalistics('medium', 'left')}
+        />
+        <Input
+          label="Right"
+          type="text"
+          value={balisticWeights.medium.right.toString()}
+          onChange={changeBalistics('medium', 'right')}
+        />
+        <H3>Light session</H3>
+        <Input
+          label="Left"
+          type="text"
+          value={balisticWeights.light.left.toString()}
+          onChange={changeBalistics('light', 'left')}
+        />
+        <Input
+          label="Right"
+          type="text"
+          value={balisticWeights.light.right.toString()}
+          onChange={changeBalistics('light', 'right')}
+        />
       </>
     );
   },
-  getInitData: (val: qdInit): qdState => {
+  getInitData: (val: rtkInit): rtkState => {
     return {
       sessionDate: val.startDate,
       scheduleIndex: 0,
