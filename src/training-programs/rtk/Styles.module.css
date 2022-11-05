@@ -1,0 +1,44 @@
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.clock {
+  align-items: center;
+  font-size: 7.5rem;
+  font-family: 'Andalé Mono', Andalé, monospace;
+}
+
+.clock.small {
+  font-size: 6rem;
+}
+
+.sets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+
+  text-align: center;
+}
+
+.sets > li:nth-child(1) {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.sets > li:nth-child(2) {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.sets > li:nth-child(3) {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.sets > li {
+  font-size: 1rem;
+  font-weight: 400;
+}
