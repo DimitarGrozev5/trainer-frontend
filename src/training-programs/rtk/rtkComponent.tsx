@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import _ from 'lodash';
 
 import Button from '../../components/UI-elements/Button/Button';
@@ -7,99 +7,203 @@ import { H1, H2 } from '../common-components/Headings/H';
 import Info from '../common-components/Info/Info';
 import styles from './Styles.module.css';
 import { SessionProps } from '../data-types';
-import { qdVolume } from './rtk-types';
-import { QDTimer } from './qdTimer';
+import { balisticProgression, grindProgression } from './rtk';
+import {
+  progressionIndex,
+  RTKIntent,
+  WeightCombo,
+  WeightVariations,
+} from './rtk-types';
 
-const dice = (exclude: number[]): number => {
-  let rnd = _.random(1, 6, false);
-  while (exclude.includes(rnd)) {
-    rnd = _.random(1, 6, false);
-  }
-  return rnd;
-};
-
-const volumeDice = {
-  40: [1],
-  60: [2, 3],
-  80: [4, 5],
-  100: [6],
-};
-const repSchemeFromDice: number[] = [0, 5, 5, 15, 15, 10, 10];
-const volumeFromDice: qdVolume[] = [40, 40, 60, 60, 80, 80, 100];
-
-export const QDComponent = ({
+export const RTKComponent = ({
   program,
   onAchievedChanged,
-}: SessionProps<'quick-dead'>) => {
+}: SessionProps<'rtk'>) => {
   // Get details from last session
-  const { lastVolume } = program.state;
+  const {
+    currentBlock,
+    sessionInBlock,
 
-  // Function to calculate random session
-  const randWorkout = (lastVolume: qdVolume) => {
-    const nextRepSchemeRoll = dice([]);
-    const nextVolumeRoll = dice(volumeDice[lastVolume]);
+    nextGrindGoal,
+    lastThreeGrindTimes,
+    nextBalisticGoal,
+    lastThreeBalisticTimes,
 
-    const repScheme = repSchemeFromDice[nextRepSchemeRoll];
-    const volume = volumeFromDice[nextVolumeRoll];
+    grindWeights,
+    balisticWeights,
+    bestGrindTest,
+    bestBalistic,
+  } = program.state;
 
-    return { repScheme, volume };
-  };
+  // Session type - 0 - light; 1 - medium; 2 - heavy
+  const sessionType = sessionInBlock % 3;
+  const sessionTypes = ['Light', 'Medium', 'Heavy'];
+
+  // Ladder params
+  const fullLadder = useMemo(() => {
+    return currentBlock === 'grind'
+      ? grindProgression[nextGrindGoal]
+      : balisticProgression[nextBalisticGoal];
+  }, [currentBlock, nextBalisticGoal, nextGrindGoal]);
+
+  const sessionLadder = useMemo(() => {
+    const drop = currentBlock === 'grind' ? 1 : 2;
+    switch (sessionType) {
+      case 0:
+        return fullLadder.map((r) => ({ topSet: r.topSet - 2 * drop }));
+      case 1:
+        return fullLadder.map((r) => ({ topSet: r.topSet - drop }));
+      case 2:
+        return fullLadder;
+
+      default:
+        return fullLadder;
+    }
+  }, [currentBlock, fullLadder, sessionType]);
+
+  const sessionVolume = sessionLadder.reduce((volume, rung) => {
+    return volume + ((rung.topSet + 1) * rung.topSet) / 2;
+  }, 0);
+
+  const allBellWeights =
+    currentBlock === 'grind' ? grindWeights : balisticWeights;
+  const sessionWeights =
+    sessionType === 0
+      ? allBellWeights.light
+      : sessionType === 1
+      ? allBellWeights.medium
+      : allBellWeights.heavy;
 
   // State for session setup ot execution
-  const [sessionStarted, setSessionStarted] = useState(false);
+  // 0 - overview
+  // 1 - do session
+  // 2 - test
+  const [sessionState, setSessionState] = useState(0);
 
-  // State for session parameters
-  const [w, setW] = useState(randWorkout(lastVolume));
-
-  const changeWHandler = () => {
-    setW(randWorkout(lastVolume));
-  };
-  const offDayHandler = () => {
-    setW({ repScheme: 5, volume: 40 });
-  };
   const startSessionHandler = () => {
-    setSessionStarted(true);
+    setSessionState(1);
   };
+  const startTestHandler = () => {
+    setSessionState(2);
+  };
+
+  // Setup achievment
+  const [achieved, setAchieved] = useState<progressionIndex>(
+    currentBlock === 'grind' ? nextGrindGoal : nextBalisticGoal
+  );
+  const [time, setTime] = useState(0);
+  const [nextWeights, setNextWeights] = useState<WeightVariations>(
+    currentBlock === 'grind' ? grindWeights : balisticWeights
+  );
+  const [intent, setIntent] = useState<RTKIntent>('stay');
+
+  const [test, setTest] = useState<
+    | {
+        block: 'grind';
+        testAchieved: WeightCombo;
+      }
+    | {
+        block: 'balistic';
+        testAchieved: WeightCombo & { reps: number };
+      }
+  >(
+    currentBlock === 'grind'
+      ? {
+          block: 'grind',
+          testAchieved: bestGrindTest,
+        }
+      : { block: 'balistic', testAchieved: bestBalistic }
+  );
+
+  useEffect(() => {
+    if (sessionState === 1) {
+      onAchievedChanged({
+        achieved,
+        time,
+        nextWeights,
+        intent,
+      });
+    } else if (sessionState === 2) {
+      onAchievedChanged(test);
+    }
+  }, [
+    achieved,
+    intent,
+    nextWeights,
+    onAchievedChanged,
+    sessionState,
+    test,
+    time,
+  ]);
 
   return (
     <>
-      {!sessionStarted && (
+      {sessionState === 0 && (
         <>
           <H1>Session for today:</H1>
           <Card>
-            <H2>Total daily reps:</H2>
-            <Info>Total reps: {w.volume}</Info>
-            <Info>Number of series: {w.volume / 20}</Info>
-            <Info>Session duration: {(w.volume / 20) * 6} min</Info>
+            <H2>
+              {currentBlock === 'grind' ? 'Grind' : 'Balistic'} Block{' '}
+              {sessionTypes[sessionType]} session:
+            </H2>
+            <Info>Ladders: {sessionLadder.length}</Info>
+            <Info>Max reps in Rung: {sessionLadder[0].topSet}</Info>
+            <Info>Session target Volume: {sessionVolume}</Info>
+            <Info>
+              Kettlebell Weights: {sessionWeights.left}kg/{sessionWeights.right}
+              kg
+            </Info>
           </Card>
           <Card>
-            <H2>Reps and Sets within Series:</H2>
-            {w.repScheme === 5 && <Info>Reps/sets: 5/4</Info>}
-            {w.repScheme === 10 && <Info>Reps/sets: 10/2</Info>}
-            {w.repScheme === 15 && (
-              <Info>Alternate series of 5/4 and 10/2</Info>
+            <H2>Exercises:</H2>
+            {currentBlock === 'grind' && (
+              <>
+                <Info>Ladders of Presses (Snatch before first press)</Info>
+                <Info>Do 5 Squats after each top Rung</Info>
+                <Info>Do 2x20 Deadlifts at the end</Info>
+              </>
+            )}
+            {currentBlock === 'balistic' && (
+              <>
+                {sessionType === 0 ? (
+                  <>
+                    <Info>Ladders of Viking Push Press</Info>
+                    <Info>
+                      Do 2-3x10-20 per arm of Front or Side rise Snatches
+                    </Info>
+                  </>
+                ) : (
+                  <Info>Ladders of Clean & Jerk</Info>
+                )}
+              </>
             )}
           </Card>
           <Card className={styles.control}>
-            <Button stretch onClick={changeWHandler}>
-              Reshuffle
-            </Button>
-            <Button stretch onClick={offDayHandler}>
-              I am having an off day
-            </Button>
             <Button stretch onClick={startSessionHandler}>
               Start Session (starts in 10 seconds)
             </Button>
+            {sessionType === 2 && (
+              <>
+                <Button stretch onClick={startTestHandler}>
+                  Start Test
+                </Button>
+              </>
+            )}
+          </Card>
+          <Card>
+            <H2>Best Achivements:</H2>
+            <Info>
+              Best Press: {bestGrindTest.left}kg/{bestGrindTest.right}kg
+            </Info>
+            <Info>
+              Best Clean and Jerk: {bestBalistic.reps} reps with{' '}
+              {bestBalistic.left}kg/{bestBalistic.right}kg
+            </Info>
           </Card>
         </>
       )}
-      {sessionStarted && (
-        <QDTimer
-          repScheme={w.repScheme}
-          volume={w.volume}
-          onAchievedChanged={onAchievedChanged}
-        />
-      )}
+      {sessionState === 1 && <></>}
+      {sessionState === 2 && <></>}
     </>
   );
 };

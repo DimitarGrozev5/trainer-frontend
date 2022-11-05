@@ -26,9 +26,9 @@ export interface rtkState {
   sessionInBlock: number;
 
   // The index of the Progression array from rtk.tsx
-  lastGrindAchievement: progressionIndex;
+  nextGrindGoal: progressionIndex;
   lastThreeGrindTimes: [number, number, number];
-  lastBalisticAchievement: progressionIndex;
+  nextBalisticGoal: progressionIndex;
   lastThreeBalisticTimes: [number, number, number];
 
   grindWeights: WeightVariations;
@@ -50,6 +50,7 @@ export type RTKIntent = 'stay' | 'progress';
 export type rtkAchieved =
   | {
       achieved: progressionIndex;
+      time: number;
       nextWeights: WeightVariations;
       intent: RTKIntent;
     }

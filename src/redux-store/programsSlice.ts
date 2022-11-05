@@ -41,8 +41,9 @@ const programsSlice = createSlice({
         state: null,
         version: null,
       },
+      rtk: { id: 'rtk', active: false, state: null, version: null },
     },
-    arr: ['EnduroGrip', 'ees', 'quick-dead'],
+    arr: ['EnduroGrip', 'ees', 'quick-dead', 'rtk'],
   } as ProgramsState,
 
   reducers: {

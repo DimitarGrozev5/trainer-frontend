@@ -5,7 +5,7 @@ import Input from '../../components/UI-elements/Input/Input';
 import { CircularArray } from '../../util/array';
 import { roundDate } from '../../util/date';
 import { InitProps, TP } from '../data-types';
-import { QDComponent } from './rtkComponent';
+import { RTKComponent } from './rtkComponent';
 import {
   Ladder,
   rtkAchieved,
@@ -17,7 +17,7 @@ import { SessionDate } from '../extra-types';
 import { H2, H3 } from '../common-components/Headings/H';
 
 const schedule = [2, 2, 3];
-const grindProgression: Ladder[] = [
+export const grindProgression: Ladder[] = [
   [{ topSet: 3 }, { topSet: 3 }, { topSet: 3 }],
   [{ topSet: 3 }, { topSet: 3 }, { topSet: 3 }, { topSet: 3 }],
   [{ topSet: 3 }, { topSet: 3 }, { topSet: 3 }, { topSet: 3 }, { topSet: 3 }],
@@ -32,7 +32,7 @@ const grindProgression: Ladder[] = [
   [{ topSet: 5 }, { topSet: 5 }, { topSet: 5 }, { topSet: 5 }, { topSet: 4 }],
   [{ topSet: 5 }, { topSet: 5 }, { topSet: 5 }, { topSet: 5 }, { topSet: 5 }],
 ];
-const balisticProgression: Ladder[] = [
+export const balisticProgression: Ladder[] = [
   [{ topSet: 6 }, { topSet: 6 }, { topSet: 6 }],
   [{ topSet: 6 }, { topSet: 6 }, { topSet: 6 }, { topSet: 6 }],
   [{ topSet: 6 }, { topSet: 6 }, { topSet: 6 }, { topSet: 6 }, { topSet: 6 }],
@@ -279,9 +279,9 @@ export const RTK: TP<'rtk', true> = {
       currentBlock: 'grind',
       sessionInBlock: 0,
 
-      lastGrindAchievement: 0,
+      nextGrindGoal: 0,
       lastThreeGrindTimes: [Infinity, Infinity, Infinity],
-      lastBalisticAchievement: 0,
+      nextBalisticGoal: 0,
       lastThreeBalisticTimes: [Infinity, Infinity, Infinity],
 
       grindWeights: val.grindWeights,
@@ -292,19 +292,31 @@ export const RTK: TP<'rtk', true> = {
     };
   },
 
-  getDescFromState: (state: qdState): string => {
+  getDescFromState: (state: rtkState): string => {
     return 'Will be decided on the day';
   },
   getNextState: (
-    prevState: qdState,
-    achieved: qdAchieved | 'skip'
-  ): qdState => {
+    prevState: rtkState,
+    achieved: rtkAchieved | 'skip'
+  ): rtkState => {
     const skip = achieved === 'skip';
 
     const {
       sessionDate: sessionDateUtc,
       scheduleIndex,
-      lastVolume,
+
+      currentBlock,
+      sessionInBlock,
+
+      nextGrindGoal,
+      lastThreeGrindTimes,
+      nextBalisticGoal,
+      lastThreeBalisticTimes,
+
+      grindWeights,
+      balisticWeights,
+      bestGrindTest,
+      bestBalistic,
     } = prevState;
 
     /// Calculate next session date
@@ -325,14 +337,92 @@ export const RTK: TP<'rtk', true> = {
     // Calculate next schedule index
     const nextScheduleIndex = schedulePlan.getIndex(+1);
 
+    /// Switch block if needed
+    let nextBlock = currentBlock;
+    let nextSessionInBlock = (sessionInBlock + 1) % 6;
+    if (sessionInBlock === 5) {
+      nextBlock = currentBlock === 'grind' ? 'balistic' : 'grind';
+    }
+
+    /// Update achivements
+    let nextGrindIndex = nextGrindGoal;
+    let nextThreeGrindTimes = lastThreeGrindTimes;
+    let nextBalisticIndex = nextBalisticGoal;
+    let nextThreeBalisticTimes = lastThreeBalisticTimes;
+    let nextGrindWeights = grindWeights;
+    let nextBalisticWeights = balisticWeights;
+    let nextBestGrindTest = bestGrindTest;
+    let nextBestBalistic = bestBalistic;
+
+    if (achieved !== 'skip') {
+      if ('achieved' in achieved) {
+        /// Update session achievemnt only if the user wants to progress
+        if (currentBlock === 'grind') {
+          if (achieved.intent === 'progress') {
+            nextGrindIndex = (nextGrindIndex + 1) % 13;
+          }
+          nextThreeGrindTimes = [
+            nextThreeGrindTimes[1],
+            nextThreeGrindTimes[2],
+            achieved.time,
+          ];
+          nextGrindWeights = achieved.nextWeights;
+        } else {
+          if (achieved.intent === 'progress') {
+            nextBalisticIndex = (nextBalisticIndex + 1) % 13;
+          }
+          nextThreeBalisticTimes = [
+            nextThreeBalisticTimes[1],
+            nextThreeBalisticTimes[2],
+            achieved.time,
+          ];
+          nextBalisticWeights = achieved.nextWeights;
+        }
+      } else if ('block' in achieved) {
+        if (achieved.block === 'grind') {
+          nextBestGrindTest = achieved.testAchieved;
+        } else {
+          nextBestBalistic = achieved.testAchieved;
+        }
+      }
+    }
     return {
       sessionDate: SessionDate.from(nextSessionDate),
       scheduleIndex: nextScheduleIndex,
-      lastVolume: skip ? lastVolume : achieved.volume,
+
+      currentBlock: nextBlock,
+      sessionInBlock: nextSessionInBlock,
+
+      nextGrindGoal: nextGrindIndex,
+      lastThreeGrindTimes: nextThreeGrindTimes,
+      nextBalisticGoal: nextBalisticIndex,
+      lastThreeBalisticTimes: nextThreeBalisticTimes,
+
+      grindWeights: nextGrindWeights,
+      balisticWeights: nextBalisticWeights,
+
+      bestGrindTest: nextBestGrindTest,
+      bestBalistic: nextBestBalistic,
     };
   },
-  getNextScheduleState: function (prevState: qdState): qdState {
-    const { sessionDate: sessionDateUtc, scheduleIndex } = prevState;
+  getNextScheduleState: function (prevState: rtkState): rtkState {
+    const {
+      sessionDate: sessionDateUtc,
+      scheduleIndex,
+
+      currentBlock,
+      sessionInBlock,
+
+      nextGrindGoal,
+      lastThreeGrindTimes,
+      nextBalisticGoal,
+      lastThreeBalisticTimes,
+
+      grindWeights,
+      balisticWeights,
+      bestGrindTest,
+      bestBalistic,
+    } = prevState;
 
     /// Calculate next session date
     // Convert sessionDate to Date object
@@ -349,12 +439,49 @@ export const RTK: TP<'rtk', true> = {
     // Calculate next schedule index
     const nextScheduleIndex = schedulePlan.getIndex(+1);
 
+    /// Switch block if needed
+    let nextBlock = currentBlock;
+    let nextSessionInBlock = (sessionInBlock + 1) % 6;
+    if (sessionInBlock === 5) {
+      nextBlock = currentBlock === 'grind' ? 'balistic' : 'grind';
+    }
+
+    /// Update achivements
+    let nextGrindIndex = nextGrindGoal;
+    let nextThreeGrindTimes = lastThreeGrindTimes;
+    let nextBalisticIndex = nextBalisticGoal;
+    let nextThreeBalisticTimes = lastThreeBalisticTimes;
+    let nextGrindWeights = grindWeights;
+    let nextBalisticWeights = balisticWeights;
+    let nextBestGrindTest = bestGrindTest;
+    let nextBestBalistic = bestBalistic;
+
+    /// Update session achievemnt only if the user wants to progress
+    if (currentBlock === 'grind') {
+      nextGrindIndex = (nextGrindIndex + 1) % 13;
+    } else {
+      nextBalisticIndex = (nextBalisticIndex + 1) % 13;
+    }
+
     return {
       sessionDate: SessionDate.from(nextSessionDate),
       scheduleIndex: nextScheduleIndex,
-      lastVolume: 40,
+
+      currentBlock: nextBlock,
+      sessionInBlock: nextSessionInBlock,
+
+      nextGrindGoal: nextGrindIndex,
+      lastThreeGrindTimes: nextThreeGrindTimes,
+      nextBalisticGoal: nextBalisticIndex,
+      lastThreeBalisticTimes: nextThreeBalisticTimes,
+
+      grindWeights: nextGrindWeights,
+      balisticWeights: nextBalisticWeights,
+
+      bestGrindTest: nextBestGrindTest,
+      bestBalistic: nextBestBalistic,
     };
   },
 
-  SessionComponent: QDComponent,
+  SessionComponent: RTKComponent,
 };
