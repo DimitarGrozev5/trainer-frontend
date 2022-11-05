@@ -275,7 +275,20 @@ export const RTK: TP<'rtk', true> = {
     return {
       sessionDate: val.startDate,
       scheduleIndex: 0,
-      lastVolume: 100,
+
+      currentBlock: 'grind',
+      sessionInBlock: 0,
+
+      lastGrindAchievement: 0,
+      lastThreeGrindTimes: [Infinity, Infinity, Infinity],
+      lastBalisticAchievement: 0,
+      lastThreeBalisticTimes: [Infinity, Infinity, Infinity],
+
+      grindWeights: val.grindWeights,
+      balisticWeights: val.balisticWeights,
+
+      bestGrindTest: val.grindWeights.heavy,
+      bestBalistic: { ...val.balisticWeights.heavy, reps: 0 },
     };
   },
 
