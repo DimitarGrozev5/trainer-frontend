@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import _ from 'lodash';
 
 import Button from '../../components/UI-elements/Button/Button';
 import Card from '../../components/UI-elements/Card/Card';
@@ -14,6 +13,8 @@ import {
   WeightCombo,
   WeightVariations,
 } from './rtk-types';
+import { useStopwatch } from '../common-components/Stopwatch/useStopwatch';
+import Stopwatch from '../common-components/Stopwatch/Stopwatch';
 
 export const RTKComponent = ({
   program,
@@ -136,6 +137,8 @@ export const RTKComponent = ({
     time,
   ]);
 
+  const stopwatchProps = useStopwatch();
+
   return (
     <>
       {sessionState === 0 && (
@@ -202,7 +205,16 @@ export const RTKComponent = ({
           </Card>
         </>
       )}
-      {sessionState === 1 && <></>}
+      {sessionState === 1 && (
+        <>
+          <Card>
+            <Stopwatch {...stopwatchProps} />
+          </Card>
+          <Card>
+            
+          </Card>
+        </>
+      )}
       {sessionState === 2 && <></>}
     </>
   );
